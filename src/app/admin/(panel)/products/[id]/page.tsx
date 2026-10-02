@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ProductForm } from "@/components/admin/product-form";
+import { ProductImages } from "@/components/admin/product-images";
 import { requireEditor } from "@/lib/auth";
 import { getCurrentStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase/server";
@@ -19,7 +20,7 @@ export default async function EditProductPage({
   ]);
 
   const db = await createClient();
-  const [{ data: product }, options] = await Promise.all([
+  const [{ data: product }, { data: images }, options] = await Promise.all([
     db
       .from("products")
       .select(
@@ -28,6 +29,12 @@ export default async function EditProductPage({
       .eq("id", id)
       .eq("store_id", session.storeId)
       .maybeSingle(),
+    db
+      .from("product_images")
+      .select("id, public_url, alt_text_ar, alt_text_en, is_primary")
+      .eq("product_id", id)
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: true }),
     loadProductFormOptions(session.storeId, locale),
   ]);
   if (!product) notFound();
@@ -37,8 +44,9 @@ export default async function EditProductPage({
     .map(({ spec_key, value_ar, value_en }) => ({ spec_key, value_ar, value_en }));
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex max-w-3xl flex-col gap-6">
       <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
+      <ProductImages storeId={session.storeId} productId={id} images={images ?? []} />
       <ProductForm
         action={updateProduct.bind(null, id)}
         currency={store.currency_code}

@@ -7,6 +7,7 @@ import { SelectField } from "@/components/ui/select";
 import { requireAdmin } from "@/lib/auth";
 import { cn } from "@/lib/cn";
 import { formatDate, formatPrice, pickLocalized } from "@/lib/format";
+import { thumbUrl } from "@/lib/images";
 import { escapeLike, normalizeSearch } from "@/lib/search";
 import { getCurrentStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase/server";
@@ -19,6 +20,24 @@ type Params = Record<string, string | string[] | undefined>;
 
 function first(value: string | string[] | undefined) {
   return (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
+}
+
+/** Small primary-image preview for the list (the compressed thumbnail variant). */
+function ProductThumb({ url }: { url: string | null | undefined }) {
+  if (!url) {
+    return <div aria-hidden className="size-12 shrink-0 rounded-lg border border-dashed border-border bg-surface" />;
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={thumbUrl(url)}
+      alt=""
+      width={48}
+      height={48}
+      loading="lazy"
+      className="size-12 shrink-0 rounded-lg border border-border bg-background object-contain"
+    />
+  );
 }
 
 const AVAILABILITY_STYLE: Record<string, string> = {
@@ -51,7 +70,7 @@ export default async function AdminProductsPage({
   let query = db
     .from("products")
     .select(
-      "id, name_ar, name_en, slug, price, availability, active, featured, created_at, categories(name_ar, name_en), brands(name)",
+      "id, name_ar, name_en, slug, price, availability, active, featured, created_at, categories(name_ar, name_en), brands(name), product_images(public_url, is_primary)",
       { count: "exact" },
     )
     .eq("store_id", session.storeId);
@@ -175,6 +194,11 @@ export default async function AdminProductsPage({
                 {products.map((product) => (
                   <tr key={product.id} className="border-b border-border last:border-0">
                     <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <ProductThumb
+                          url={product.product_images.find((image) => image.is_primary)?.public_url}
+                        />
+                        <div>
                       <div className="font-medium">
                         {pickLocalized(locale, product.name_ar, product.name_en)}
                         {product.featured && (
@@ -185,6 +209,8 @@ export default async function AdminProductsPage({
                       </div>
                       <div className="text-xs text-muted" dir="ltr">
                         {product.slug}
+                      </div>
+                        </div>
                       </div>
                     </td>
                     <td className="px-4 py-3">

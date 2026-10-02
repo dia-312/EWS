@@ -24,6 +24,16 @@ type Db = Awaited<ReturnType<typeof createClient>>;
 
 const POSTGRES_UNIQUE_VIOLATION = "23505";
 
+/** A product may only be shown to visitors once it has a primary image. */
+async function hasPrimaryImage(db: Db, productId: string) {
+  const { count } = await db
+    .from("product_images")
+    .select("id", { count: "exact", head: true })
+    .eq("product_id", productId)
+    .eq("is_primary", true);
+  return (count ?? 0) > 0;
+}
+
 /** Uses the typed brand id, or finds/creates a brand from the "new brand" field. */
 async function resolveBrandId(db: Db, storeId: string, input: ProductInput) {
   if (!input.new_brand) return input.brand_id;
@@ -161,7 +171,8 @@ export async function createProduct(
     const brandId = await resolveBrandId(db, session.storeId, input);
     const { data, error } = await db
       .from("products")
-      .insert({ ...productColumns(input, brandId), store_id: session.storeId })
+      // A new product has no image yet, so it starts hidden until one is added.
+      .insert({ ...productColumns(input, brandId), active: false, store_id: session.storeId })
       .select("id")
       .single();
     if (error) {
@@ -194,6 +205,19 @@ export async function updateProduct(
 
   const db = await createClient();
   try {
+    if (input.active) {
+      const { data: current } = await db
+        .from("products")
+        .select("active")
+        .eq("id", id)
+        .eq("store_id", session.storeId)
+        .maybeSingle();
+      // Products that were already visible before this rule existed stay editable.
+      if (current && !current.active && !(await hasPrimaryImage(db, id))) {
+        return { fieldErrors: { active: "needs_image" } };
+      }
+    }
+
     const brandId = await resolveBrandId(db, session.storeId, input);
     const { data, error } = await db
       .from("products")
@@ -218,15 +242,26 @@ export async function updateProduct(
   redirect("/admin/products?saved=updated");
 }
 
-export async function toggleProductActive(id: string, active: boolean) {
+export type ToggleProductResult = { error?: "needs_image" | "failed" };
+
+export async function toggleProductActive(
+  id: string,
+  active: boolean,
+): Promise<ToggleProductResult> {
   const session = await requireEditor();
   const db = await createClient();
-  await db
+
+  if (active && !(await hasPrimaryImage(db, id))) return { error: "needs_image" };
+
+  const { error } = await db
     .from("products")
     .update({ active })
     .eq("id", id)
     .eq("store_id", session.storeId);
+  if (error) return { error: "failed" };
+
   revalidatePath("/admin/products");
+  return {};
 }
 
 export type DeleteProductResult = { error?: "delete_failed" };

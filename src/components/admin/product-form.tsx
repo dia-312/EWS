@@ -231,13 +231,32 @@ export function ProductForm({
       </Section>
 
       <Section title={t("sections.display")}>
-        <CheckboxField
-          id="active"
-          name="active"
-          label={t("active")}
-          hint={t("activeHint")}
-          defaultChecked={initial?.active ?? true}
-        />
+        {initial ? (
+          <>
+            <CheckboxField
+              id="active"
+              name="active"
+              label={t("active")}
+              hint={error("active") ?? t("activeHint")}
+              defaultChecked={initial.active}
+            />
+            {error("active") && (
+              <p role="alert" className="-mt-2 text-xs text-danger">
+                {error("active")}
+              </p>
+            )}
+          </>
+        ) : (
+          // A new product has no image yet, so it is saved hidden.
+          <CheckboxField
+            id="active"
+            name="active"
+            label={t("active")}
+            hint={t("activeNewHint")}
+            disabled
+            defaultChecked={false}
+          />
+        )}
         <CheckboxField
           id="featured"
           name="featured"
