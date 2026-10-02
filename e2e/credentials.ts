@@ -19,3 +19,13 @@ export const TEST_STRANGER = {
   email: "e2e-stranger@example.test",
   password: "e2e-only-Stranger#2026",
 };
+
+/**
+ * An owner account used only by the sign-in/sign-out test. Signing out revokes
+ * every session of an account, so it must not be the account the other specs use.
+ */
+export const TEST_SESSION_OWNER = {
+  email: "e2e-session-owner@example.test",
+  password: "e2e-only-Session#2026",
+  displayName: "E2E Session Owner",
+};

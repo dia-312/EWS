@@ -1,5 +1,5 @@
 import { test as setup, expect } from "@playwright/test";
-import { TEST_ADMIN, TEST_STRANGER, TEST_VIEWER } from "./credentials";
+import { TEST_ADMIN, TEST_SESSION_OWNER, TEST_STRANGER, TEST_VIEWER } from "./credentials";
 
 const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
@@ -46,6 +46,7 @@ setup("create local test accounts and sign in", async ({ page, context, baseURL 
 
   const adminId = await createUser(TEST_ADMIN.email, TEST_ADMIN.password);
   const viewerId = await createUser(TEST_VIEWER.email, TEST_VIEWER.password);
+  const sessionOwnerId = await createUser(TEST_SESSION_OWNER.email, TEST_SESSION_OWNER.password);
   await createUser(TEST_STRANGER.email, TEST_STRANGER.password);
 
   await rest("admin_profiles", {
@@ -54,6 +55,7 @@ setup("create local test accounts and sign in", async ({ page, context, baseURL 
     body: JSON.stringify([
       { id: adminId, store_id: storeId, role: "owner", display_name: TEST_ADMIN.displayName },
       { id: viewerId, store_id: storeId, role: "viewer", display_name: "E2E Viewer" },
+      { id: sessionOwnerId, store_id: storeId, role: "owner", display_name: TEST_SESSION_OWNER.displayName },
     ]),
   });
 

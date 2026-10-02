@@ -12,7 +12,7 @@
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test:e2e": "playwright test"
   },
   "dependencies": {

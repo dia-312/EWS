@@ -1,4 +1,4 @@
-import { TEST_ADMIN, TEST_STRANGER, TEST_VIEWER } from "./credentials";
+import { TEST_ADMIN, TEST_SESSION_OWNER, TEST_STRANGER, TEST_VIEWER } from "./credentials";
 import { expect, test } from "./fixtures";
 
 async function signIn(page: import("@playwright/test").Page, email: string, password: string) {
@@ -27,9 +27,9 @@ test("wrong or missing credentials show an error and stay on the login page", as
 });
 
 test("the owner signs in, sees the dashboard numbers and signs out", async ({ page }) => {
-  await signIn(page, TEST_ADMIN.email, TEST_ADMIN.password);
+  await signIn(page, TEST_SESSION_OWNER.email, TEST_SESSION_OWNER.password);
   await expect(page).toHaveURL(/\/admin$/);
-  await expect(page.getByRole("heading", { name: `Welcome, ${TEST_ADMIN.displayName}` })).toBeVisible();
+  await expect(page.getByRole("heading", { name: `Welcome, ${TEST_SESSION_OWNER.displayName}` })).toBeVisible();
 
   // Seed data: 12 active products, 1 live offer, 1 out of stock.
   await expect(page.locator("dl > div", { hasText: "Active products" })).toContainText("12");

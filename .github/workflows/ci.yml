@@ -27,23 +27,27 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Lint
+        id: lint
         run: pnpm lint 2>&1 | tee lint.log
-      - if: failure()
+      - if: failure() && steps.lint.outcome == 'failure'
         run: bash scripts/ci/annotate-failure.sh "Lint failed" lint.log
 
       - name: Typecheck
+        id: typecheck
         run: pnpm typecheck 2>&1 | tee typecheck.log
-      - if: failure()
+      - if: failure() && steps.typecheck.outcome == 'failure'
         run: bash scripts/ci/annotate-failure.sh "Typecheck failed" typecheck.log
 
       - name: Unit tests
+        id: unit
         run: pnpm test 2>&1 | tee unit.log
-      - if: failure()
+      - if: failure() && steps.unit.outcome == 'failure'
         run: bash scripts/ci/annotate-failure.sh "Unit tests failed" unit.log 80
 
       - name: Build
+        id: build
         run: pnpm build 2>&1 | tee build.log
-      - if: failure()
+      - if: failure() && steps.build.outcome == 'failure'
         run: bash scripts/ci/annotate-failure.sh "Build failed" build.log
 
   e2e:
