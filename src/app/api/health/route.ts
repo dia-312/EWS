@@ -15,6 +15,17 @@ export async function GET() {
   };
 
   try {
+    // Names only, never values: which variables does this Worker actually see?
+    report.processEnvNames = Object.keys(process.env)
+      .filter((k) => !k.startsWith("npm_"))
+      .sort();
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    report.bindingNames = Object.keys(getCloudflareContext().env ?? {}).sort();
+  } catch (err) {
+    report.contextError = err instanceof Error ? err.message : String(err);
+  }
+
+  try {
     const { getCurrentStore } = await import("@/lib/store");
     const store = await getCurrentStore();
     report.store = { name: store.name, slug: store.slug };
