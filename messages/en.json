@@ -449,5 +449,169 @@
     "compatibility": "Compatibility",
     "pieces": "Pieces",
     "warranty": "Warranty"
+  },
+  "store": {
+    "nav": {
+      "label": "Main navigation",
+      "home": "Home",
+      "allProducts": "All products",
+      "offers": "Offers",
+      "skip": "Skip to content",
+      "breadcrumbs": "Breadcrumbs"
+    },
+    "language": {
+      "ar": "العربية",
+      "en": "English",
+      "switchTo": "Switch to {language}"
+    },
+    "search": {
+      "label": "Search for a product",
+      "placeholder": "Search products or brands...",
+      "submit": "Search"
+    },
+    "availability": {
+      "in_stock": "In stock",
+      "limited": "Limited stock",
+      "out_of_stock": "Out of stock"
+    },
+    "badges": {
+      "sale": "SALE",
+      "new": "NEW",
+      "featured": "FEATURED",
+      "best_seller": "BEST SELLER",
+      "limited": "LIMITED"
+    },
+    "contact": {
+      "whatsapp": "Chat on WhatsApp",
+      "call": "Call us"
+    },
+    "hours": {
+      "openNow": "Open now",
+      "closedNow": "Closed now"
+    },
+    "days": {
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday"
+    },
+    "footer": {
+      "contact": "Contact us",
+      "map": "View on the map",
+      "hours": "Opening hours",
+      "closed": "Closed",
+      "noHours": "Opening hours have not been set yet.",
+      "copyright": "© {year} {name}. All rights reserved.",
+      "browse": "Browse all products"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "goTo": "Go to page {page}"
+    },
+    "filters": {
+      "title": "Filters",
+      "close": "Close",
+      "category": "Category",
+      "allCategories": "All categories",
+      "brand": "Brand",
+      "price": "Price",
+      "minPrice": "From",
+      "maxPrice": "To",
+      "availability": "Availability",
+      "onSale": "On sale only",
+      "apply": "Apply",
+      "clearAll": "Clear all",
+      "applied": "Applied filters",
+      "remove": "Remove filter: {filter}"
+    },
+    "sort": {
+      "label": "Sort",
+      "newest": "Newest",
+      "price_asc": "Price: low to high",
+      "price_desc": "Price: high to low",
+      "name": "Name"
+    },
+    "listing": {
+      "filters": "Product filters",
+      "results": "{count, plural, =0 {No products} one {# product} other {# products}}",
+      "allProducts": "All products",
+      "searchTitle": "Results for \"{query}\"",
+      "noResults": {
+        "title": "No matching products",
+        "body": "Try different search words or remove some filters.",
+        "clear": "Clear filters"
+      }
+    },
+    "product": {
+      "noImage": "No product image",
+      "gallery": "Product images",
+      "showImage": "Show image {number} of {total}",
+      "specs": "Specifications",
+      "description": "Description",
+      "related": "Similar products",
+      "askOnWhatsapp": "Ask about this product on WhatsApp",
+      "contactSoon": "The store's contact details will be added soon.",
+      "outOfStockHint": "This product is currently out of stock. Contact us to find out when it will be available.",
+      "whatsappMessage": "Hello, I would like to ask about \"{name}\" (price: {price}).\n{url}"
+    },
+    "offer": {
+      "endsIn": "Offer ends in"
+    },
+    "ai": {
+      "entry": "AI Shopping Assistant",
+      "badge": "Coming soon",
+      "title": "AI Shopping Assistant — Coming Soon",
+      "description": "We are building an assistant that helps you pick the right product from the store's catalogue. It is not available yet, and nothing will be answered until it is ready.",
+      "point1": "Ask in your own words what you need",
+      "point2": "Suggestions based only on the store's real products",
+      "close": "Got it"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "body": "The link may have changed, or the product is no longer in the store.",
+      "home": "Back to home"
+    },
+    "home": {
+      "browse": "Browse products",
+      "viewAll": "View all",
+      "save": "Save {percent}%",
+      "viewDeal": "View the deal",
+      "chatOnWhatsapp": "Message us on WhatsApp",
+      "sections": {
+        "hero": "Welcome",
+        "categories": "Shop by category",
+        "offers": "Special offers",
+        "new_arrivals": "New arrivals",
+        "best_sellers": "Best sellers",
+        "featured": "Featured products",
+        "deal_of_day": "Deal of the day",
+        "banner": "Promotion",
+        "trust": "Why choose us",
+        "contact": "Contact us"
+      },
+      "trust": {
+        "catalog": {
+          "title": "The whole catalogue in one place",
+          "body": "Price, specifications and availability for every product, clearly shown."
+        },
+        "whatsapp": {
+          "title": "Ask us on WhatsApp",
+          "body": "Message us about any product and we answer directly."
+        },
+        "prices": {
+          "title": "Clear prices",
+          "body": "Prices and offers are kept up to date by the store itself."
+        },
+        "visit": {
+          "title": "Visit the store",
+          "body": "See the product in person; opening hours are listed below."
+        }
+      }
+    }
   }
 }

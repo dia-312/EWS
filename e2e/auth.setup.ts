@@ -44,6 +44,19 @@ setup("create local test accounts and sign in", async ({ page, context, baseURL 
   expect(stores, "the seed should have created the ews store").toHaveLength(1);
   const storeId = stores[0].id;
 
+  // Contact details for the storefront specs (the seed leaves them empty on purpose).
+  await rest(`store_settings?store_id=eq.${storeId}`, {
+    method: "PATCH",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify({
+      phone: "+970 59 000 0000",
+      whatsapp: "970590000000",
+      instagram_url: "https://instagram.com/e2e-store",
+      address_en: "1 Test Street",
+      address_ar: "شارع الاختبار 1",
+    }),
+  });
+
   const adminId = await createUser(TEST_ADMIN.email, TEST_ADMIN.password);
   const viewerId = await createUser(TEST_VIEWER.email, TEST_VIEWER.password);
   const sessionOwnerId = await createUser(TEST_SESSION_OWNER.email, TEST_SESSION_OWNER.password);

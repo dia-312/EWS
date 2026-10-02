@@ -74,6 +74,10 @@ test("a product goes from creation to visibility, with images, and can be duplic
   await expect(page.getByText("Add a primary image to the product first, then show it.").first()).toBeVisible();
   await page.getByLabel("Visible to visitors").uncheck();
 
+  // a hidden product does not exist for visitors
+  expect((await request.get(`/en/products/${slug}`)).status()).toBe(404);
+  expect(await (await request.get("/sitemap.xml")).text()).not.toContain(slug);
+
   // ---- images: upload (compressed in the browser), primary, order
   const images = page.locator('section[aria-labelledby="images-title"]');
   const fileInput = images.locator('input[type="file"]');
@@ -101,6 +105,17 @@ test("a product goes from creation to visibility, with images, and can be duplic
   await expect(page).toHaveURL(/\/admin\/products\?saved=updated/);
   await expect(row()).toContainText("Visible");
   await expect(row().locator("img")).toBeVisible();
+
+  // ---- visitors see it on the storefront, in both languages, with its image and search aliases
+  const publicPage = await request.get(`/en/products/${slug}`);
+  expect(publicPage.status()).toBe(200);
+  expect(await publicPage.text()).toContain("E2E Gadget");
+  expect((await request.get(`/ar/products/${slug}`)).status()).toBe(200);
+  expect(await (await request.get("/sitemap.xml")).text()).toContain(slug);
+  await page.goto("/en/products?q=%D8%AC%D9%87%D8%A7%D8%B2+%D8%A7%D8%AE%D8%AA%D8%A8%D8%A7%D8%B1%D9%8A"); // an alias typed in Arabic
+  await expect(page.locator("main article", { hasText: "E2E Gadget" })).toBeVisible();
+  await expect(page.locator("main article", { hasText: "E2E Gadget" }).locator("img")).toHaveAttribute("src", /-thumb\./);
+  await page.goto("/admin/products");
 
   // ---- visitors can read it, with its images and specs
   if (SUPABASE_URL && ANON_KEY) {
@@ -130,6 +145,9 @@ test("a product goes from creation to visibility, with images, and can be duplic
     await targetRow.getByRole("dialog").getByRole("button", { name: "Yes, delete" }).click();
     await expect(targetRow).toHaveCount(0);
   }
+
+  // Gone for visitors too.
+  expect((await request.get(`/en/products/${slug}`)).status()).toBe(404);
 
   // Deleting a product also deletes its stored files.
   expect((await request.get(stored!)).status(), "stored thumbnail removed with the product").toBeGreaterThanOrEqual(400);
