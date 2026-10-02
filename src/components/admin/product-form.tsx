@@ -64,13 +64,14 @@ export function ProductForm({
 }: ProductFormProps) {
   const t = useTranslations("admin.products.form");
   const tc = useTranslations("admin.common");
-  const { state, onSubmit, pending } = useActionForm<ProductFormState>(action, {});
+  const { state, onSubmit, onInput, isDismissed, pending } = useActionForm<ProductFormState>(action, {});
 
   // For a new product the slug follows the English name until it is edited by hand.
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
 
   const error = (field: string) => {
+    if (isDismissed(field)) return undefined;
     const code = state.fieldErrors?.[field];
     return code ? t(`errors.${code}`) : undefined;
   };
@@ -79,7 +80,7 @@ export function ProductForm({
     initial?.is_new_override === true ? "yes" : initial?.is_new_override === false ? "no" : "auto";
 
   return (
-    <form onSubmit={onSubmit} className="flex max-w-3xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} onInput={onInput} className="flex max-w-3xl flex-col gap-5" noValidate>
       <Section title={t("sections.basic")}>
         <TextField
           id="name_ar"

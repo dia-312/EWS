@@ -16,7 +16,8 @@
       "categories": "Categories",
       "products": "Products",
       "appearance": "Appearance",
-      "settings": "Settings"
+      "settings": "Settings",
+      "offers": "Offers"
     },
     "login": {
       "title": "Admin sign in",
@@ -419,6 +420,86 @@
         "badge": "Sale",
         "primaryButton": "WhatsApp us",
         "secondaryButton": "Details"
+      }
+    },
+    "offers": {
+      "title": "Offers",
+      "add": "Add offer",
+      "empty": {
+        "title": "No offers yet",
+        "body": "Add an offer to a product so it shows its new price with a discount badge in the store."
+      },
+      "noResults": "No offers with this status.",
+      "loadError": "Could not load offers.",
+      "filters": {
+        "label": "Filter offers by status",
+        "all": "All"
+      },
+      "columns": {
+        "product": "Product",
+        "label": "Offer name",
+        "price": "Price",
+        "window": "Period",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "live": "Live",
+        "scheduled": "Scheduled",
+        "expired": "Expired",
+        "inactive": "Inactive"
+      },
+      "window": {
+        "from": "From",
+        "until": "Until",
+        "noStart": "Starts immediately",
+        "noEnd": "No end date"
+      },
+      "notices": {
+        "created": "Offer added.",
+        "updated": "Changes saved."
+      },
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "deleteDialog": {
+        "title": "Delete offer?",
+        "description": "The offer on \"{name}\" will be deleted permanently and the product returns to its regular price. To pause it, use \"Deactivate\".",
+        "confirm": "Yes, delete"
+      },
+      "deleteErrors": {
+        "delete_failed": "Could not delete the offer. Try again."
+      },
+      "form": {
+        "newTitle": "New offer",
+        "editTitle": "Edit offer",
+        "product": "Product",
+        "productPlaceholder": "Choose a product",
+        "titleAr": "Offer name (Arabic)",
+        "titleEn": "Offer name (English)",
+        "titleHint": "Optional, for example: Deal of the week.",
+        "oldPrice": "Old price ({currency})",
+        "oldPriceHint": "Leave empty to use the product's regular price ({price}).",
+        "oldPriceHintNoProduct": "Leave empty to use the product's regular price.",
+        "newPrice": "Offer price ({currency})",
+        "discountPreview": "Discount: {percent}%",
+        "notCheaperPreview": "The offer price must be lower than the old price.",
+        "startAt": "Starts at",
+        "startAtHint": "Leave empty to start immediately.",
+        "endAt": "Ends at",
+        "endAtHint": "Leave empty for an offer with no end. Visitors see a countdown when an end time is set.",
+        "timeZoneHint": "Times use the store's time zone ({timeZone}).",
+        "active": "Offer is active",
+        "activeHint": "When off, the offer is hidden even if it is inside its period.",
+        "errors": {
+          "required": "This field is required.",
+          "invalid": "This value is not valid.",
+          "product_required": "Choose a product from the list.",
+          "invalid_price": "Enter a valid price of at least 0.",
+          "not_cheaper": "The offer price must be lower than the old price.",
+          "invalid_date": "Enter a valid date and time.",
+          "end_before_start": "The end time must be after the start time."
+        },
+        "saveFailed": "Could not save the offer. Try again."
       }
     }
   },
