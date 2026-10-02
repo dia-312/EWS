@@ -38,7 +38,7 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 
 1. **Arabic search.** Postgres full-text search has no Arabic stemmer. Use `pg_trgm` + `unaccent` over a normalized `search_text` column (unify alef forms, ta marbuta/ha, remove diacritics) and add a `search_aliases` field to products for Arabic/English aliases. The spec's schema does not include aliases yet.
 2. **Images.** Supabase image transformations are not on the free plan. Compress and convert to WebP in the browser before upload, then serve through `next/image`.
-3. **Offers.** The `offers` table is the single source of truth. A product's "on sale" state is derived from its active offer (inside start/end window), not stored on `products`.
+3. **Offers.** The `offers` table is the single source of truth. A product's "on sale" state is derived from its active offer (inside its start/end window). `products.price` is the regular price and the schema deliberately has no `products.old_price`; the offer carries the old/new price pair.
 4. **Badges.** Must be data-driven (spec A8) but the schema has no place for them. Add a `badges` representation (table or column) to the schema before building the product editor.
 
 ## Environment prerequisites
