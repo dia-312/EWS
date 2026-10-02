@@ -13,7 +13,8 @@
     "nav": {
       "label": "Main navigation",
       "dashboard": "Dashboard",
-      "categories": "Categories"
+      "categories": "Categories",
+      "products": "Products"
     },
     "login": {
       "title": "Admin sign in",
@@ -99,6 +100,173 @@
         },
         "saveFailed": "Could not save the category. Try again."
       }
+    },
+    "products": {
+      "title": "Products",
+      "add": "Add product",
+      "copySuffix": "(copy)",
+      "featuredTag": "Featured",
+      "empty": {
+        "title": "No products yet",
+        "body": "Add your first product to show it in the store."
+      },
+      "noResults": {
+        "title": "No results",
+        "body": "Try different search words or remove some filters."
+      },
+      "loadError": "Could not load products.",
+      "columns": {
+        "name": "Product",
+        "category": "Category",
+        "brand": "Brand",
+        "price": "Price",
+        "availability": "Availability",
+        "status": "Status",
+        "created": "Added",
+        "actions": "Actions"
+      },
+      "availability": {
+        "in_stock": "In stock",
+        "limited": "Limited stock",
+        "out_of_stock": "Out of stock"
+      },
+      "status": {
+        "active": "Visible",
+        "inactive": "Hidden"
+      },
+      "filters": {
+        "search": "Search",
+        "category": "Category",
+        "availability": "Availability",
+        "status": "Status",
+        "all": "All",
+        "apply": "Apply",
+        "clear": "Clear filters"
+      },
+      "pagination": {
+        "label": "Pagination",
+        "summary": "Page {page} of {totalPages} ({total} products)",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "notices": {
+        "created": "Product added.",
+        "updated": "Changes saved."
+      },
+      "activate": "Show",
+      "deactivate": "Hide",
+      "duplicate": "Duplicate",
+      "deleteDialog": {
+        "title": "Delete product?",
+        "description": "The product \"{name}\" and its specifications will be deleted permanently. To only remove it from the store, use \"Hide\" instead. This cannot be undone.",
+        "confirm": "Yes, delete"
+      },
+      "deleteErrors": {
+        "delete_failed": "Could not delete the product. Try again."
+      },
+      "form": {
+        "newTitle": "New product",
+        "editTitle": "Edit product",
+        "sections": {
+          "basic": "Basic information",
+          "pricing": "Price and availability",
+          "descriptions": "Descriptions",
+          "specs": "Specifications",
+          "display": "Store display",
+          "search": "Search"
+        },
+        "nameAr": "Arabic name",
+        "nameEn": "English name",
+        "nameEnHint": "Optional. Used to suggest the slug.",
+        "slug": "Slug",
+        "slugHint": "Lowercase English letters, digits and dashes only. It appears in the product page URL, so avoid changing it later.",
+        "category": "Category",
+        "categoryPlaceholder": "Choose a category",
+        "brand": "Brand",
+        "brandNone": "No brand",
+        "newBrand": "New brand",
+        "newBrandHint": "Type a name to add a brand that is not in the list (takes priority over the list).",
+        "price": "Price ({currency})",
+        "priceHint": "The regular price. Promotions are added later from the Offers section.",
+        "availability": "Availability",
+        "availabilityOptions": {
+          "in_stock": "In stock",
+          "limited": "Limited stock",
+          "out_of_stock": "Out of stock"
+        },
+        "shortDescriptionAr": "Short description (Arabic)",
+        "shortDescriptionEn": "Short description (English)",
+        "descriptionAr": "Full description (Arabic)",
+        "descriptionEn": "Full description (English)",
+        "specs": {
+          "title": "Specifications",
+          "hint": "Shown on the product page and used to compare products. Pick the spec type from the list so it lines up with other products.",
+          "empty": "No specifications added yet.",
+          "add": "Add specification",
+          "remove": "Remove",
+          "key": "Type",
+          "custom": "Other (type a name)",
+          "customKey": "Specification name",
+          "valueAr": "Value (Arabic)",
+          "valueEn": "Value (English)"
+        },
+        "active": "Visible to visitors",
+        "activeHint": "When off, the product is hidden from the site.",
+        "featured": "Featured product",
+        "featuredHint": "Can be shown in the featured products section on the homepage.",
+        "bestseller": "Best seller",
+        "bestsellerHint": "Shown in the best sellers section.",
+        "newOverride": "\"New\" badge",
+        "newOverrideHint": "Automatic: the product counts as new based on when it was added.",
+        "newOverrideOptions": {
+          "auto": "Automatic",
+          "yes": "Always new",
+          "no": "Not new"
+        },
+        "sortOrder": "Display order",
+        "sortOrderHint": "A lower number appears earlier. Default is 0.",
+        "badges": "Badges",
+        "aliases": "Extra search words",
+        "aliasesHint": "Alternative names or common misspellings, one per line or comma-separated. Example: iphone, ايفون.",
+        "errors": {
+          "required": "This field is required.",
+          "invalid": "This value is not valid.",
+          "invalid_slug": "Use lowercase English letters, digits and dashes only.",
+          "slug_taken": "This slug is already used by another product.",
+          "invalid_price": "Enter a valid price of at least 0.",
+          "invalid_spec": "Make sure each specification has a name and a reasonable length.",
+          "duplicate_spec": "The same specification type cannot be used twice."
+        },
+        "saveFailed": "Could not save the product. Try again."
+      }
     }
+  },
+  "specs": {
+    "screen": "Display",
+    "screen_size": "Screen size",
+    "resolution": "Resolution",
+    "processor": "Processor",
+    "ram": "RAM",
+    "storage": "Storage",
+    "camera": "Camera",
+    "front_camera": "Front camera",
+    "battery": "Battery",
+    "battery_life": "Battery life",
+    "os": "Operating system",
+    "smart_os": "Smart TV platform",
+    "color": "Color",
+    "weight": "Weight",
+    "dimensions": "Dimensions",
+    "connectivity": "Connectivity",
+    "ports": "Ports",
+    "power": "Power",
+    "length": "Length",
+    "type": "Type",
+    "capacity": "Capacity",
+    "spin_speed": "Spin speed",
+    "hardness": "Hardness",
+    "compatibility": "Compatibility",
+    "pieces": "Pieces",
+    "warranty": "Warranty"
   }
 }
