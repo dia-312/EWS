@@ -1,0 +1,34 @@
+{
+  "admin": {
+    "title": "Admin dashboard",
+    "signOut": "Sign out",
+    "nav": {
+      "dashboard": "Dashboard"
+    },
+    "login": {
+      "title": "Admin sign in",
+      "subtitle": "Enter your email and password to continue.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "errors": {
+        "invalid_input": "Enter a valid email address and your password.",
+        "invalid_credentials": "Incorrect email or password.",
+        "forbidden": "This account is not allowed to access this store's dashboard."
+      }
+    },
+    "refresh": {
+      "message": "Checking your session..."
+    },
+    "dashboard": {
+      "welcome": "Welcome, {name}",
+      "stats": {
+        "activeProducts": "Active products",
+        "onSale": "Products on sale",
+        "outOfStock": "Out-of-stock products"
+      },
+      "loadError": "Could not load the statistics."
+    }
+  }
+}
