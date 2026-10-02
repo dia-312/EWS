@@ -20,6 +20,7 @@ test("the product list searches Arabic text and filters by availability", async 
   await expect(page.getByRole("row", { name: /Sony WH-1000XM5/ })).toBeVisible();
 
   await page.getByRole("link", { name: "Clear filters" }).click();
+  await expect(page).toHaveURL(/\/admin\/products$/);
   await page.getByLabel("Availability").selectOption({ label: "Out of stock" });
   await page.getByRole("button", { name: "Apply" }).click();
   await expect(page.getByRole("row", { name: /LG 8 kg Front Load Washer/ })).toBeVisible();
@@ -122,11 +123,14 @@ test("a product goes from creation to visibility, with images, and can be duplic
   await expect(page.getByRole("row", { name: new RegExp(`${slug}-copy`) })).toContainText("Hidden");
 
   // ---- delete both through the confirmation dialog
+  // (the copy first: its slug contains the original's)
   for (const target of [`${slug}-copy`, slug]) {
-    const targetRow = page.getByRole("row", { name: new RegExp(`${target}\\b`) }).first();
-    await targetRow.getByRole("button", { name: "Delete" }).click();
-    await page.getByRole("dialog").getByRole("button", { name: "Yes, delete" }).click();
-    await expect(page.getByRole("row", { name: new RegExp(`${target}$`) })).toHaveCount(0);
+    const targetRow = page.getByRole("row", { name: new RegExp(target) });
+    await targetRow.getByRole("button", { name: "Delete", exact: true }).click();
+    await targetRow.getByRole("dialog").getByRole("button", { name: "Yes, delete" }).click();
+    await expect(targetRow).toHaveCount(0);
   }
-  await expect(page.getByRole("row", { name: new RegExp(slug) })).toHaveCount(0);
+
+  // Deleting a product also deletes its stored files.
+  expect((await request.get(stored!)).status(), "stored thumbnail removed with the product").toBeGreaterThanOrEqual(400);
 });

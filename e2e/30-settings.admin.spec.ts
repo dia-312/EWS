@@ -64,7 +64,7 @@ test("the store logo can be uploaded, shown publicly and removed", async ({ page
   expect(src).toContain("/store-logos/");
   expect((await request.get(src!)).status()).toBe(200);
 
-  await logo.getByRole("button", { name: "Delete" }).click();
+  await logo.getByRole("button", { name: "Delete", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: "Yes, delete" }).click();
   await expect(logo.getByText("No logo")).toBeVisible();
   expect((await request.get(src!)).status(), "the file is removed from storage").toBeGreaterThanOrEqual(400);

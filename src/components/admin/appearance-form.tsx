@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { AppearanceFormState } from "@/app/admin/(panel)/appearance/actions";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
   type ThemePreset,
 } from "@/config/theme";
 import { contrastRatio, isHexColor } from "@/lib/color";
+import { useActionForm } from "@/lib/use-action-form";
 import { checkContrast } from "@/lib/validations/settings";
 
 export type AppearanceValues = {
@@ -121,7 +122,7 @@ export function AppearanceForm({
 }) {
   const t = useTranslations("admin.appearance");
   const tc = useTranslations("admin.common");
-  const [state, formAction, pending] = useActionState<AppearanceFormState, FormData>(action, {});
+  const { state, onSubmit, pending } = useActionForm<AppearanceFormState>(action, {});
   const [values, setValues] = useState<AppearanceValues>(initial);
 
   const set = <K extends keyof AppearanceValues>(key: K, value: AppearanceValues[K]) =>
@@ -173,7 +174,7 @@ export function AppearanceForm({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
-      <form action={formAction} className="flex flex-col gap-5" noValidate>
+      <form onSubmit={onSubmit} className="flex flex-col gap-5" noValidate>
         <fieldset disabled={readOnly} className="flex flex-col gap-5">
           <section className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5">
             <h2 className="text-base font-bold">{t("sections.preset")}</h2>

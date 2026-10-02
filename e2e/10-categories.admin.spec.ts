@@ -53,7 +53,7 @@ test("a category can be created, validated, edited, hidden, reordered and delete
   await expect.poll(slugsInOrder).toEqual([...before.slice(0, -2), slug, before.at(-2)!]);
 
   // Delete with confirmation.
-  await page.getByRole("row", { name: new RegExp(slug) }).getByRole("button", { name: "Delete" }).click();
+  await page.getByRole("row", { name: new RegExp(slug) }).getByRole("button", { name: "Delete", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toContainText("Delete category?");
   await dialog.getByRole("button", { name: "Yes, delete" }).click();
@@ -65,7 +65,7 @@ test("a category that still has products cannot be deleted", async ({ page }) =>
   const mobiles = page.getByRole("row", { name: /mobiles/ });
   await expect(mobiles).toBeVisible();
 
-  await mobiles.getByRole("button", { name: "Delete" }).click();
+  await mobiles.getByRole("button", { name: "Delete", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByRole("button", { name: "Yes, delete" }).click();
   await expect(dialog).toContainText("A category with products cannot be deleted.");

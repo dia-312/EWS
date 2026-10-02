@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import type { ProductFormState } from "@/app/admin/(panel)/products/actions";
 import { SpecEditor, type SpecRowValue } from "@/components/admin/spec-editor";
@@ -9,6 +9,7 @@ import { Button, buttonClass } from "@/components/ui/button";
 import { CheckboxField, TextareaField, TextField } from "@/components/ui/field";
 import { SelectField } from "@/components/ui/select";
 import { slugify } from "@/lib/slug";
+import { useActionForm } from "@/lib/use-action-form";
 import { AVAILABILITY } from "@/lib/validations/product";
 
 export type ProductFormValues = {
@@ -63,10 +64,7 @@ export function ProductForm({
 }: ProductFormProps) {
   const t = useTranslations("admin.products.form");
   const tc = useTranslations("admin.common");
-  const [state, formAction, pending] = useActionState<ProductFormState, FormData>(
-    action,
-    {},
-  );
+  const { state, onSubmit, pending } = useActionForm<ProductFormState>(action, {});
 
   // For a new product the slug follows the English name until it is edited by hand.
   const [slug, setSlug] = useState(initial?.slug ?? "");
@@ -81,7 +79,7 @@ export function ProductForm({
     initial?.is_new_override === true ? "yes" : initial?.is_new_override === false ? "no" : "auto";
 
   return (
-    <form action={formAction} className="flex max-w-3xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} className="flex max-w-3xl flex-col gap-5" noValidate>
       <Section title={t("sections.basic")}>
         <TextField
           id="name_ar"
