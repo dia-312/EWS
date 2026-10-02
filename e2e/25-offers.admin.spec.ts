@@ -14,6 +14,8 @@ async function storefront(page: import("@playwright/test").Page) {
 }
 
 test("an offer goes from creation to the storefront, through its whole life", async ({ page, request }) => {
+  // A long, realistic journey through many pages: give it more than the default minute.
+  test.setTimeout(180_000);
   const label = `E2E Deal ${Date.now().toString(36)}`;
 
   // ---- the seeded offer is listed as live
