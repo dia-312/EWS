@@ -171,7 +171,7 @@ importers:
         version: 5.9.1(react-hook-form@7.89.0(@types/react@19.3.0)(react@19.2.8))(zod@4.6.5)
       '@opennextjs/cloudflare':
         specifier: ^1.20.7
-        version: 1.20.7(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)(wrangler@4.145.0(@types/node@20.19.43))
+        version: 1.20.7(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)(wrangler@4.145.0(@types/node@20.19.43))
       '@supabase/ssr':
         specifier: ^0.12.7
         version: 0.12.7(@supabase/supabase-js@2.117.2)
@@ -180,10 +180,10 @@ importers:
         version: 2.117.2
       next:
         specifier: 16.3.8
-        version: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-intl:
         specifier: ^4.14.8
-        version: 4.14.8(@swc/helpers@0.5.23)(@types/react@19.3.0)(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
+        version: 4.14.8(@swc/helpers@0.5.23)(@types/react@19.3.0)(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -200,6 +200,9 @@ importers:
         specifier: ^5.0.15
         version: 5.0.15(@types/react@19.3.0)(react@19.2.8)
     devDependencies:
+      '@playwright/test':
+        specifier: ^1.63.0
+        version: 1.63.0
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.3.3
@@ -1641,6 +1644,11 @@ packages:
   '@parcel/watcher@2.6.0':
     resolution: {integrity: sha512-7FNeNl8NCE7aINx7WXiKQrPYZWC/hvrTsmk6zmxbI7LTXE7hVek/n8AfVgpe2y82zl3w0HvCHN0bVKMBoJcC0w==}
     engines: {node: '>= 10.0.0'}
+
+  '@playwright/test@1.63.0':
+    resolution: {integrity: sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ==}
+    engines: {node: '>=20'}
+    hasBin: true
 
   '@poppinss/colors@4.1.6':
     resolution: {integrity: sha512-H9xkIdFswbS8n1d6vmRd8+c10t2Qe+rZITbbDHHkQixH5+2x1FDGmi/0K+WgWiqQFKPSlIYB7jlH6Kpfn6Fleg==}
@@ -3849,6 +3857,16 @@ packages:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
 
+  playwright-core@1.63.0:
+    resolution: {integrity: sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==}
+    engines: {node: '>=20'}
+    hasBin: true
+
+  playwright@1.63.0:
+    resolution: {integrity: sha512-+7ziBLidS4NaNCdt57SUDT+wYmmd5fmiQejUic/kb+YsYSCPyOOE9sebzMjNmQrsnNpDJqd4WHvV/8lfKfUDUg==}
+    engines: {node: '>=20'}
+    hasBin: true
+
   po-parser@2.2.0:
     resolution: {integrity: sha512-NdTrKgh0oO7+y+RFX8KKhOB438x/j94UGXEFzl/7pHH0JjWSn42iJ9tgmPksIO6n1JKDHmNDcejPJfKspljB9g==}
 
@@ -5820,7 +5838,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@opennextjs/aws@4.1.6(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)':
+  '@opennextjs/aws@4.1.6(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)':
     dependencies:
       '@ast-grep/napi': 0.40.5
       '@aws-sdk/client-cloudfront': 3.984.0
@@ -5836,24 +5854,24 @@ snapshots:
       cookie: 1.1.1
       esbuild: 0.25.4
       express: 5.2.1(supports-color@7.2.0)
-      next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       path-to-regexp: 6.3.0
       urlpattern-polyfill: 10.1.0
       yaml: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
-  '@opennextjs/cloudflare@1.20.7(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)(wrangler@4.145.0(@types/node@20.19.43))':
+  '@opennextjs/cloudflare@1.20.7(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)(wrangler@4.145.0(@types/node@20.19.43))':
     dependencies:
       '@ast-grep/napi': 0.40.5
       '@dotenvx/dotenvx': 1.31.0
-      '@opennextjs/aws': 4.1.6(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)
+      '@opennextjs/aws': 4.1.6(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(supports-color@7.2.0)
       ci-info: 4.4.0
       cloudflare: 4.5.0
       comment-json: 4.6.2
       enquirer: 2.4.1
       glob: 12.0.0
-      next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       ts-tqdm: 0.8.6
       wrangler: 4.145.0(@types/node@20.19.43)
       yargs: 18.2.0
@@ -5918,6 +5936,10 @@ snapshots:
       '@parcel/watcher-linux-x64-musl': 2.6.0
       '@parcel/watcher-win32-arm64': 2.6.0
       '@parcel/watcher-win32-x64': 2.6.0
+
+  '@playwright/test@1.63.0':
+    dependencies:
+      playwright: 1.63.0
 
   '@poppinss/colors@4.1.6':
     dependencies:
@@ -8023,7 +8045,7 @@ snapshots:
 
   next-intl-swc-plugin-extractor@4.14.8: {}
 
-  next-intl@4.14.8(@swc/helpers@0.5.23)(@types/react@19.3.0)(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8):
+  next-intl@4.14.8(@swc/helpers@0.5.23)(@types/react@19.3.0)(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8):
     dependencies:
       '@eloqnt/config': 0.1.1
       '@eloqnt/format-json': 0.1.0
@@ -8033,7 +8055,7 @@ snapshots:
       '@swc/core': 1.16.13(@swc/helpers@0.5.23)
       icu-minify: 4.14.8
       negotiator: 1.1.0
-      next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-intl-swc-plugin-extractor: 4.14.8
       react: 19.2.8
       use-intl: 4.14.8(@types/react@19.3.0)(react@19.2.8)
@@ -8042,7 +8064,7 @@ snapshots:
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@playwright/test@1.63.0)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       '@next/env': 16.3.8
       '@swc/helpers': 0.5.23
@@ -8061,6 +8083,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.3.8
       '@next/swc-win32-arm64-msvc': 16.3.8
       '@next/swc-win32-x64-msvc': 16.3.8
+      '@playwright/test': 1.63.0
       sharp: 0.35.5(@types/node@20.19.43)
     transitivePeerDependencies:
       - '@babel/core'
@@ -8207,6 +8230,12 @@ snapshots:
   picomatch@2.3.2: {}
 
   picomatch@4.0.7: {}
+
+  playwright-core@1.63.0: {}
+
+  playwright@1.63.0:
+    dependencies:
+      playwright-core: 1.63.0
 
   po-parser@2.2.0: {}
 

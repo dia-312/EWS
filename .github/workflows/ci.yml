@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  checks:
+    name: Lint, types, unit tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint 2>&1 | tee lint.log
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "Lint failed" lint.log
+
+      - name: Typecheck
+        run: pnpm typecheck 2>&1 | tee typecheck.log
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "Typecheck failed" typecheck.log
+
+      - name: Unit tests
+        run: pnpm test 2>&1 | tee unit.log
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "Unit tests failed" unit.log 80
+
+      - name: Build
+        run: pnpm build 2>&1 | tee build.log
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "Build failed" build.log
+
+  e2e:
+    name: End-to-end (local Supabase + Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      STORE_SLUG: ews
+      BASE_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # A throwaway local stack: migrations and seed.sql are applied to a fresh
+      # database. Nothing here touches the real Supabase project.
+      - name: Start local Supabase
+        run: |
+          supabase start -x realtime,studio,imgproxy,mailpit,edge-runtime,logflare,vector,supavisor,postgres-meta 2>&1 | tee supabase-start.log
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "supabase start failed" supabase-start.log 60
+
+      - name: Export local Supabase environment
+        run: supabase status -o json | node scripts/ci/supabase-env.mjs
+
+      # The local values override .env.production, so the app talks to the local stack.
+      - name: Build app against the local stack
+        run: |
+          export NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL"
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+          pnpm build 2>&1 | tee e2e-build.log
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "E2E build failed" e2e-build.log
+
+      - name: Start app
+        run: |
+          export NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL"
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+          nohup pnpm exec next start -p 3000 > app.log 2>&1 &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null "$BASE_URL/admin/login" && exit 0
+            sleep 2
+          done
+          echo "App did not start"
+          exit 1
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "App failed to start" app.log 40
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Playwright tests
+        run: pnpm test:e2e 2>&1 | tee e2e.log
+      - if: failure()
+        run: |
+          bash scripts/ci/annotate-failure.sh "E2E tests failed" e2e.log 120
+          bash scripts/ci/annotate-failure.sh "App log (tail)" app.log 40
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+          retention-days: 7
