@@ -9,6 +9,8 @@ const ITEMS = [
   { href: "/admin", key: "dashboard", exact: true },
   { href: "/admin/products", key: "products", exact: false },
   { href: "/admin/categories", key: "categories", exact: false },
+  { href: "/admin/appearance", key: "appearance", exact: false },
+  { href: "/admin/settings", key: "settings", exact: false },
 ] as const;
 
 export function AdminNav() {

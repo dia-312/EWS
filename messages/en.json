@@ -14,7 +14,9 @@
       "label": "Main navigation",
       "dashboard": "Dashboard",
       "categories": "Categories",
-      "products": "Products"
+      "products": "Products",
+      "appearance": "Appearance",
+      "settings": "Settings"
     },
     "login": {
       "title": "Admin sign in",
@@ -276,6 +278,147 @@
           "limit": "A product cannot have more than {max} images.",
           "actionFailed": "The action could not be completed. Try again."
         }
+      }
+    },
+    "settings": {
+      "title": "Store settings",
+      "loadError": "Could not load the store settings.",
+      "logo": {
+        "title": "Store logo",
+        "hint": "Shown at the top of the site. A square or horizontal logo with a transparent background works best (PNG or WebP).",
+        "none": "No logo",
+        "upload": "Upload logo",
+        "replace": "Replace logo",
+        "uploading": "Uploading...",
+        "deleteDialog": {
+          "title": "Delete logo?",
+          "description": "The current logo will be removed from the site.",
+          "confirm": "Yes, delete"
+        },
+        "errors": {
+          "type": "Unsupported file type. Use JPG, PNG or WebP.",
+          "tooLarge": "The file is too large.",
+          "uploadFailed": "Could not upload the logo. Try again.",
+          "actionFailed": "The action could not be completed. Try again."
+        }
+      },
+      "days": {
+        "sat": "Saturday",
+        "sun": "Sunday",
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday"
+      },
+      "hours": {
+        "title": "Working hours",
+        "hint": "Mark a day closed or set opening and closing times. You can add a second period (for example after a lunch break). If you close after midnight, enter the time as is (such as 02:00).",
+        "closed": "Closed",
+        "open": "Opens",
+        "close": "Closes"
+      },
+      "form": {
+        "sections": {
+          "identity": "Identity",
+          "contact": "Contact",
+          "address": "Address",
+          "about": "About the store",
+          "seo": "Search engines (SEO)"
+        },
+        "name": "Store name",
+        "localeDefault": "Default site language",
+        "locales": {
+          "ar": "العربية",
+          "en": "English"
+        },
+        "currency": "Currency",
+        "currencyHint": "Changing the currency does not convert product prices.",
+        "timezone": "Time zone",
+        "timezoneHint": "Used for the \"Open now / Closed\" indicator. Example: Asia/Hebron.",
+        "phone": "Phone number",
+        "phoneHint": "Shown as a tap-to-call link.",
+        "whatsapp": "WhatsApp number",
+        "whatsappHint": "Include the country code, e.g. +970591234567.",
+        "instagram": "Instagram link",
+        "instagramHint": "A full link starting with https://instagram.com/",
+        "facebook": "Facebook link",
+        "facebookHint": "A full link starting with https://facebook.com/",
+        "addressAr": "Address (Arabic)",
+        "addressEn": "Address (English)",
+        "mapUrl": "Map link",
+        "mapUrlHint": "A Google Maps share link (https).",
+        "aboutAr": "About (Arabic)",
+        "aboutEn": "About (English)",
+        "seoTitle": "Default page title",
+        "seoTitleHint": "Up to 70 characters. Shown in search results and the browser tab.",
+        "seoDescription": "Default description",
+        "seoDescriptionHint": "Up to 160 characters. Shown under the title in search results.",
+        "errors": {
+          "required": "This field is required.",
+          "invalid": "This value is not valid.",
+          "too_long": "The text is too long.",
+          "invalid_hours": "Check the working hours: each period needs different opening and closing times."
+        },
+        "saved": "Settings saved.",
+        "saveFailed": "Could not save the settings. Try again."
+      }
+    },
+    "appearance": {
+      "title": "Store appearance",
+      "intro": "Pick a ready-made preset, then adjust colors, font and corners as you like. The preview updates live.",
+      "sections": {
+        "preset": "Preset",
+        "colors": "Colors",
+        "shape": "Font and corners"
+      },
+      "preset": "Preset",
+      "presetHint": "Changing the preset resets colors, font and corners to the preset's values.",
+      "resetToPreset": "Reset to preset values",
+      "presets": {
+        "modern": "Modern",
+        "minimal": "Minimal",
+        "gaming": "Gaming (dark)",
+        "luxury": "Luxury",
+        "tech": "Tech (dark)"
+      },
+      "colors": {
+        "primary": "Primary color",
+        "secondary": "Secondary color",
+        "accent": "Accent color",
+        "surface": "Page background",
+        "text": "Text color"
+      },
+      "contrastInfo": "Text contrast against the background: {ratio}:1 (at least 4.5 required).",
+      "font": "Font",
+      "fonts": {
+        "tajawal": "Tajawal",
+        "cairo": "Cairo",
+        "ibm-plex-sans-arabic": "IBM Plex Sans Arabic"
+      },
+      "radius": "Corner style",
+      "radii": {
+        "none": "Sharp",
+        "sm": "Slight",
+        "md": "Medium",
+        "lg": "Rounded",
+        "full": "Pill"
+      },
+      "errors": {
+        "invalid": "This value is not valid.",
+        "low_contrast_text": "The text is hard to read on the background. Pick a darker or lighter color.",
+        "low_contrast_primary": "The primary color is too close to the background and will not stand out."
+      },
+      "saved": "Appearance saved.",
+      "saveFailed": "Could not save the appearance. Try again.",
+      "preview": {
+        "title": "Preview",
+        "image": "Product image",
+        "product": "Product name",
+        "brand": "Brand",
+        "badge": "Sale",
+        "primaryButton": "WhatsApp us",
+        "secondaryButton": "Details"
       }
     }
   },
