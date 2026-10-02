@@ -235,9 +235,47 @@
           "slug_taken": "This slug is already used by another product.",
           "invalid_price": "Enter a valid price of at least 0.",
           "invalid_spec": "Make sure each specification has a name and a reasonable length.",
-          "duplicate_spec": "The same specification type cannot be used twice."
+          "duplicate_spec": "The same specification type cannot be used twice.",
+          "needs_image": "Add a primary image to the product first, then show it."
         },
-        "saveFailed": "Could not save the product. Try again."
+        "saveFailed": "Could not save the product. Try again.",
+        "newImagesNote": "The product is saved hidden. After saving you will land on the edit page to add images, and then you can show it to visitors.",
+        "activeNewHint": "You can show the product once it has an image."
+      },
+      "toggleErrors": {
+        "needs_image": "Add a primary image to the product first (from its edit page), then show it.",
+        "failed": "Could not change the product's visibility. Try again."
+      },
+      "images": {
+        "title": "Images",
+        "hint": "The primary image appears in lists and when sharing. You can add up to {max} images.",
+        "drop": "Drag images here or click to choose",
+        "uploading": "Compressing and uploading images...",
+        "limitReached": "You reached the maximum number of images",
+        "formats": "JPG, PNG, WebP or AVIF — compressed automatically before upload",
+        "empty": "No images yet. Add a primary image so the product can be shown.",
+        "primary": "Primary",
+        "makePrimary": "Make primary",
+        "moveEarlier": "Move earlier",
+        "moveLater": "Move later",
+        "deleteDialog": {
+          "title": "Delete image?",
+          "description": "The image will be deleted permanently. If it is the primary image, the first remaining image becomes primary.",
+          "confirm": "Yes, delete"
+        },
+        "alt": {
+          "summary": "Alt text (for screen readers)",
+          "ar": "Arabic",
+          "en": "English",
+          "save": "Save text"
+        },
+        "errors": {
+          "type": "\"{name}\": unsupported file type.",
+          "tooLarge": "\"{name}\": the file is too large.",
+          "uploadFailed": "\"{name}\": the image could not be uploaded.",
+          "limit": "A product cannot have more than {max} images.",
+          "actionFailed": "The action could not be completed. Try again."
+        }
       }
     }
   },

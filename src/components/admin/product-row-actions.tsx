@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import {
   deleteProduct,
@@ -21,6 +21,7 @@ export function ProductRowActions({ id, name, active }: ProductRowActionsProps) 
   const t = useTranslations("admin.products");
   const tc = useTranslations("admin.common");
   const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string>();
 
   return (
     <div className="flex flex-wrap items-center gap-1">
@@ -31,7 +32,12 @@ export function ProductRowActions({ id, name, active }: ProductRowActionsProps) 
         variant="ghost"
         size="sm"
         disabled={pending}
-        onClick={() => startTransition(() => toggleProductActive(id, !active))}
+        onClick={() =>
+          startTransition(async () => {
+            const result = await toggleProductActive(id, !active);
+            setError(result.error ? t(`toggleErrors.${result.error}`) : undefined);
+          })
+        }
       >
         {active ? t("deactivate") : t("activate")}
       </Button>
@@ -54,6 +60,11 @@ export function ProductRowActions({ id, name, active }: ProductRowActionsProps) 
           return result.error ? t(`deleteErrors.${result.error}`) : undefined;
         }}
       />
+      {error && (
+        <p role="alert" className="w-full text-xs text-danger">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

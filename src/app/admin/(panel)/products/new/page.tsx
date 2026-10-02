@@ -17,6 +17,9 @@ export default async function NewProductPage() {
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold">{t("newTitle")}</h1>
+      <p className="max-w-3xl rounded-lg border border-border bg-background px-4 py-3 text-sm">
+        {t("newImagesNote")}
+      </p>
       <ProductForm
         action={createProduct}
         currency={store.currency_code}
