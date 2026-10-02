@@ -64,3 +64,12 @@ export async function requireAdmin() {
   if (session.status === "forbidden") redirect("/admin/login?error=forbidden");
   return session;
 }
+
+const EDIT_ROLES: AdminRole[] = ["owner", "manager", "editor"];
+
+/** Like requireAdmin(), but for writes: read-only `viewer` accounts are refused. */
+export async function requireEditor() {
+  const session = await requireAdmin();
+  if (!EDIT_ROLES.includes(session.role)) redirect("/admin?error=read_only");
+  return session;
+}

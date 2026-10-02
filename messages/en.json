@@ -2,8 +2,18 @@
   "admin": {
     "title": "Admin dashboard",
     "signOut": "Sign out",
+    "common": {
+      "save": "Save",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back"
+    },
     "nav": {
-      "dashboard": "Dashboard"
+      "label": "Main navigation",
+      "dashboard": "Dashboard",
+      "categories": "Categories"
     },
     "login": {
       "title": "Admin sign in",
@@ -28,7 +38,67 @@
         "onSale": "Products on sale",
         "outOfStock": "Out-of-stock products"
       },
-      "loadError": "Could not load the statistics."
+      "loadError": "Could not load the statistics.",
+      "readOnly": "Your account is read-only and cannot make changes."
+    },
+    "categories": {
+      "title": "Categories",
+      "add": "Add category",
+      "empty": {
+        "title": "No categories yet",
+        "body": "Add your first category to start organizing products."
+      },
+      "columns": {
+        "name": "Name",
+        "slug": "Slug",
+        "products": "Products",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "active": "Visible",
+        "inactive": "Hidden"
+      },
+      "notices": {
+        "created": "Category added.",
+        "updated": "Changes saved."
+      },
+      "loadError": "Could not load categories.",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "activate": "Show",
+      "deactivate": "Hide",
+      "deleteDialog": {
+        "title": "Delete category?",
+        "description": "The category \"{name}\" will be deleted permanently. This cannot be undone.",
+        "confirm": "Yes, delete"
+      },
+      "deleteErrors": {
+        "has_products": "A category with products cannot be deleted. Move its products to another category or hide the category instead.",
+        "delete_failed": "Could not delete the category. Try again."
+      },
+      "form": {
+        "newTitle": "New category",
+        "editTitle": "Edit category",
+        "nameAr": "Arabic name",
+        "nameEn": "English name",
+        "nameEnHint": "Optional. Used to suggest the slug.",
+        "slug": "Slug",
+        "slugHint": "Lowercase English letters, digits and dashes only, e.g. mobile-phones. Appears in the page URL.",
+        "descriptionAr": "Arabic description",
+        "descriptionEn": "English description",
+        "icon": "Icon",
+        "iconHint": "Optional icon name such as smartphone or tv.",
+        "active": "Visible to visitors",
+        "activeHint": "When off, the category is hidden from the site.",
+        "errors": {
+          "required": "This field is required.",
+          "invalid": "This value is not valid.",
+          "invalid_slug": "Use lowercase English letters, digits and dashes only.",
+          "slug_taken": "This slug is already used by another category."
+        },
+        "saveFailed": "Could not save the category. Try again."
+      }
     }
   }
 }
