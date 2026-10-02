@@ -20,7 +20,7 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 | Fonts | Tajawal or IBM Plex Sans Arabic via `next/font` | Final pick during design |
 | Tests | Vitest (unit) + Playwright (e2e, RTL + mobile viewports) | |
 | Tooling | pnpm, ESLint, Prettier | |
-| Hosting | Vercel | |
+| Hosting | TBD (see "Cost & handover") | Vercel Hobby is ruled out: its docs restrict Hobby to non-commercial use and define a store site as commercial. Leading candidate: Cloudflare Workers via OpenNext. Findings: Next 16 is supported; Workers Free has a 10 ms CPU/request limit (risky for SSR); `proxy.ts` (Node middleware) is experimental on OpenNext, so prefer server-side auth checks and, if needed, legacy `middleware.ts`; needs a prototype deploy on a real Cloudflare account to measure |
 
 ## Single store now, resellable later
 
@@ -28,6 +28,17 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 - The schema keeps `stores` and `store_id` on every business table, as in the spec, but no multi-tenant logic (domain routing, tenant onboarding) is built in v1.
 - All store-specific data (name, logo, contact, theme, products) lives in the database and is loaded by a seed script. Nothing store-specific is hardcoded.
 - Selling to another store = new Supabase project + new Vercel project + new seed file + new env vars.
+
+## Cost & handover
+
+The store owner receives full ownership: all accounts (Supabase, hosting, domain, GitHub if code is handed over) are in the owner's name and paid by them directly. Target running cost is the domain only; everything else on free tiers with mitigations:
+
+- **Supabase free pauses after inactivity and has no automatic backups.** Add a scheduled keep-alive and a scheduled export of the data (products/offers as CSV, plus the DB dump) so the owner is never left without a copy.
+- **Hosting must allow commercial use on the free plan.** Verify a Next.js deploy on Cloudflare (OpenNext) early; fall back to Netlify free. Vercel only if the owner agrees to pay.
+- **Password-reset email** needs a free SMTP provider (e.g. Resend or Brevo free tier); Supabase's default mailer is too limited.
+- **Images**: compress to WebP before upload to stay inside the free storage/egress limits.
+- **Monitoring**: free uptime monitor and free error tracking, so problems are seen before the owner reports them.
+- **Upgrade path**: if traffic or data outgrows free limits, upgrading is a plan change on the owner's accounts, not a rewrite.
 
 ## Development environment
 
