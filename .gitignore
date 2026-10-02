@@ -47,3 +47,6 @@ next-env.d.ts
 .open-next
 .wrangler
 .dev.vars
+
+# public, non-secret production settings are committed on purpose
+!.env.production
