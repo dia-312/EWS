@@ -56,7 +56,10 @@ jobs:
     timeout-minutes: 30
     env:
       STORE_SLUG: ews
+      # Tests need every admin edit to show up at once, so the storefront cache is off.
+      STOREFRONT_CACHE_SECONDS: "0"
       BASE_URL: http://localhost:3000
+      CACHE_BASE_URL: http://localhost:3001
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -103,6 +106,22 @@ jobs:
           exit 1
       - if: failure()
         run: bash scripts/ci/annotate-failure.sh "App failed to start" app.log 40
+
+      # A second copy with the storefront cache ON, as in production, to prove it caches.
+      - name: Start app with the storefront cache on
+        run: |
+          export NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL"
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+          export STOREFRONT_CACHE_SECONDS=300
+          nohup pnpm exec next start -p 3001 > app-cached.log 2>&1 &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null "http://localhost:3001/admin/login" && exit 0
+            sleep 2
+          done
+          echo "Cached app did not start"
+          exit 1
+      - if: failure()
+        run: bash scripts/ci/annotate-failure.sh "Cached app failed to start" app-cached.log 40
 
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium

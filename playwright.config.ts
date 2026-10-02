@@ -39,5 +39,12 @@ export default defineConfig({
       dependencies: ["setup"],
       use: { storageState: "e2e/.auth/admin.json" },
     },
+    {
+      // Talks to a second copy of the app that has the storefront cache switched on.
+      name: "cache",
+      testMatch: /.*\.cache\.spec\.ts/,
+      dependencies: ["setup"],
+      use: { baseURL: process.env.CACHE_BASE_URL ?? "http://localhost:3001" },
+    },
   ],
 });
