@@ -44,13 +44,14 @@ export function OfferForm({ action, products, currency, timeZone, initial, defau
   const t = useTranslations("admin.offers.form");
   const tc = useTranslations("admin.common");
   const locale = useLocale();
-  const { state, onSubmit, pending } = useActionForm<OfferFormState>(action, {});
+  const { state, onSubmit, onInput, isDismissed, pending } = useActionForm<OfferFormState>(action, {});
 
   const [productId, setProductId] = useState(initial?.product_id ?? defaultProductId ?? "");
   const [oldPrice, setOldPrice] = useState(initial?.old_price != null ? String(initial.old_price) : "");
   const [newPrice, setNewPrice] = useState(initial ? String(initial.new_price) : "");
 
   const error = (field: string) => {
+    if (isDismissed(field)) return undefined;
     const code = state.fieldErrors?.[field];
     return code ? t(`errors.${code}`) : undefined;
   };
@@ -63,7 +64,7 @@ export function OfferForm({ action, products, currency, timeZone, initial, defau
   const notCheaper = reference !== null && offer !== null && percent === null;
 
   return (
-    <form onSubmit={onSubmit} className="flex max-w-2xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} onInput={onInput} className="flex max-w-2xl flex-col gap-5" noValidate>
       <SelectField
         id="product_id"
         name="product_id"

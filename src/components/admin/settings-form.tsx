@@ -50,15 +50,16 @@ export function SettingsForm({
 }) {
   const t = useTranslations("admin.settings.form");
   const tc = useTranslations("admin.common");
-  const { state, onSubmit, pending } = useActionForm<SettingsFormState>(action, {});
+  const { state, onSubmit, onInput, isDismissed, pending } = useActionForm<SettingsFormState>(action, {});
 
   const error = (field: string) => {
+    if (isDismissed(field)) return undefined;
     const code = state.fieldErrors?.[field];
     return code ? t(`errors.${code}`) : undefined;
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex max-w-3xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} onInput={onInput} className="flex max-w-3xl flex-col gap-5" noValidate>
       <fieldset disabled={readOnly} className="flex flex-col gap-5">
         <Section title={t("sections.identity")}>
           <TextField

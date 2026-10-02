@@ -30,19 +30,20 @@ type CategoryFormProps = {
 export function CategoryForm({ action, initial }: CategoryFormProps) {
   const t = useTranslations("admin.categories.form");
   const tc = useTranslations("admin.common");
-  const { state, onSubmit, pending } = useActionForm<CategoryFormState>(action, {});
+  const { state, onSubmit, onInput, isDismissed, pending } = useActionForm<CategoryFormState>(action, {});
 
   // For a new category the slug follows the English name until it is edited by hand.
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
 
   const error = (field: string) => {
+    if (isDismissed(field)) return undefined;
     const code = state.fieldErrors?.[field];
     return code ? t(`errors.${code}`) : undefined;
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex max-w-2xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} onInput={onInput} className="flex max-w-2xl flex-col gap-5" noValidate>
       <TextField
         id="name_ar"
         name="name_ar"
