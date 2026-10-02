@@ -14,6 +14,22 @@ export async function GET() {
     },
   };
 
+  // The anon key is public by design; its shape (not the whole value) helps
+  // spot paste errors such as truncation or stray whitespace.
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+  report.anonKeyShape = {
+    length: anon.length,
+    tail: anon.slice(-6),
+    hasWhitespace: /s/.test(anon),
+    urlHost: (() => {
+      try {
+        return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").host;
+      } catch {
+        return "invalid";
+      }
+    })(),
+  };
+
   try {
     // Names only, never values: which variables does this Worker actually see?
     report.processEnvNames = Object.keys(process.env)
