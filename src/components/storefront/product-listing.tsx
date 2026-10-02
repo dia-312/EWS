@@ -9,8 +9,9 @@ import { SortLinks } from "@/components/storefront/sort-links";
 import { buttonClass } from "@/components/ui/button";
 import type { Locale } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
-import { getBrands, getCategories, searchCatalog } from "@/lib/catalog";
+import { getBrands, searchCatalog } from "@/lib/catalog";
 import { activeFilterCount, toQueryString, type CatalogParams } from "@/lib/catalog-params";
+import { getStorefront } from "@/lib/storefront-data";
 
 type ProductListingProps = {
   locale: Locale;
@@ -31,7 +32,7 @@ export async function ProductListing({
   fixedCategoryId,
 }: ProductListingProps) {
   const t = await getTranslations("store.listing");
-  const [categories, brands] = await Promise.all([getCategories(store.id), getBrands(store.id)]);
+  const [{ categories }, brands] = await Promise.all([getStorefront(), getBrands(store.id)]);
 
   const categoryId =
     fixedCategoryId ?? categories.find((category) => category.slug === params.category)?.id ?? null;

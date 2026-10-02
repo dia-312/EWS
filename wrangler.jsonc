@@ -3,7 +3,8 @@
   "main": ".open-next/worker.js",
   "name": "ews",
   "vars": {
-    "STORE_SLUG": "ews"
+    "STORE_SLUG": "ews",
+    "STOREFRONT_CACHE_SECONDS": "30"
   },
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
