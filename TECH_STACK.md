@@ -80,6 +80,15 @@ Pitfalls found by these tests and fixed:
 - Supabase Storage looks objects up under the caller's role; without a SELECT policy `remove()` silently deletes nothing. See `20261003000004_storage_editor_select.sql`.
 - `signOut()` revokes every session of an account, so tests that sign out must use their own account.
 
+## Performance
+
+- **Round trips dominate.** The Supabase project is in `ap-southeast-2` (Sydney) while visitors and the Cloudflare edge (`ZDM`, Palestine) are far away, so one database round trip costs about 0.4 s. Pages used to need 3-5 in sequence (1.5-2.2 s).
+- **One query per page.** `getStorefront()` loads store, settings, theme and categories together; the product page loads its live offer with the product.
+- **In-memory stale-while-revalidate cache** (`src/lib/memo.ts`) for public data: `STOREFRONT_CACHE_SECONDS` (default 30 in production, 0 in development and in the main e2e run; settings/theme/brands/sections use 2x). Visitors get cached data at once and one background refresh per entry updates it. Result on the live site: about 0.1 s for repeat visits, 0.45-0.8 s for the first visit to a URL.
+- **Consequence for the owner:** a change made in the admin appears on the public site within about 30 s (60 s for settings and theme), after one more page view. Admin pages are never cached.
+- Never cache anything that depends on who is asking; only functions using the cookie-less public client go through `memoizeAsync`.
+- **Biggest remaining win: move the database closer** (for example Frankfurt, `eu-central-1`). Supabase cannot change a project's region, so this means a new project plus migrating schema, seed, admin account and storage. It would cut the cold path to roughly 0.1-0.2 s.
+
 ## Development environment
 
 - Supabase Cloud project (free tier) for development. Migrations live in `supabase/migrations` and are applied with the Supabase CLI.
