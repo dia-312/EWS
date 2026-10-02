@@ -1,15 +1,27 @@
 @import "tailwindcss";
 
-/* Design tokens. Store branding (store_theme) overrides these at runtime. */
+/*
+ * Design tokens. These are the defaults (the "modern" preset). The storefront
+ * overrides them per store on a `.theme-root` wrapper from the store_theme row.
+ */
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --surface: #f6f7f9;
-  --muted: #6b7280;
-  --border: #e5e7eb;
   --primary: #2563eb;
   --primary-foreground: #ffffff;
+  --secondary: #0f172a;
+  --secondary-foreground: #ffffff;
+  --accent: #f59e0b;
+  --accent-foreground: #000000;
   --danger: #dc2626;
+}
+
+/* Derived from foreground/background so they stay correct in dark presets. */
+:root,
+.theme-root {
+  --muted: color-mix(in srgb, var(--foreground) 62%, var(--background));
+  --border: color-mix(in srgb, var(--foreground) 14%, var(--background));
 }
 
 @theme inline {
@@ -20,14 +32,25 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-danger: var(--danger);
-  --font-sans: var(--font-tajawal);
+  --font-sans: var(--font-store, var(--font-tajawal));
+  --radius-lg: var(--ui-radius-lg, 0.5rem);
+  --radius-xl: var(--ui-radius-xl, 0.75rem);
+  --radius-2xl: var(--ui-radius-2xl, 1rem);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-tajawal), system-ui, sans-serif;
+}
+
+.theme-root {
+  font-family: var(--font-store, var(--font-tajawal)), system-ui, sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {
