@@ -15,7 +15,7 @@ async function storefront(page: import("@playwright/test").Page) {
 
 test("an offer goes from creation to the storefront, through its whole life", async ({ page, request }) => {
   // A long, realistic journey through many pages: give it more than the default minute.
-  test.setTimeout(180_000);
+  test.setTimeout(120_000);
   const label = `E2E Deal ${Date.now().toString(36)}`;
 
   // ---- the seeded offer is listed as live
@@ -108,6 +108,7 @@ test("an offer goes from creation to the storefront, through its whole life", as
   await expect(page.locator("main del")).toHaveCount(0);
 
   // ---- status filters
+  await page.goto("/admin/offers");
   await page.getByRole("link", { name: /^Expired \(/ }).click();
   await expect(page).toHaveURL(/status=expired/);
   await expect(offerRow(page, label)).toBeVisible();
