@@ -1,6 +1,5 @@
 "use client";
 
-import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import type { SettingsFormState } from "@/app/admin/(panel)/settings/actions";
 import { WorkingHoursEditor } from "@/components/admin/working-hours-editor";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TextareaField, TextField } from "@/components/ui/field";
 import { SelectField } from "@/components/ui/select";
 import { locales } from "@/config/i18n";
+import { useActionForm } from "@/lib/use-action-form";
 import { COMMON_TIME_ZONES, CURRENCIES } from "@/lib/validations/settings";
 import type { WorkingHours } from "@/lib/working-hours";
 
@@ -50,7 +50,7 @@ export function SettingsForm({
 }) {
   const t = useTranslations("admin.settings.form");
   const tc = useTranslations("admin.common");
-  const [state, formAction, pending] = useActionState<SettingsFormState, FormData>(action, {});
+  const { state, onSubmit, pending } = useActionForm<SettingsFormState>(action, {});
 
   const error = (field: string) => {
     const code = state.fieldErrors?.[field];
@@ -58,7 +58,7 @@ export function SettingsForm({
   };
 
   return (
-    <form action={formAction} className="flex max-w-3xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} className="flex max-w-3xl flex-col gap-5" noValidate>
       <fieldset disabled={readOnly} className="flex flex-col gap-5">
         <Section title={t("sections.identity")}>
           <TextField

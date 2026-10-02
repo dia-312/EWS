@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import type { CategoryFormState } from "@/app/admin/(panel)/categories/actions";
 import { Button, buttonClass } from "@/components/ui/button";
 import { CheckboxField, TextareaField, TextField } from "@/components/ui/field";
 import { slugify } from "@/lib/slug";
+import { useActionForm } from "@/lib/use-action-form";
 
 export type CategoryFormValues = {
   name_ar: string;
@@ -29,10 +30,7 @@ type CategoryFormProps = {
 export function CategoryForm({ action, initial }: CategoryFormProps) {
   const t = useTranslations("admin.categories.form");
   const tc = useTranslations("admin.common");
-  const [state, formAction, pending] = useActionState<
-    CategoryFormState,
-    FormData
-  >(action, {});
+  const { state, onSubmit, pending } = useActionForm<CategoryFormState>(action, {});
 
   // For a new category the slug follows the English name until it is edited by hand.
   const [slug, setSlug] = useState(initial?.slug ?? "");
@@ -44,7 +42,7 @@ export function CategoryForm({ action, initial }: CategoryFormProps) {
   };
 
   return (
-    <form action={formAction} className="flex max-w-2xl flex-col gap-5" noValidate>
+    <form onSubmit={onSubmit} className="flex max-w-2xl flex-col gap-5" noValidate>
       <TextField
         id="name_ar"
         name="name_ar"

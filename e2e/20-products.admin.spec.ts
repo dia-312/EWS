@@ -1,0 +1,136 @@
+import { expect, makePng, test, unique } from "./fixtures";
+
+const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
+const ANON_KEY = process.env.SUPABASE_ANON_KEY ?? "";
+
+test("the product list searches Arabic text and filters by availability", async ({ page }) => {
+  await page.goto("/admin/products");
+  await expect(page.getByRole("row", { name: /Samsung Galaxy A55/ })).toBeVisible();
+
+  // "ايفون" (no hamza/diacritics) must find "iPhone 15" through its aliases.
+  await page.getByLabel("Search").fill("ايفون");
+  await page.getByRole("button", { name: "Apply" }).click();
+  await expect(page.getByRole("row", { name: /iPhone 15/ })).toBeVisible();
+  await expect(page.getByRole("row", { name: /Samsung Galaxy A55/ })).toHaveCount(0);
+
+  // "سماعه" matches headphones written with a ta marbuta ("سماعة").
+  await page.getByLabel("Search").fill("سماعه");
+  await page.getByRole("button", { name: "Apply" }).click();
+  await expect(page.getByRole("row", { name: /JBL Tune 520BT/ })).toBeVisible();
+  await expect(page.getByRole("row", { name: /Sony WH-1000XM5/ })).toBeVisible();
+
+  await page.getByRole("link", { name: "Clear filters" }).click();
+  await expect(page).toHaveURL(/\/admin\/products$/);
+  await page.getByLabel("Availability").selectOption({ label: "Out of stock" });
+  await page.getByRole("button", { name: "Apply" }).click();
+  await expect(page.getByRole("row", { name: /LG 8 kg Front Load Washer/ })).toBeVisible();
+  await expect(page.getByRole("row", { name: /iPhone 15/ })).toHaveCount(0);
+});
+
+test("a product goes from creation to visibility, with images, and can be duplicated and deleted", async ({
+  page,
+  request,
+}) => {
+  const slug = unique("e2e-gadget");
+  const name = "E2E Gadget";
+
+  // ---- create (saved hidden, because it has no image yet)
+  await page.goto("/admin/products/new");
+  await expect(page.getByLabel("Visible to visitors")).toBeDisabled();
+
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByText("This field is required.").first()).toBeVisible();
+
+  await page.getByLabel("Arabic name").fill("منتج اختبار");
+  await page.getByLabel("English name").fill(name);
+  await expect(page.getByLabel("Slug")).toHaveValue("e2e-gadget");
+  await page.getByLabel("Slug").fill(slug);
+  await page.getByLabel("Category").selectOption({ label: "Mobile Phones" });
+  await page.getByLabel("New brand").fill("E2E Brand");
+  await page.getByLabel("Price (ILS)").fill("99.5");
+  await page.getByLabel("Extra search words").fill("جهاز اختباري");
+
+  await page.getByRole("button", { name: "Add specification" }).click();
+  await page.getByLabel("Value (Arabic)").fill("٨ جيجا");
+  await page.getByLabel("Value (English)").fill("8 GB");
+
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page).toHaveURL(/\/admin\/products\?saved=created/);
+  await expect(page.getByText("Product added.")).toBeVisible();
+
+  const row = () => page.getByRole("row", { name: new RegExp(slug) });
+  await expect(row()).toContainText("Hidden");
+  await expect(row()).toContainText("E2E Brand");
+
+  // ---- cannot be shown without a primary image
+  await row().getByRole("link", { name: "Edit" }).click();
+  await expect(page.getByRole("heading", { name: "Edit product" })).toBeVisible();
+  await expect(page.getByText("No images yet.")).toBeVisible();
+  await expect(page.getByLabel("Arabic name")).toHaveValue("منتج اختبار");
+  await expect(page.getByLabel("Value (English)")).toHaveValue("8 GB");
+
+  await page.getByLabel("Visible to visitors").check();
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByText("Add a primary image to the product first, then show it.").first()).toBeVisible();
+  await page.getByLabel("Visible to visitors").uncheck();
+
+  // ---- images: upload (compressed in the browser), primary, order
+  const images = page.locator('section[aria-labelledby="images-title"]');
+  const fileInput = images.locator('input[type="file"]');
+
+  await fileInput.setInputFiles({ name: "first.png", mimeType: "image/png", buffer: makePng(300, 200, [200, 40, 40]) });
+  await expect(images.locator("li")).toHaveCount(1);
+  await expect(images.getByText("Primary", { exact: true })).toBeVisible();
+
+  await fileInput.setInputFiles({ name: "second.png", mimeType: "image/png", buffer: makePng(300, 200, [40, 40, 200]) });
+  await expect(images.locator("li")).toHaveCount(2);
+  await expect(images.getByText("Primary", { exact: true })).toHaveCount(1);
+
+  const stored = await images.locator("li img").first().getAttribute("src");
+  expect(stored).toContain("-thumb.");
+  const thumb = await request.get(stored!);
+  expect(thumb.status(), "the stored thumbnail is publicly readable").toBe(200);
+  expect(thumb.headers()["content-type"]).toMatch(/image\/(webp|jpeg)/);
+
+  await images.getByRole("button", { name: "Make primary" }).click();
+  await expect(images.getByText("Primary", { exact: true })).toHaveCount(1);
+
+  // ---- now it can be shown
+  await page.getByLabel("Visible to visitors").check();
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page).toHaveURL(/\/admin\/products\?saved=updated/);
+  await expect(row()).toContainText("Visible");
+  await expect(row().locator("img")).toBeVisible();
+
+  // ---- visitors can read it, with its images and specs
+  if (SUPABASE_URL && ANON_KEY) {
+    const publicRow = await request.get(
+      `${SUPABASE_URL}/rest/v1/products?slug=eq.${slug}&select=slug,product_images(is_primary),product_specs(spec_key)`,
+      { headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` } },
+    );
+    const [product] = (await publicRow.json()) as { product_images: { is_primary: boolean }[]; product_specs: unknown[] }[];
+    expect(product.product_images).toHaveLength(2);
+    expect(product.product_images.filter((image) => image.is_primary)).toHaveLength(1);
+    expect(product.product_specs).toHaveLength(1);
+  }
+
+  // ---- duplicate creates a hidden copy
+  await row().getByRole("button", { name: "Duplicate" }).click();
+  await expect(page).toHaveURL(/\/admin\/products\/[0-9a-f-]{36}$/);
+  await expect(page.getByLabel("Slug")).toHaveValue(`${slug}-copy`);
+  await expect(page.getByLabel("Visible to visitors")).not.toBeChecked();
+  await page.goto("/admin/products");
+  await expect(page.getByRole("row", { name: new RegExp(`${slug}-copy`) })).toContainText("Hidden");
+
+  // ---- delete both through the confirmation dialog
+  // (the copy first: its slug contains the original's)
+  for (const target of [`${slug}-copy`, slug]) {
+    const targetRow = page.getByRole("row", { name: new RegExp(target) });
+    await targetRow.getByRole("button", { name: "Delete", exact: true }).click();
+    await targetRow.getByRole("dialog").getByRole("button", { name: "Yes, delete" }).click();
+    await expect(targetRow).toHaveCount(0);
+  }
+
+  // Deleting a product also deletes its stored files.
+  expect((await request.get(stored!)).status(), "stored thumbnail removed with the product").toBeGreaterThanOrEqual(400);
+});

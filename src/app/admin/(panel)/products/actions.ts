@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { requireEditor } from "@/lib/auth";
+import { PRODUCT_IMAGES_BUCKET, thumbPath } from "@/lib/images";
 import { slugify } from "@/lib/slug";
 import { createClient } from "@/lib/supabase/server";
 import type { FormErrors } from "@/lib/validations/category";
@@ -269,12 +270,27 @@ export type DeleteProductResult = { error?: "delete_failed" };
 export async function deleteProduct(id: string): Promise<DeleteProductResult> {
   const session = await requireEditor();
   const db = await createClient();
+
+  // The rows cascade away with the product, so remember the files first.
+  const { data: images } = await db
+    .from("product_images")
+    .select("storage_path")
+    .eq("product_id", id);
+
   const { error } = await db
     .from("products")
     .delete()
     .eq("id", id)
     .eq("store_id", session.storeId);
   if (error) return { error: "delete_failed" };
+
+  // Best effort: an orphaned file is harmless, a failed delete here must not
+  // report the product as undeleted.
+  if (images && images.length > 0) {
+    await db.storage
+      .from(PRODUCT_IMAGES_BUCKET)
+      .remove(images.flatMap((image) => [image.storage_path, thumbPath(image.storage_path)]));
+  }
 
   revalidatePath("/admin/products");
   return {};

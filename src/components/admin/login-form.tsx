@@ -1,22 +1,19 @@
 "use client";
 
-import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { signIn, type SignInState } from "@/app/admin/login/actions";
+import { useActionForm } from "@/lib/use-action-form";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-background px-3 py-2.5 text-base outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
 export function LoginForm({ initialError }: { initialError?: "forbidden" }) {
   const t = useTranslations("admin.login");
-  const [state, action, pending] = useActionState<SignInState, FormData>(
-    signIn,
-    {},
-  );
+  const { state, onSubmit, pending } = useActionForm<SignInState>(signIn, {});
   const errorKey = state.error ?? initialError;
 
   return (
-    <form action={action} className="flex flex-col gap-4" noValidate>
+    <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="email" className="text-sm font-medium">
           {t("email")}
