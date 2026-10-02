@@ -20,7 +20,7 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 | Fonts | Tajawal or IBM Plex Sans Arabic via `next/font` | Final pick during design |
 | Tests | Vitest (unit) + Playwright (e2e, RTL + mobile viewports) | |
 | Tooling | pnpm, ESLint, Prettier | |
-| Hosting | TBD (see "Cost & handover") | Vercel Hobby is ruled out: its docs restrict Hobby to non-commercial use and define a store site as commercial. Leading candidate: Cloudflare Workers via OpenNext. Findings: Next 16 is supported; Workers Free has a 10 ms CPU/request limit (risky for SSR); `proxy.ts` (Node middleware) is experimental on OpenNext, so prefer server-side auth checks and, if needed, legacy `middleware.ts`; needs a prototype deploy on a real Cloudflare account to measure |
+| Hosting | Cloudflare Workers via OpenNext (`@opennextjs/cloudflare`), built by Cloudflare Workers Builds from GitHub `main` | Verified 2026-10-02 on the free plan: the SSR home page reading Supabase returned 200 on 20/20 sequential requests (~0.85 s each from a remote client). Vercel Hobby is ruled out (non-commercial use only). Local OpenNext builds fail on Windows (symlink EPERM), so builds run on Cloudflare. `proxy.ts` (Node middleware) is experimental on OpenNext: prefer server-side auth checks, and legacy `middleware.ts` if middleware is needed. Recheck CPU limits once real catalog pages exist |
 
 ## Single store now, resellable later
 
@@ -39,6 +39,13 @@ The store owner receives full ownership: all accounts (Supabase, hosting, domain
 - **Images**: compress to WebP before upload to stay inside the free storage/egress limits.
 - **Monitoring**: free uptime monitor and free error tracking, so problems are seen before the owner reports them.
 - **Upgrade path**: if traffic or data outgrows free limits, upgrading is a plan change on the owner's accounts, not a rewrite.
+
+## Deployment notes (Cloudflare)
+
+- Build command: `pnpm exec opennextjs-cloudflare build`; deploy command: `pnpm exec opennextjs-cloudflare deploy`.
+- `wrangler deploy` deletes variables that exist only in the dashboard, so runtime variables (`STORE_SLUG`) live in `wrangler.jsonc` under `vars`.
+- `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` live in the committed `.env.production` (public by design). Do not also set them as dashboard build variables: dashboard values override the file, and a pasted masked value ("••••") caused "Invalid API key".
+- Selling to another store: change `STORE_SLUG` in `wrangler.jsonc` and the two public values in `.env.production`, and point the deployment at the new store's own Supabase project.
 
 ## Development environment
 
