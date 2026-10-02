@@ -163,7 +163,14 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
             </Link>
           </p>
 
-          <Price current={current} was={was} currency={store.currency_code} locale={locale} size="lg" />
+          <div className="flex flex-col gap-1">
+            {offer && pickLocalized(locale, offer.title_ar, offer.title_en) && (
+              <p className="text-sm font-bold text-danger">
+                {pickLocalized(locale, offer.title_ar, offer.title_en)}
+              </p>
+            )}
+            <Price current={current} was={was} currency={store.currency_code} locale={locale} size="lg" />
+          </div>
           {offer?.end_at && <OfferCountdown endsAt={offer.end_at} />}
 
           <div className="flex flex-col gap-1">

@@ -25,3 +25,12 @@ export function pickLocalized(
 ) {
   return (locale === "en" ? en || ar : ar || en) ?? "";
 }
+
+/** Date and time in the store's own time zone (used for offer windows). */
+export function formatDateTime(value: string | Date, locale: string, timeZone: string) {
+  return new Intl.DateTimeFormat(latinDigits(locale), {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone,
+  }).format(new Date(value));
+}

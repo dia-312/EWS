@@ -25,7 +25,8 @@ function parsePrice(value: string) {
   return Number(compact.includes(".") ? compact.replace(/,/g, "") : compact.replace(",", "."));
 }
 
-const price = z
+/** A required price field: text from the form -> number >= 0 with 2 decimals. */
+export const price = z
   .string()
   .trim()
   .min(1)
