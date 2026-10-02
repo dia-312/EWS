@@ -17,9 +17,11 @@ test("store settings validate, save and persist", async ({ page }) => {
 
   // Working hours: a period needs both an opening and a closing time.
   await page.getByLabel("Instagram link").fill("https://instagram.com/e2e");
+  // (the seed already gives Saturday 09:00-21:00, so clear the closing time first)
   const saturday = page.locator("li", { hasText: "Saturday" });
   await saturday.getByLabel("Closed").uncheck();
   await page.getByLabel("Saturday - Opens 1").fill("09:00");
+  await page.getByLabel("Saturday - Closes 1").fill("");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Check the working hours")).toBeVisible();
 

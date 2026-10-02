@@ -63,6 +63,23 @@ $env:SWC_NATIVE_BINDING_CACHE = "$PWD\.swc-cache"
 
 Cloudflare builds on Linux are not affected.
 
+## Automated checks (CI)
+
+`.github/workflows/ci.yml` runs on every push and pull request:
+
+- **checks**: lint, `next typegen` + `tsc`, Vitest unit tests, production build.
+- **e2e**: starts a throwaway local Supabase stack (migrations + `seed.sql` on a fresh database), builds the app against it, and runs the Playwright suite in `e2e/`: public pages, sign-in/out and roles, anonymous database limits, categories, products with image upload, settings, appearance.
+- Test accounts (`e2e/credentials.ts`) exist only in that local stack; `e2e/auth.setup.ts` refuses to create them unless `SUPABASE_URL` is local. They never touch the real project.
+- Failed steps are summarised as annotations (`scripts/ci/annotate-failure.sh`), so results can be read from the public API without downloading logs.
+- Run locally with Docker: `supabase start`, export the URL/keys as `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, build/start the app with the matching `NEXT_PUBLIC_*` values, then `pnpm test:e2e`.
+- The repository is public so Actions are free and results are readable anonymously. It contains no secrets: the anon key and URL are public by design and the service-role key is never committed.
+
+Pitfalls found by these tests and fixed:
+
+- React 19 resets uncontrolled fields after a form `action` finishes, even on validation errors. Forms use `useActionForm` (submit from `onSubmit`) so typed values survive.
+- Supabase Storage looks objects up under the caller's role; without a SELECT policy `remove()` silently deletes nothing. See `20261003000004_storage_editor_select.sql`.
+- `signOut()` revokes every session of an account, so tests that sign out must use their own account.
+
 ## Development environment
 
 - Supabase Cloud project (free tier) for development. Migrations live in `supabase/migrations` and are applied with the Supabase CLI.
