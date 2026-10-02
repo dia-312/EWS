@@ -2,8 +2,10 @@ import { getTranslations } from "next-intl/server";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function AdminDashboardPage() {
-  const session = await requireAdmin();
+export default async function AdminDashboardPage({
+  searchParams,
+}: PageProps<"/admin">) {
+  const [session, params] = await Promise.all([requireAdmin(), searchParams]);
   const t = await getTranslations("admin.dashboard");
   const supabase = await createClient();
   const now = new Date().toISOString();
@@ -42,6 +44,15 @@ export default async function AdminDashboardPage() {
       <h1 className="text-2xl font-bold">
         {t("welcome", { name: session.displayName ?? session.email ?? "" })}
       </h1>
+
+      {params.error === "read_only" && (
+        <p
+          role="status"
+          className="rounded-lg border border-border bg-background px-4 py-3 text-sm"
+        >
+          {t("readOnly")}
+        </p>
+      )}
 
       {failed ? (
         <p role="alert" className="text-danger">

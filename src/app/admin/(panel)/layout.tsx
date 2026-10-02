@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { signOut } from "@/app/admin/login/actions";
+import { AdminNav } from "@/components/admin/admin-nav";
 import { requireAdmin } from "@/lib/auth";
 import { getCurrentStore } from "@/lib/store";
 
@@ -41,6 +42,7 @@ export default async function AdminPanelLayout({
           </div>
         </div>
       </header>
+      <AdminNav />
       <div className="mx-auto w-full max-w-6xl flex-1 p-4 sm:py-8">
         {children}
       </div>
