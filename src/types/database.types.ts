@@ -808,6 +808,49 @@ export type Database = {
       can_edit_store: { Args: { p_store: string }; Returns: boolean }
       is_store_member: { Args: { p_store: string }; Returns: boolean }
       normalize_search: { Args: { input: string }; Returns: string }
+      search_products: {
+        Args: {
+          p_availability?: string[]
+          p_brands?: string[]
+          p_category?: string
+          p_collection?: string
+          p_limit?: number
+          p_locale?: string
+          p_max?: number
+          p_min?: number
+          p_offset?: number
+          p_on_sale?: boolean
+          p_query?: string
+          p_sort?: string
+          p_store: string
+        }
+        Returns: {
+          availability: string
+          badge_keys: string[]
+          bestseller: boolean
+          brand_name: string
+          category_name_ar: string
+          category_name_en: string
+          category_slug: string
+          created_at: string
+          featured: boolean
+          id: string
+          image_alt_ar: string
+          image_alt_en: string
+          image_url: string
+          is_new: boolean
+          name_ar: string
+          name_en: string
+          offer_ends_at: string
+          offer_old_price: number
+          offer_price: number
+          price: number
+          short_description_ar: string
+          short_description_en: string
+          slug: string
+          total_count: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

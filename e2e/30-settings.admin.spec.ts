@@ -39,8 +39,8 @@ test("store settings validate, save and persist", async ({ page }) => {
   await expect(page.getByLabel("Saturday - Closes 1")).toHaveValue("21:00");
 
   // The public site reads the new name.
-  await page.goto("/");
-  await expect(page.getByRole("heading", { name: "EWS Electronics E2E" })).toBeVisible();
+  await page.goto("/en");
+  await expect(page.getByRole("banner").getByText("EWS Electronics E2E")).toBeVisible();
 
   // Restore the original name.
   await page.goto("/admin/settings");
