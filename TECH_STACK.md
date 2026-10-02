@@ -47,6 +47,22 @@ The store owner receives full ownership: all accounts (Supabase, hosting, domain
 - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` live in the committed `.env.production` (public by design). Do not also set them as dashboard build variables: dashboard values override the file, and a pasted masked value ("••••") caused "Invalid API key".
 - Selling to another store: change `STORE_SLUG` in `wrangler.jsonc` and the two public values in `.env.production`, and point the deployment at the new store's own Supabase project.
 
+## Auth notes
+
+- No `proxy.ts`/`middleware.ts`: it is experimental on OpenNext (Node runtime). Admin pages are guarded on the server by `requireAdmin()` (`src/lib/auth.ts`), which validates the token with `getUser()` and checks membership of the deployment's store.
+- An expired access token looks anonymous on the server, so anonymous requests go to `/admin/refresh`, a client page that lets the browser refresh the session once and returns to the dashboard or the login page.
+- Admins are never created by the app. Create the user in the Supabase dashboard (Auto Confirm), then run `supabase/scripts/grant_admin.sql`. Turn off "Allow new users to sign up" in Authentication settings.
+
+## Local build quirk (Windows + Claude desktop app)
+
+`next-intl` loads `@swc/core`, whose native addon refuses to load when `%LOCALAPPDATA%` has an ACL entry for the app sandbox (`ERR_SWC_NATIVE_CACHE`). Work around it by pointing the cache at the project folder (already git-ignored):
+
+```powershell
+$env:SWC_NATIVE_BINDING_CACHE = "$PWD\.swc-cache"
+```
+
+Cloudflare builds on Linux are not affected.
+
 ## Development environment
 
 - Supabase Cloud project (free tier) for development. Migrations live in `supabase/migrations` and are applied with the Supabase CLI.

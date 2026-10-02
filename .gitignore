@@ -50,3 +50,6 @@ next-env.d.ts
 
 # public, non-secret production settings are committed on purpose
 !.env.production
+
+# local SWC native binding cache (see TECH_STACK.md)
+.swc-cache
