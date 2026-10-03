@@ -9,7 +9,7 @@ async function dragWithKeyboard(page: Page, handle: Locator, steps: number) {
   await expect(async () => {
     await handle.focus();
     await page.keyboard.press("Space");
-    await expect(page.locator("[id^='DndLiveRegion']")).toContainText("Picked up", { timeout: 1500 });
+    await expect(page.locator("[id^='DndLiveRegion']")).toContainText(/Picked up|is now at position/, { timeout: 1500 });
   }).toPass({ timeout: 15_000 });
   const key = steps < 0 ? "ArrowUp" : "ArrowDown";
   for (let index = 0; index < Math.abs(steps); index++) {

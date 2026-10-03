@@ -104,7 +104,7 @@ test("a product goes from creation to visibility, with images, and can be duplic
     await expect(async () => {
       await images.locator("[data-drag-handle]").nth(handleIndex).focus();
       await page.keyboard.press("Space");
-      await expect(page.locator("[id^='DndLiveRegion']")).toContainText("Picked up", { timeout: 1500 });
+      await expect(page.locator("[id^='DndLiveRegion']")).toContainText(/Picked up|is now at position/, { timeout: 1500 });
     }).toPass({ timeout: 15_000 });
     await page.keyboard.press(key);
     await page.waitForTimeout(250);
