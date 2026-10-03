@@ -289,7 +289,8 @@
         "downloadPng": "تنزيل PNG",
         "label": "رمز QR لهذا المنتج",
         "unavailable": "احفظ المنتج أولًا للحصول على رمز QR."
-      }
+      },
+      "importCsv": "استيراد من CSV"
     },
     "settings": {
       "title": "إعدادات المتجر",
@@ -641,6 +642,96 @@
         "count": "المرات"
       },
       "noSearches": "لا توجد عمليات بحث بعد."
+    },
+    "import": {
+      "title": "استيراد المنتجات من ملف",
+      "back": "العودة إلى المنتجات",
+      "howTitle": "كيف تعمل",
+      "step1": "نزّل القالب (أو صدّر منتجاتك الحالية) وافتحه في Excel أو Google Sheets.",
+      "step2": "اكتب منتجًا واحدًا في كل صف واحفظ الملف بصيغة CSV (في Excel: حفظ باسم ثم «CSV UTF-8»).",
+      "step3": "ارفع الملف هنا، راجع المعاينة، ثم اضغط استيراد.",
+      "downloadTemplate": "تنزيل القالب",
+      "exportExisting": "تصدير المنتجات الحالية",
+      "rulesTitle": "القواعد والقيم المقبولة",
+      "rules": {
+        "slug": "الحقل slug هو هوية المنتج في رابطه. إذا كان الـ slug موجودًا يتم تحديث ذلك المنتج، وإذا كان جديدًا يتم إنشاء منتج جديد. إن تركته فارغًا يُنشأ من الاسم الإنجليزي.",
+        "required": "المنتج الجديد يحتاج name_ar و category و price. الباقي اختياري.",
+        "blank": "عند التحديث، الخلية الفارغة (أو العمود الذي تحذفه) تُبقي القيمة الحالية. لتغيير الأسعار فقط ارفع ملفًا فيه slug و price فقط.",
+        "hidden": "المنتجات الجديدة تبدأ مخفية لأنها بلا صور. أضف الصور من صفحة المنتج ثم أظهره. المنتجات الموجودة تحتفظ بحالة ظهورها.",
+        "brand": "العلامة التجارية غير الموجودة تُنشأ تلقائيًا. أما category فيجب أن يكون قسمًا موجودًا (الـ slug أو الاسم).",
+        "values": "availability: in_stock أو limited أو out_of_stock (وتصح الكلمات العربية مثل متوفر / محدود / نفذ). featured و bestseller: yes أو no (أو نعم / لا). search_aliases: افصل بينها بـ |. ويمكن كتابة الأسعار بأرقام عربية.",
+        "limits": "حتى 500 منتج و 1 ميغابايت للملف."
+      },
+      "categoriesTitle": "أقسامك (استخدم هذه القيم في عمود category)",
+      "uploadTitle": "رفع الملف",
+      "fileLabel": "ملف CSV",
+      "check": "فحص الملف",
+      "checking": "جارٍ الفحص...",
+      "previewTitle": "ماذا سيفعل الاستيراد",
+      "summary": {
+        "created": "منتجات جديدة",
+        "updated": "منتجات سيتم تحديثها",
+        "invalid": "صفوف فيها مشاكل"
+      },
+      "tooManyRows": "الملف فيه أكثر من 500 منتج. تم فحص أول 500 صف فقط، قسّم الملف لاستيراد الباقي.",
+      "missingColumns": "الملف لا يحتوي عمود: {columns}. لا يمكن إنشاء منتجات جديدة بدونها، لكن التحديث يعمل.",
+      "unknownColumns": "أعمدة سيتم تجاهلها: {columns}",
+      "newBrands": "علامات تجارية سيتم إنشاؤها: {brands}",
+      "table": {
+        "line": "السطر",
+        "product": "المنتج",
+        "action": "الإجراء",
+        "problems": "المشاكل",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "skipped": "سيتم تخطيه"
+      },
+      "invalidSkipped": "الصفوف التي فيها مشاكل يتم تخطيها. صحّحها في الملف وارفعه مرة أخرى لتضمينها.",
+      "import": "استيراد {count} منتج",
+      "importing": "جارٍ الاستيراد...",
+      "doneTitle": "انتهى الاستيراد",
+      "doneSummary": "تم إنشاء {created}، وتحديث {updated}، وتخطي {skipped}.",
+      "doneHidden": "المنتجات الجديدة مخفية حتى تضيف صورة لكل منها.",
+      "viewProducts": "عرض المنتجات",
+      "nothingToImport": "لا يوجد في هذا الملف شيء صالح للاستيراد.",
+      "importFailed": "فشل الاستيراد ولم يتغير شيء. حاول مرة أخرى.",
+      "partialFailure": "توقف الاستيراد في المنتصف: تم حفظ {saved} منتج. ارفع الملف نفسه مرة أخرى للإكمال؛ المنتجات المحفوظة سيتم تحديثها فقط.",
+      "fileErrors": {
+        "no_file": "اختر ملف CSV أولًا.",
+        "too_big": "حجم الملف أكبر من 1 ميغابايت.",
+        "empty": "الملف لا يحتوي منتجات (يحتاج صف عناوين وصفًّا واحدًا على الأقل).",
+        "no_header": "الصف الأول يجب أن يكون أسماء الأعمدة.",
+        "failed": "تعذّر فحص الملف. حاول مرة أخرى."
+      },
+      "columns": {
+        "slug": "slug",
+        "name_ar": "name_ar",
+        "name_en": "name_en",
+        "category": "category",
+        "brand": "brand",
+        "price": "price",
+        "availability": "availability",
+        "short_description_ar": "short_description_ar",
+        "short_description_en": "short_description_en",
+        "description_ar": "description_ar",
+        "description_en": "description_en",
+        "search_aliases": "search_aliases",
+        "featured": "featured",
+        "bestseller": "bestseller"
+      },
+      "errors": {
+        "name_required": "مطلوب للمنتج الجديد",
+        "category_required": "مطلوب للمنتج الجديد",
+        "category_unknown": "لا يوجد قسم بهذا الاسم (استخدم slug أو اسمًا من القائمة)",
+        "price_required": "مطلوب للمنتج الجديد",
+        "price_invalid": "سعر غير صالح",
+        "availability_invalid": "استخدم in_stock أو limited أو out_of_stock",
+        "yes_no_invalid": "استخدم yes أو no",
+        "slug_invalid": "استخدم أحرفًا إنجليزية صغيرة وأرقامًا وشرطات",
+        "slug_required": "مطلوب (لا يمكن إنشاؤه من الاسم الإنجليزي)",
+        "slug_duplicate": "هذا الـ slug مكرر في الملف",
+        "too_long": "طويل جدًا"
+      }
     }
   },
   "specs": {

@@ -289,7 +289,8 @@
         "downloadPng": "Download PNG",
         "label": "QR code for this product",
         "unavailable": "Save the product first to get its QR code."
-      }
+      },
+      "importCsv": "Import from CSV"
     },
     "settings": {
       "title": "Store settings",
@@ -641,6 +642,96 @@
         "count": "Times"
       },
       "noSearches": "No searches yet."
+    },
+    "import": {
+      "title": "Import products from a file",
+      "back": "Back to products",
+      "howTitle": "How it works",
+      "step1": "Download the template (or export your current products) and open it in Excel or Google Sheets.",
+      "step2": "Fill in one product per row and save it as CSV (in Excel: Save As, then \"CSV UTF-8\").",
+      "step3": "Upload the file here, check the preview, then import.",
+      "downloadTemplate": "Download the template",
+      "exportExisting": "Export current products",
+      "rulesTitle": "Rules and accepted values",
+      "rules": {
+        "slug": "slug is the product's identity in its web address. A slug that already exists updates that product; a new slug creates a new one. If you leave it empty it is made from the English name.",
+        "required": "A new product needs name_ar, category and price. Everything else is optional.",
+        "blank": "When updating, an empty cell (or a column you leave out) keeps the current value. To change only prices, upload a file with just slug and price.",
+        "hidden": "New products start hidden because they have no image yet. Add images on the product page, then show it. Existing products keep their visibility.",
+        "brand": "A brand that does not exist yet is created. category must be one that already exists (slug or name).",
+        "values": "availability: in_stock, limited or out_of_stock (Arabic words such as متوفر / محدود / نفذ also work). featured and bestseller: yes or no. search_aliases: separate with |. Prices may use Arabic digits.",
+        "limits": "Up to 500 products and 1 MB per file."
+      },
+      "categoriesTitle": "Your categories (use these in the category column)",
+      "uploadTitle": "Upload the file",
+      "fileLabel": "CSV file",
+      "check": "Check the file",
+      "checking": "Checking...",
+      "previewTitle": "What the import will do",
+      "summary": {
+        "created": "New products",
+        "updated": "Updated products",
+        "invalid": "Rows with problems"
+      },
+      "tooManyRows": "The file has more than 500 products. Only the first 500 rows are checked; split the file to import the rest.",
+      "missingColumns": "The file has no column for: {columns}. New products cannot be created without them; updates still work.",
+      "unknownColumns": "Columns that will be ignored: {columns}",
+      "newBrands": "Brands that will be created: {brands}",
+      "table": {
+        "line": "Line",
+        "product": "Product",
+        "action": "Action",
+        "problems": "Problems",
+        "create": "Create",
+        "update": "Update",
+        "skipped": "Skipped"
+      },
+      "invalidSkipped": "Rows with problems are skipped. Fix them in the file and upload it again to include them.",
+      "import": "Import {count} products",
+      "importing": "Importing...",
+      "doneTitle": "Import finished",
+      "doneSummary": "{created} created, {updated} updated, {skipped} skipped.",
+      "doneHidden": "New products are hidden until you add an image to each one.",
+      "viewProducts": "View products",
+      "nothingToImport": "There is nothing valid to import in this file.",
+      "importFailed": "The import failed and nothing was changed. Try again.",
+      "partialFailure": "The import stopped part-way: {saved} products were saved. Upload the same file again to finish; products already saved are simply updated.",
+      "fileErrors": {
+        "no_file": "Choose a CSV file first.",
+        "too_big": "The file is larger than 1 MB.",
+        "empty": "The file has no products (it needs a header row and at least one product row).",
+        "no_header": "The first row must be the column names.",
+        "failed": "Could not check the file. Try again."
+      },
+      "columns": {
+        "slug": "slug",
+        "name_ar": "name_ar",
+        "name_en": "name_en",
+        "category": "category",
+        "brand": "brand",
+        "price": "price",
+        "availability": "availability",
+        "short_description_ar": "short_description_ar",
+        "short_description_en": "short_description_en",
+        "description_ar": "description_ar",
+        "description_en": "description_en",
+        "search_aliases": "search_aliases",
+        "featured": "featured",
+        "bestseller": "bestseller"
+      },
+      "errors": {
+        "name_required": "required for a new product",
+        "category_required": "required for a new product",
+        "category_unknown": "no such category (use a slug or name from the list)",
+        "price_required": "required for a new product",
+        "price_invalid": "not a valid price",
+        "availability_invalid": "use in_stock, limited or out_of_stock",
+        "yes_no_invalid": "use yes or no",
+        "slug_invalid": "use lowercase English letters, digits and dashes",
+        "slug_required": "required (it cannot be made from the English name)",
+        "slug_duplicate": "this slug appears twice in the file",
+        "too_long": "too long"
+      }
     }
   },
   "specs": {
