@@ -5,6 +5,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import {
   MAX_COMPARE,
   MAX_FAVORITES,
+  MAX_RECENT,
+  pushRecent,
   sanitizeSaved,
   toggleInList,
   type ToggleResult,
@@ -15,11 +17,13 @@ export const SHOP_STORAGE_KEY = "ews-shop";
 type ShopState = {
   favorites: string[];
   compare: string[];
+  /** Recently viewed product ids, newest first. */
+  recent: string[];
   /** False until the saved lists have been read from the browser (avoids a hydration mismatch). */
   hydrated: boolean;
   /** A short message for every visitor-facing action that was refused (never saved). */
-  notice: "compare_full" | null;
-  showNotice: (notice: "compare_full") => void;
+  notice: "compare_full" | "link_copied" | null;
+  showNotice: (notice: "compare_full" | "link_copied") => void;
   /** Text for the single screen-reader live region (see ShopToast). */
   announcement: string;
   announce: (text: string) => void;
@@ -30,6 +34,9 @@ type ShopState = {
   toggleCompare: (id: string) => ToggleResult;
   removeCompare: (id: string) => void;
   clearCompare: () => void;
+  addRecent: (id: string) => void;
+  setRecent: (ids: string[]) => void;
+  clearRecent: () => void;
 };
 
 /** localStorage can be missing or throw (private windows, blocked storage): never crash because of it. */
@@ -62,6 +69,7 @@ export const useShopStore = create<ShopState>()(
     (set, get) => ({
       favorites: [],
       compare: [],
+      recent: [],
       hydrated: false,
       notice: null,
       showNotice: (notice) => set({ notice }),
@@ -84,6 +92,10 @@ export const useShopStore = create<ShopState>()(
       },
       removeCompare: (id) => set({ compare: get().compare.filter((item) => item !== id) }),
       clearCompare: () => set({ compare: [] }),
+
+      addRecent: (id) => set({ recent: pushRecent(get().recent, id, MAX_RECENT) }),
+      setRecent: (ids) => set({ recent: ids }),
+      clearRecent: () => set({ recent: [] }),
     }),
     {
       name: SHOP_STORAGE_KEY,
@@ -91,7 +103,7 @@ export const useShopStore = create<ShopState>()(
       storage: createJSONStorage(() => safeStorage),
       // Read from storage after the page has hydrated (see ShopHydrator).
       skipHydration: true,
-      partialize: ({ favorites, compare }) => ({ favorites, compare }),
+      partialize: ({ favorites, compare, recent }) => ({ favorites, compare, recent }),
       merge: (persisted, current) => ({ ...current, ...sanitizeSaved(persisted) }),
     },
   ),

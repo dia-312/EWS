@@ -9,6 +9,9 @@ import { OfferCountdown } from "@/components/storefront/offer-countdown";
 import { Price } from "@/components/storefront/price";
 import { ProductGallery } from "@/components/storefront/product-gallery";
 import { ProductGrid } from "@/components/storefront/product-grid";
+import { QrDialog } from "@/components/storefront/qr-dialog";
+import { RecentlyViewed, RecordView } from "@/components/storefront/recent";
+import { ShareButton } from "@/components/storefront/share-button";
 import { CompareButton, FavoriteButton } from "@/components/storefront/shop-buttons";
 import { SpecsTable } from "@/components/storefront/specs-table";
 import { locales } from "@/config/i18n";
@@ -195,6 +198,8 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
           <div className="flex flex-wrap items-center gap-2">
             <FavoriteButton productId={product.id} productName={name} variant="full" />
             <CompareButton productId={product.id} productName={name} variant="full" />
+            <ShareButton url={url} title={name} text={`${name} — ${formatPrice(current, store.currency_code, locale)}`} />
+            <QrDialog url={url} productName={name} />
           </div>
           <span className="sr-only">{tBadges(product.availability as "in_stock")}</span>
         </div>
@@ -219,6 +224,9 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
           <ProductGrid items={related} locale={locale} currency={store.currency_code} />
         </section>
       )}
+
+      <RecordView productId={product.id} />
+      <RecentlyViewed excludeId={product.id} />
 
       <script
         type="application/ld+json"

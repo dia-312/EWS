@@ -280,6 +280,15 @@
           "limit": "A product cannot have more than {max} images.",
           "actionFailed": "The action could not be completed. Try again."
         }
+      },
+      "qr": {
+        "title": "QR code",
+        "description": "Print it on the shelf label or the box. Customers who scan it land on this product's page.",
+        "link": "Link in the code",
+        "downloadSvg": "Download SVG (for print)",
+        "downloadPng": "Download PNG",
+        "label": "QR code for this product",
+        "unavailable": "Save the product first to get its QR code."
       }
     },
     "settings": {
@@ -814,7 +823,8 @@
       "selected": "{count} of {max} selected to compare",
       "compareNow": "Compare now",
       "addOneMore": "Pick at least one more",
-      "clear": "Clear"
+      "clear": "Clear",
+      "linkCopied": "Link copied."
     },
     "favorites": {
       "title": "Favorites",
@@ -856,6 +866,31 @@
         "title": "The selected products are no longer available",
         "body": "They may have been hidden or removed from the store. Pick new products to compare."
       }
+    },
+    "share": {
+      "share": "Share",
+      "title": "Share this product",
+      "link": "Product link",
+      "copy": "Copy link",
+      "copyManually": "Could not copy automatically. Select the link and copy it.",
+      "close": "Close",
+      "targets": {
+        "whatsapp": "WhatsApp",
+        "facebook": "Facebook",
+        "telegram": "Telegram",
+        "email": "Email"
+      }
+    },
+    "qr": {
+      "button": "QR code",
+      "title": "QR code",
+      "hint": "Scan with a phone camera to open this product.",
+      "label": "QR code for {name}",
+      "close": "Close"
+    },
+    "recent": {
+      "title": "Recently viewed",
+      "clear": "Clear"
     }
   }
 }
