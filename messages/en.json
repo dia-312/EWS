@@ -44,7 +44,18 @@
         "outOfStock": "Out-of-stock products"
       },
       "loadError": "Could not load the statistics.",
-      "readOnly": "Your account is read-only and cannot make changes."
+      "readOnly": "Your account is read-only and cannot make changes.",
+      "shortcuts": {
+        "title": "Shortcuts",
+        "addProduct": "Add product",
+        "addOffer": "Add offer",
+        "homepage": "Manage homepage",
+        "settings": "Store settings"
+      },
+      "recent": {
+        "title": "Recently updated products",
+        "hidden": "Hidden"
+      }
     },
     "categories": {
       "title": "Categories",
@@ -248,7 +259,8 @@
         },
         "saveFailed": "Could not save the product. Try again.",
         "newImagesNote": "The product is saved hidden. After saving you will land on the edit page to add images, and then you can show it to visitors.",
-        "activeNewHint": "You can show the product once it has an image."
+        "activeNewHint": "You can show the product once it has an image.",
+        "preview": "Preview"
       },
       "toggleErrors": {
         "needs_image": "Add a primary image to the product first (from its edit page), then show it.",
@@ -294,7 +306,8 @@
         "label": "QR code for this product",
         "unavailable": "Save the product first to get its QR code."
       },
-      "importCsv": "Import from CSV"
+      "importCsv": "Import from CSV",
+      "preview": "Preview"
     },
     "settings": {
       "title": "Store settings",
@@ -650,7 +663,9 @@
         "whatsapp": "WhatsApp clicks",
         "phone": "Call clicks",
         "shares": "Shares",
-        "qrScans": "QR scans"
+        "qrScans": "QR scans",
+        "favorites": "Added to favorites",
+        "compares": "Added to compare"
       },
       "daily": "Product views per day",
       "topProducts": "Most viewed products",
@@ -666,7 +681,8 @@
         "query": "Search",
         "count": "Times"
       },
-      "noSearches": "No searches yet."
+      "noSearches": "No searches yet.",
+      "topCategories": "Most viewed categories"
     },
     "import": {
       "title": "Import products from a file",
@@ -774,6 +790,11 @@
         "uploadFailed": "Could not upload the picture. Try again.",
         "actionFailed": "The action could not be completed. Try again."
       }
+    },
+    "states": {
+      "errorTitle": "Could not load this page",
+      "errorBody": "Something went wrong while loading. Try again; if it keeps happening, check your connection.",
+      "retry": "Try again"
     }
   },
   "specs": {
@@ -888,7 +909,8 @@
       "newest": "Newest",
       "price_asc": "Price: low to high",
       "price_desc": "Price: high to low",
-      "name": "Name"
+      "name": "Name",
+      "popular": "Most viewed"
     },
     "listing": {
       "filters": "Product filters",
@@ -911,7 +933,9 @@
       "askOnWhatsapp": "Ask about this product on WhatsApp",
       "contactSoon": "The store's contact details will be added soon.",
       "outOfStockHint": "This product is currently out of stock. Contact us to find out when it will be available.",
-      "whatsappMessage": "Hello, I would like to ask about \"{name}\" (price: {price}).\n{url}"
+      "whatsappMessage": "Hello, I would like to ask about \"{name}\" (price: {price}).\n{url}",
+      "previewHidden": "Preview: this product is hidden. Visitors cannot see it until you show it.",
+      "previewLive": "Preview: this is how visitors see this product."
     },
     "offer": {
       "endsIn": "Offer ends in"
@@ -1058,6 +1082,12 @@
     },
     "pwa": {
       "install": "Install the app"
+    },
+    "states": {
+      "errorTitle": "Something went wrong",
+      "errorBody": "We could not load this page. Check your connection and try again.",
+      "retry": "Try again",
+      "home": "Back to the homepage"
     }
   }
 }

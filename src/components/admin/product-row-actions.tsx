@@ -15,9 +15,11 @@ type ProductRowActionsProps = {
   id: string;
   name: string;
   active: boolean;
+  /** Opens the product the way visitors see it, even while it is hidden. */
+  previewHref: string;
 };
 
-export function ProductRowActions({ id, name, active }: ProductRowActionsProps) {
+export function ProductRowActions({ id, name, active, previewHref }: ProductRowActionsProps) {
   const t = useTranslations("admin.products");
   const tc = useTranslations("admin.common");
   const [pending, startTransition] = useTransition();
@@ -28,6 +30,9 @@ export function ProductRowActions({ id, name, active }: ProductRowActionsProps) 
       <Link href={`/admin/products/${id}`} className={buttonClass("ghost", "sm")}>
         {tc("edit")}
       </Link>
+      <a href={previewHref} target="_blank" rel="noopener" className={buttonClass("ghost", "sm")}>
+        {t("preview")}
+      </a>
       <Button
         variant="ghost"
         size="sm"

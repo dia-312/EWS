@@ -34,3 +34,24 @@ test("the dashboard shows what visitors did", async ({ page, request }) => {
   await expect(page).toHaveURL(/days=7/);
   await expect(page.locator("[data-analytics]").getByRole("link", { name: "Last 7 days" })).toHaveAttribute("aria-current", "true");
 });
+
+test("the dashboard has shortcuts, recent updates and the most viewed categories", async ({ page, request }) => {
+  await page.goto("/admin/products");
+  await page.getByRole("row", { name: /iPhone 15/ }).getByRole("link", { name: "Edit" }).click();
+  const productId = page.url().split("/").pop()!;
+  await request.post("/api/track", { data: { type: "product_view", productId } });
+  await request.post("/api/track", { data: { type: "favorite_add", productId } });
+  await request.post("/api/track", { data: { type: "compare_add", productId } });
+
+  await page.goto("/admin");
+  const shortcuts = page.locator("[data-shortcuts]");
+  await expect(shortcuts.getByRole("link", { name: "Add product" })).toHaveAttribute("href", "/admin/products/new");
+  await expect(shortcuts.getByRole("link", { name: "Add offer" })).toHaveAttribute("href", "/admin/offers/new");
+  await expect(shortcuts.getByRole("link", { name: "Manage homepage" })).toHaveAttribute("href", "/admin/homepage");
+  await expect(shortcuts.getByRole("link", { name: "Store settings" })).toHaveAttribute("href", "/admin/settings");
+
+  await expect(page.locator("[data-recent-updates] li")).not.toHaveCount(0);
+  await expect(page.locator("[data-top-categories]")).toContainText("Mobile Phones");
+  await expect(page.locator("[data-stat='favorites'] dd")).not.toHaveText("0");
+  await expect(page.locator("[data-stat='compares'] dd")).not.toHaveText("0");
+});

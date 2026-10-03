@@ -62,6 +62,8 @@ export async function AnalyticsPanel({ storeId, days }: { storeId: string; days:
     { key: "phone", label: t("cards.phone"), value: count("phone_click") },
     { key: "shares", label: t("cards.shares"), value: count("share") },
     { key: "qrScans", label: t("cards.qrScans"), value: count("qr_scan") },
+    { key: "favorites", label: t("cards.favorites"), value: count("favorite_add") },
+    { key: "compares", label: t("cards.compares"), value: count("compare_add") },
   ];
 
   const daily = fillDays(summary.daily, days, storeToday(store.timezone));
@@ -78,7 +80,7 @@ export async function AnalyticsPanel({ storeId, days }: { storeId: string; days:
         <p className="rounded-2xl border border-border bg-background p-5 text-muted">{t("empty")}</p>
       ) : (
         <>
-          <dl className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+          <dl className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {cards.map((card) => (
               <div key={card.key} className="rounded-2xl border border-border bg-background p-4" data-stat={card.key}>
                 <dt className="text-sm text-muted">{card.label}</dt>
@@ -143,20 +145,33 @@ export async function AnalyticsPanel({ storeId, days }: { storeId: string; days:
               </table>
             </div>
 
-            <div className="rounded-2xl border border-border bg-background p-4">
-              <h3 className="mb-3 font-bold">{t("topSearches")}</h3>
-              {summary.top_searches.length === 0 ? (
-                <p className="text-sm text-muted">{t("noSearches")}</p>
-              ) : (
-                <ol className="flex flex-col gap-1 text-sm" data-top-searches>
-                  {summary.top_searches.map((entry) => (
-                    <li key={entry.query} className="flex justify-between gap-3 border-t border-border py-1.5 first:border-0">
-                      <span className="break-all">{entry.query}</span>
-                      <span className="text-muted">{number.format(entry.count)}</span>
+            <div className="flex flex-col gap-4">
+              <div className="rounded-2xl border border-border bg-background p-4">
+                <h3 className="mb-3 font-bold">{t("topCategories")}</h3>
+                <ol className="flex flex-col gap-1 text-sm" data-top-categories>
+                  {summary.top_categories.map((category) => (
+                    <li key={category.id} className="flex justify-between gap-3 border-t border-border py-1.5 first:border-0">
+                      <span>{(locale === "ar" ? category.name_ar : category.name_en) || category.name_ar}</span>
+                      <span className="text-muted">{number.format(category.views)}</span>
                     </li>
                   ))}
                 </ol>
-              )}
+              </div>
+              <div className="rounded-2xl border border-border bg-background p-4">
+                <h3 className="mb-3 font-bold">{t("topSearches")}</h3>
+                {summary.top_searches.length === 0 ? (
+                  <p className="text-sm text-muted">{t("noSearches")}</p>
+                ) : (
+                  <ol className="flex flex-col gap-1 text-sm" data-top-searches>
+                    {summary.top_searches.map((entry) => (
+                      <li key={entry.query} className="flex justify-between gap-3 border-t border-border py-1.5 first:border-0">
+                        <span className="break-all">{entry.query}</span>
+                        <span className="text-muted">{number.format(entry.count)}</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
             </div>
           </div>
         </>

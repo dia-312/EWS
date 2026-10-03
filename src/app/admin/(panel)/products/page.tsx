@@ -4,6 +4,7 @@ import { ProductRowActions } from "@/components/admin/product-row-actions";
 import { Button, buttonClass } from "@/components/ui/button";
 import { TextField } from "@/components/ui/field";
 import { SelectField } from "@/components/ui/select";
+import { defaultLocale } from "@/config/i18n";
 import { requireAdmin } from "@/lib/auth";
 import { cn } from "@/lib/cn";
 import { formatDate, formatPrice, pickLocalized } from "@/lib/format";
@@ -254,6 +255,7 @@ export default async function AdminProductsPage({
                           id={product.id}
                           name={pickLocalized(locale, product.name_ar, product.name_en)}
                           active={product.active}
+                          previewHref={`/${defaultLocale}/products/${product.slug}?preview=1`}
                         />
                       </td>
                     )}

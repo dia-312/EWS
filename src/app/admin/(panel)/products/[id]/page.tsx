@@ -4,6 +4,7 @@ import { ProductForm } from "@/components/admin/product-form";
 import { ProductImages } from "@/components/admin/product-images";
 import { ProductQr } from "@/components/admin/product-qr";
 import { defaultLocale } from "@/config/i18n";
+import { buttonClass } from "@/components/ui/button";
 import { requireEditor } from "@/lib/auth";
 import { withQrSource } from "@/lib/share";
 import { absoluteUrl } from "@/lib/storefront";
@@ -49,7 +50,17 @@ export default async function EditProductPage({
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
+        <a
+          href={`/${defaultLocale}/products/${product.slug}?preview=1`}
+          target="_blank"
+          rel="noopener"
+          className={buttonClass("secondary", "sm")}
+        >
+          {t("preview")}
+        </a>
+      </div>
       <ProductImages storeId={session.storeId} productId={id} images={images ?? []} />
       <ProductQr url={withQrSource(absoluteUrl(defaultLocale, `/products/${product.slug}`))} slug={product.slug} />
       <ProductForm

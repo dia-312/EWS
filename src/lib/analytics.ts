@@ -24,6 +24,7 @@ export type AnalyticsSummary = {
   visitors: number;
   daily: { day: string; views: number }[];
   top_products: TopProduct[];
+  top_categories: { id: string; name_ar: string; name_en: string | null; views: number }[];
   top_searches: { query: string; count: number }[];
 };
 

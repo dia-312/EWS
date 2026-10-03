@@ -17,7 +17,8 @@ import { TrackProductView } from "@/components/storefront/tracker";
 import { SpecsTable } from "@/components/storefront/specs-table";
 import { locales } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
-import { getProductBySlug, searchCatalog } from "@/lib/catalog";
+import { getAdminSession } from "@/lib/auth";
+import { getProductBySlug, getProductPreview, searchCatalog } from "@/lib/catalog";
 import { formatPrice, pickLocalized } from "@/lib/format";
 import { absoluteUrl, currentPrice, isNewProduct, localizedName } from "@/lib/storefront";
 import { getStorefront } from "@/lib/storefront-data";
@@ -26,18 +27,33 @@ export const dynamic = "force-dynamic";
 
 type Params = PageProps<"/[locale]/products/[slug]">["params"];
 
-async function load(params: Params) {
+type Search = PageProps<"/[locale]/products/[slug]">["searchParams"];
+
+/**
+ * The product, for visitors. With ?preview=1 and a signed-in admin it also finds hidden
+ * products (so the owner can check a product before showing it); for anyone else
+ * the flag is ignored.
+ */
+async function load(params: Params, searchParams: Search) {
   const { locale, slug } = await params;
   if (!hasLocale(locales, locale)) return null;
   const { store, settings } = await getStorefront();
+
+  const wantsPreview = (await searchParams).preview === "1";
+  if (wantsPreview && (await getAdminSession()).status === "admin") {
+    const found = await getProductPreview(store.id, slug);
+    return found ? { locale, slug, store, settings, product: found.product, preview: { hidden: !found.active } } : null;
+  }
+
   const product = await getProductBySlug(store.id, slug);
-  return product ? { locale, slug, store, settings, product } : null;
+  return product ? { locale, slug, store, settings, product, preview: null } : null;
 }
 
-export async function generateMetadata({ params }: PageProps<"/[locale]/products/[slug]">): Promise<Metadata> {
-  const data = await load(params);
+export async function generateMetadata({ params, searchParams }: PageProps<"/[locale]/products/[slug]">): Promise<Metadata> {
+  const data = await load(params, searchParams);
   if (!data) return {};
   const { locale, slug, product } = data;
+  if (data.preview) return { title: localizedName(locale, product), robots: { index: false, follow: false } };
 
   const name = localizedName(locale, product);
   const description =
@@ -63,10 +79,10 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/products
   };
 }
 
-export default async function ProductPage({ params }: PageProps<"/[locale]/products/[slug]">) {
-  const data = await load(params);
+export default async function ProductPage({ params, searchParams }: PageProps<"/[locale]/products/[slug]">) {
+  const data = await load(params, searchParams);
   if (!data) notFound();
-  const { locale, slug, store, settings, product } = data;
+  const { locale, slug, store, settings, product, preview } = data;
   setRequestLocale(locale);
 
   const [t, tNav, tBadges] = await Promise.all([
@@ -141,6 +157,11 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
 
   return (
     <div className="flex flex-col gap-8">
+      {preview && (
+        <p role="status" data-preview-banner className="rounded-xl border border-border bg-background px-4 py-3 text-sm font-medium">
+          {preview.hidden ? t("previewHidden") : t("previewLive")}
+        </p>
+      )}
       <Breadcrumbs
         items={[
           { label: tNav("home"), href: "/" },
@@ -226,8 +247,8 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
         </section>
       )}
 
-      <RecordView productId={product.id} />
-      <TrackProductView productId={product.id} />
+      {!preview && <RecordView productId={product.id} />}
+      {!preview && <TrackProductView productId={product.id} />}
       <RecentlyViewed excludeId={product.id} />
 
       <script
