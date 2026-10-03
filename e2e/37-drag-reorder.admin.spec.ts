@@ -42,9 +42,13 @@ test("homepage sections can be reordered by dragging, with the keyboard, and the
   await expect(async () => {
     await page.goto("/en");
     const labels = await page.locator("main section[aria-label]").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
+    // the section it swapped places with (the admin and the storefront word a few names slightly differently)
+    const displaced = before[from - 1];
+    const at = (name: string) => labels.findIndex((label) => label?.startsWith(name));
     const shown = `storefront: ${labels.join(" | ")} -- expected admin order: ${expected.join(" | ")}`;
-    expect(labels.indexOf("Why choose us"), shown).toBeGreaterThanOrEqual(0);
-    expect(labels.indexOf("Why choose us"), shown).toBeLessThan(labels.indexOf("Deal of the day"));
+    expect(at("Why choose us"), shown).toBeGreaterThanOrEqual(0);
+    expect(at(displaced), shown).toBeGreaterThanOrEqual(0);
+    expect(at("Why choose us"), shown).toBeLessThan(at(displaced));
   }).toPass({ timeout: 15_000 });
 
   // put it back
