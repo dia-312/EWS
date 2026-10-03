@@ -5,8 +5,12 @@ type Locator = import("@playwright/test").Locator;
 
 /** Picks an item up with the keyboard, moves it by `steps` places (negative = up) and drops it. */
 async function dragWithKeyboard(page: Page, handle: Locator, steps: number) {
-  await handle.focus();
-  await page.keyboard.press("Space");
+  // Keys pressed before the page has hydrated are lost, so confirm the item was picked up (and retry if not).
+  await expect(async () => {
+    await handle.focus();
+    await page.keyboard.press("Space");
+    await expect(page.locator("[id^='DndLiveRegion']")).toContainText("Picked up", { timeout: 1500 });
+  }).toPass({ timeout: 15_000 });
   const key = steps < 0 ? "ArrowUp" : "ArrowDown";
   for (let index = 0; index < Math.abs(steps); index++) {
     await page.keyboard.press(key);

@@ -100,8 +100,12 @@ test("a product goes from creation to visibility, with images, and can be duplic
   const sources = () => images.locator("li img").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src")));
   const dragged = await sources();
   const moveFirstPicture = async (key: "ArrowDown" | "ArrowUp", handleIndex: number) => {
-    await images.locator("[data-drag-handle]").nth(handleIndex).focus();
-    await page.keyboard.press("Space");
+    // Keys pressed before the page has hydrated are lost, so confirm the picture was picked up.
+    await expect(async () => {
+      await images.locator("[data-drag-handle]").nth(handleIndex).focus();
+      await page.keyboard.press("Space");
+      await expect(page.locator("[id^='DndLiveRegion']")).toContainText("Picked up", { timeout: 1500 });
+    }).toPass({ timeout: 15_000 });
     await page.keyboard.press(key);
     await page.waitForTimeout(250);
     await page.keyboard.press("Space");

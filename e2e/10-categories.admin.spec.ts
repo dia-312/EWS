@@ -46,7 +46,7 @@ test("a category can be created, validated, edited, hidden, reordered and delete
 
   // Reorder: moving up puts it before the category that was above it.
   const slugsInOrder = async () =>
-    (await page.locator("tbody tr td:nth-child(2)").allInnerTexts()).map((text) => text.trim());
+    (await page.locator("tbody tr[data-sortable-id] td:nth-child(3)").allInnerTexts()).map((text) => text.trim());
   const before = await slugsInOrder();
   expect(before.at(-1)).toBe(slug);
   await page.getByRole("row", { name: new RegExp(slug) }).getByRole("button", { name: "Move up" }).click();
