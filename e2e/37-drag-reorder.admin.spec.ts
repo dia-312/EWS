@@ -5,6 +5,8 @@ type Locator = import("@playwright/test").Locator;
 
 /** Picks an item up with the keyboard, moves it by `steps` places (negative = up) and drops it. */
 async function dragWithKeyboard(page: Page, handle: Locator, steps: number) {
+  // the handles only work once the page has hydrated
+  await expect(page.locator("[data-sortable-ready]").first()).toHaveAttribute("data-sortable-ready", "true");
   // Keys pressed before the page has hydrated are lost, so confirm the item was picked up (and retry if not).
   await expect(async () => {
     await handle.focus();
@@ -37,9 +39,12 @@ test("homepage sections can be reordered by dragging, with the keyboard, and the
   // saved: still there after a reload, and the storefront follows
   await page.reload();
   expect(await sectionNames(page)).toEqual(expected);
-  await page.goto("/en");
-  const labels = await page.locator("main section[aria-label]").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
-  expect(labels.indexOf("Why choose us")).toBeLessThan(labels.indexOf("Deal of the day"));
+  await expect(async () => {
+    await page.goto("/en");
+    const labels = await page.locator("main section[aria-label]").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
+    expect(labels.indexOf("Why choose us")).toBeGreaterThanOrEqual(0);
+    expect(labels.indexOf("Why choose us")).toBeLessThan(labels.indexOf("Deal of the day"));
+  }).toPass({ timeout: 15_000 });
 
   // put it back
   await page.goto("/admin/homepage");

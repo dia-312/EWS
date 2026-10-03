@@ -100,6 +100,7 @@ test("a product goes from creation to visibility, with images, and can be duplic
   const sources = () => images.locator("li img").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src")));
   const dragged = await sources();
   const moveFirstPicture = async (key: "ArrowDown" | "ArrowUp", handleIndex: number) => {
+    await expect(images.locator("[data-sortable-ready]")).toHaveAttribute("data-sortable-ready", "true");
     // Keys pressed before the page has hydrated are lost, so confirm the picture was picked up.
     await expect(async () => {
       await images.locator("[data-drag-handle]").nth(handleIndex).focus();

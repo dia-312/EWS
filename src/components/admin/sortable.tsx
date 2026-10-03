@@ -18,10 +18,17 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useId, useState, type ReactNode } from "react";
+import { useId, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/cn";
 import { effectiveOrder } from "@/lib/reorder";
+
+const noSubscription = () => () => {};
+
+/** False while the page is being server-rendered or hydrating, true once the handles really work. */
+function useHydrated() {
+  return useSyncExternalStore(noSubscription, () => true, () => false);
+}
 
 export type SortableItem = {
   id: string;
@@ -141,6 +148,7 @@ export function SortableList({
 }: CommonProps & { as?: "ol" | "ul"; className?: string; itemClassName?: string; grid?: boolean; disabled?: boolean }) {
   const { ordered, order, sensors, onDragEnd, accessibility, error, announcement } = useReorder({ items, onReorder });
   const contextId = useId();
+  const hydrated = useHydrated();
 
   // Read-only accounts see the same list without the handles.
   if (disabled) {
@@ -159,7 +167,7 @@ export function SortableList({
     <>
       <DndContext id={contextId} sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} accessibility={accessibility}>
         <SortableContext items={order} strategy={grid ? rectSortingStrategy : verticalListSortingStrategy}>
-          <Tag className={className}>
+          <Tag className={className} data-sortable-ready={hydrated}>
             {ordered.map((item) => (
               <SortableListItem key={item.id} item={item} className={itemClassName} grid={grid} />
             ))}
@@ -213,6 +221,7 @@ export function SortableTableBody({
   const { order, sensors, onDragEnd, accessibility, error, announcement } = useReorder({ items: asItems, onReorder });
   const byId = new Map(items.map((item) => [item.id, item]));
   const contextId = useId();
+  const hydrated = useHydrated();
 
   if (disabled) {
     return (
@@ -230,7 +239,7 @@ export function SortableTableBody({
   return (
     <DndContext id={contextId} sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} accessibility={accessibility}>
       <SortableContext items={order} strategy={verticalListSortingStrategy}>
-        <tbody>
+        <tbody data-sortable-ready={hydrated}>
           {order.map((id) => (
             <SortableTableRow key={id} item={byId.get(id)!} className={rowClassName} />
           ))}
