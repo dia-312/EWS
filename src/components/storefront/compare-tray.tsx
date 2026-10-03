@@ -6,11 +6,17 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { MAX_COMPARE, compareHref } from "@/lib/shop-state";
 import { useShopStore } from "@/lib/shop-store";
 
+const NONE: string[] = [];
+
 /** Floating bar that shows what is selected for comparison and leads to the comparison page. */
 export function CompareTray() {
   const t = useTranslations("store.shop");
   const pathname = usePathname();
-  const compare = useShopStore((state) => (state.hydrated ? state.compare : []));
+  // Select stored values as they are: a selector that builds a new array or object
+  // on every call (such as `hydrated ? list : []`) makes Zustand 5 re-render forever.
+  const hydrated = useShopStore((state) => state.hydrated);
+  const saved = useShopStore((state) => state.compare);
+  const compare = hydrated ? saved : NONE;
   const clear = useShopStore((state) => state.clearCompare);
 
   // The comparison page has its own controls.

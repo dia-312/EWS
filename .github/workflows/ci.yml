@@ -53,7 +53,7 @@ jobs:
   e2e:
     name: End-to-end (local Supabase + Playwright)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     env:
       STORE_SLUG: ews
       # Tests need every admin edit to show up at once, so the storefront cache is off.
