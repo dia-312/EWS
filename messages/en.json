@@ -1048,7 +1048,8 @@
       "closed": "Closed",
       "noHours": "Opening hours have not been set yet.",
       "copyright": "© {year} {name}. All rights reserved.",
-      "browse": "Browse all products"
+      "browse": "Browse all products",
+      "developedBy": "Website by {name}"
     },
     "pagination": {
       "label": "Pagination",
