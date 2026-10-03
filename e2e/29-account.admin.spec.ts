@@ -12,8 +12,20 @@ async function signIn(page: Page, password: string) {
   await page.getByRole("button", { name: "Sign in" }).click();
 }
 
-async function changePassword(page: Page, to: string) {
+/** Opens the account page, signing in first only if the browser is not signed in. */
+async function openAccount(page: Page, password: string) {
   await page.goto("/admin/account");
+  if (page.url().includes("/admin/login")) {
+    await page.getByLabel("Email").fill(TEST_SESSION_OWNER.email);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.waitForURL(new RegExp("/admin$"));
+    await page.goto("/admin/account");
+  }
+}
+
+async function changePassword(page: Page, to: string) {
+  await openAccount(page, to === TEST_SESSION_OWNER.password ? CHANGED : TEST_SESSION_OWNER.password);
   const form = page.locator("[data-password-form]");
   await form.getByLabel("New password", { exact: true }).fill(to);
   await form.getByLabel("Repeat the new password").fill(to);
@@ -63,7 +75,6 @@ test("a signed-in person sees their account and changes their own password", asy
   } finally {
     // put the original password back, so the account works again for the next run
     if (current !== TEST_SESSION_OWNER.password) {
-      await signIn(page, current);
       await changePassword(page, TEST_SESSION_OWNER.password);
     }
     await context.close();

@@ -19,16 +19,18 @@ async function asSomeoneElse(browser: Browser, baseURL: string | undefined) {
 }
 
 const member = (page: Page, email: string) => page.locator("[data-team-member]", { hasText: email });
+/** The role shown as a badge (the dropdown next to it also contains every role's name). */
+const roleOf = (page: Page, email: string) => member(page, email).locator("[data-role]");
 
 test("the owner sees the team, and people without the owner role cannot", async ({ page, browser, baseURL }) => {
   await page.goto("/admin");
   await page.getByRole("link", { name: "Team", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Team", exact: true })).toBeVisible();
 
-  await expect(member(page, TEST_VIEWER.email)).toContainText("Viewer");
+  await expect(roleOf(page, TEST_VIEWER.email)).toHaveText("Viewer");
   // the owner's own row has no controls: nobody can lock themselves out
   const own = page.locator("[data-team-member]", { hasText: "E2E Admin" });
-  await expect(own).toContainText("Owner");
+  await expect(own.locator("[data-role]")).toHaveText("Owner");
   await expect(own).toContainText("You");
   await expect(own.getByRole("button")).toHaveCount(0);
 
@@ -58,7 +60,7 @@ test("the owner adds someone, changes what they may do, and removes them", async
   await form.getByLabel("Role").selectOption({ label: "Viewer" });
   await form.getByRole("button", { name: "Add to the team" }).click();
   await expect(form.getByRole("status")).toHaveText("Done.");
-  await expect(member(page, TEST_STRANGER.email)).toContainText("Viewer");
+  await expect(roleOf(page, TEST_STRANGER.email)).toHaveText("Viewer");
 
   const { context, page: guest } = await asSomeoneElse(browser, baseURL);
   try {
@@ -71,7 +73,9 @@ test("the owner adds someone, changes what they may do, and removes them", async
 
     // made an editor, they can add things
     await page.getByLabel("Change the role of E2E Guest").selectOption({ label: "Editor" });
-    await expect(member(page, TEST_STRANGER.email)).toContainText("Editor");
+    await expect(roleOf(page, TEST_STRANGER.email)).toHaveText("Editor");
+    await page.reload(); // the change is saved, not just shown
+    await expect(roleOf(page, TEST_STRANGER.email)).toHaveText("Editor");
     await guest.reload();
     await expect(guest.getByRole("link", { name: "Add category" })).toBeVisible();
     // but an editor still cannot manage the team
