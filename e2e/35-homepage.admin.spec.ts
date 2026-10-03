@@ -55,8 +55,8 @@ test("the owner reorders, hides, edits, removes and re-adds homepage sections", 
   await page.goto("/admin/homepage");
   await page.getByRole("link", { name: "Edit: New arrivals" }).click();
   await expect(page.getByRole("heading", { name: "Edit section: New arrivals" })).toBeVisible();
-  await page.getByLabel("Title (English)").fill("Fresh in store");
-  await page.getByLabel("Title (Arabic)").fill("وصل للتو");
+  await page.getByLabel("Title (English)", { exact: true }).fill("Fresh in store");
+  await page.getByLabel("Title (Arabic)", { exact: true }).fill("وصل للتو");
   await page.getByLabel("Number of products").fill("1");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Enter a whole number within the allowed range.")).toBeVisible();
@@ -77,8 +77,8 @@ test("the owner reorders, hides, edits, removes and re-adds homepage sections", 
   // ---- an empty title goes back to the default
   await page.goto("/admin/homepage");
   await page.getByRole("link", { name: "Edit: New arrivals" }).click();
-  await page.getByLabel("Title (English)").fill("");
-  await page.getByLabel("Title (Arabic)").fill("");
+  await page.getByLabel("Title (English)", { exact: true }).fill("");
+  await page.getByLabel("Title (Arabic)", { exact: true }).fill("");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page).toHaveURL(/saved=1/);
   await page.goto("/en");
@@ -88,7 +88,7 @@ test("the owner reorders, hides, edits, removes and re-adds homepage sections", 
   await page.goto("/admin/homepage");
   await page.getByRole("link", { name: "Edit: Hero banner" }).click();
   await expect(page.getByLabel("Number of products")).toHaveCount(0);
-  await page.getByLabel("Title (English)").fill("Welcome to the E2E store");
+  await page.getByLabel("Title (English)", { exact: true }).fill("Welcome to the E2E store");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page).toHaveURL(/saved=1/);
   await page.goto("/en");
