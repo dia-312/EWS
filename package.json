@@ -2,6 +2,11 @@
   "name": "ews",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Dia'a Yaqub Arar",
+    "email": "diaararx@gmail.com",
+    "url": "https://github.com/dia-312"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
