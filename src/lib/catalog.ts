@@ -2,6 +2,7 @@ import { cache } from "react";
 import type { Locale } from "@/config/i18n";
 import { PAGE_SIZE, totalPages, type CatalogParams } from "@/lib/catalog-params";
 import { memoizeAsync } from "@/lib/memo";
+import { createClient as createSessionClient } from "@/lib/supabase/server";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Database } from "@/types/database.types";
 
@@ -172,6 +173,49 @@ export const getProductBySlug = cache(
 );
 
 export type ProductDetail = NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>;
+
+/**
+ * The same product as visitors would see it, but also when it is hidden. Only for
+ * signed-in admins (the caller checks). Admins can read every offer of their store,
+ * so the live one is picked here instead of by row level security.
+ */
+export async function getProductPreview(storeId: string, slug: string) {
+  const { data: product, error } = await (await createSessionClient())
+    .from("products")
+    .select(
+      `id, slug, name_ar, name_en, short_description_ar, short_description_en,
+       description_ar, description_en, price, availability, featured, created_at,
+       is_new_override, category_id, active,
+       brands(name, slug),
+       categories(slug, name_ar, name_en, active),
+       product_images(id, public_url, alt_text_ar, alt_text_en, is_primary, display_order),
+       product_specs(spec_key, value_ar, value_en, display_order),
+       product_badges(badges(key, label_ar, label_en, color, active, display_order)),
+       offers(new_price, old_price, end_at, start_at, active, title_ar, title_en)`,
+    )
+    .eq("store_id", storeId)
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) throw new Error(`Failed to load product preview: ${error.message}`);
+  if (!product) return null;
+
+  const now = new Date();
+  const live = product.offers
+    .filter((offer) => offer.active && (!offer.start_at || new Date(offer.start_at) <= now) && (!offer.end_at || new Date(offer.end_at) > now))
+    .sort((a, b) => Number(a.new_price) - Number(b.new_price))[0];
+  const { offers, active, ...rest } = product;
+  void offers;
+  return {
+    product: {
+      ...rest,
+      // typed like the public loader's result, which also uses null for "no live offer"
+      offer: (live
+        ? { new_price: live.new_price, old_price: live.old_price, end_at: live.end_at, title_ar: live.title_ar, title_en: live.title_en }
+        : null) as ProductDetail["offer"],
+    } satisfies ProductDetail,
+    active,
+  };
+}
 
 /**
  * Products with their specifications, for the side-by-side comparison. Returned

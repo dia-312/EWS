@@ -1,7 +1,10 @@
-import { getTranslations } from "next-intl/server";
+import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { AnalyticsPanel } from "@/components/admin/analytics-panel";
+import { buttonClass } from "@/components/ui/button";
 import { requireAdmin } from "@/lib/auth";
 import { parseDays } from "@/lib/analytics";
+import { formatDate, pickLocalized } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage({
@@ -12,7 +15,8 @@ export default async function AdminDashboardPage({
   const supabase = await createClient();
   const now = new Date().toISOString();
 
-  const [activeProducts, outOfStock, onSale] = await Promise.all([
+  const locale = await getLocale();
+  const [activeProducts, outOfStock, onSale, recent] = await Promise.all([
     supabase
       .from("products")
       .select("id", { count: "exact", head: true })
@@ -32,6 +36,12 @@ export default async function AdminDashboardPage({
       .eq("active", true)
       .or(`start_at.is.null,start_at.lte.${now}`)
       .or(`end_at.is.null,end_at.gt.${now}`),
+    supabase
+      .from("products")
+      .select("id, name_ar, name_en, updated_at, active")
+      .eq("store_id", session.storeId)
+      .order("updated_at", { ascending: false })
+      .limit(5),
   ]);
 
   const failed = [activeProducts, outOfStock, onSale].some((r) => r.error);
@@ -72,6 +82,44 @@ export default async function AdminDashboardPage({
             </div>
           ))}
         </dl>
+      )}
+
+      {session.role !== "viewer" && (
+        <nav aria-label={t("shortcuts.title")} className="flex flex-wrap gap-2" data-shortcuts>
+          <Link href="/admin/products/new" className={buttonClass("primary", "sm")}>
+            {t("shortcuts.addProduct")}
+          </Link>
+          <Link href="/admin/offers/new" className={buttonClass("secondary", "sm")}>
+            {t("shortcuts.addOffer")}
+          </Link>
+          <Link href="/admin/homepage" className={buttonClass("secondary", "sm")}>
+            {t("shortcuts.homepage")}
+          </Link>
+          <Link href="/admin/settings" className={buttonClass("secondary", "sm")}>
+            {t("shortcuts.settings")}
+          </Link>
+        </nav>
+      )}
+
+      {recent.data && recent.data.length > 0 && (
+        <section aria-labelledby="recent-updates" className="rounded-2xl border border-border bg-background p-5" data-recent-updates>
+          <h2 id="recent-updates" className="mb-3 text-lg font-bold">
+            {t("recent.title")}
+          </h2>
+          <ul className="flex flex-col text-sm">
+            {recent.data.map((product) => (
+              <li key={product.id} className="flex items-center justify-between gap-3 border-t border-border py-2 first:border-0">
+                <Link href={`/admin/products/${product.id}`} className="underline-offset-2 hover:underline">
+                  {pickLocalized(locale, product.name_ar, product.name_en)}
+                </Link>
+                <span className="text-muted">
+                  {product.active ? "" : `${t("recent.hidden")} · `}
+                  {formatDate(product.updated_at, locale)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <AnalyticsPanel storeId={session.storeId} days={parseDays(params.days)} />

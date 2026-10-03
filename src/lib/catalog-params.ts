@@ -4,7 +4,7 @@
  * state; it knows nothing about the database.
  */
 
-export const SORT_KEYS = ["newest", "price_asc", "price_desc", "name"] as const;
+export const SORT_KEYS = ["newest", "price_asc", "price_desc", "name", "popular"] as const;
 export type SortKey = (typeof SORT_KEYS)[number];
 
 export const AVAILABILITY_VALUES = ["in_stock", "limited", "out_of_stock"] as const;
