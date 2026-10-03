@@ -117,11 +117,14 @@ test("a file that cannot be used says why", async ({ page }) => {
 
   await page.locator("#import-file").setInputFiles({ name: "empty.csv", mimeType: "text/csv", buffer: csv("slug,price") });
   await page.getByRole("button", { name: "Check the file" }).click();
-  await expect(page.getByRole("alert")).toContainText("The file has no products");
+  await expect(page.getByRole("alert").filter({ hasText: "The file has no products" })).toBeVisible();
 });
 
 test("the export needs an admin session", async ({ playwright, baseURL }) => {
-  const anonymous = await playwright.request.newContext({ baseURL });
-  expect((await anonymous.get("/admin/products/export")).status()).toBe(401);
+  // an explicitly empty session: no cookies at all
+  const anonymous = await playwright.request.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
+  const response = await anonymous.get("/admin/products/export");
+  expect(response.status()).toBe(401);
+  expect(await response.text()).not.toContain("slug,name_ar");
   await anonymous.dispose();
 });
