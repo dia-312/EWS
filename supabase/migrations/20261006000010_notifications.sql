@@ -34,13 +34,6 @@ create policy notification_subscriptions_public_insert on public.notification_su
     )
   );
 
-create policy notification_subscriptions_admin_update on public.notification_subscriptions
-  for update to authenticated
-  using (public.can_edit_store(store_id))
-  with check (public.can_edit_store(store_id));
-
-create policy notification_subscriptions_admin_delete on public.notification_subscriptions
-  for delete to authenticated
-  using (public.can_edit_store(store_id));
+-- Admins already have update and delete on this table (the generic policies of the RLS migration).
 
 grant insert on public.notification_subscriptions to anon;
