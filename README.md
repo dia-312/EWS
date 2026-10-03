@@ -8,7 +8,7 @@ Built with Next.js 16, Supabase and Cloudflare Workers. One deployment serves on
 
 | For | File |
 |---|---|
-| The shop owner (Arabic) | [`docs/owner-guide.ar.md`](docs/owner-guide.ar.md) |
+| The shop owner (Arabic) | [`docs/owner-guide.ar.md`](docs/owner-guide.ar.md), printable: [`docs/owner-guide.ar.pdf`](docs/owner-guide.ar.pdf) (`pnpm docs:pdf` rebuilds it after the guide changes) |
 | Handing the project over to a shop (Arabic) | [`docs/handover-checklist.ar.md`](docs/handover-checklist.ar.md) |
 | The next developer | [`docs/developer-handover.md`](docs/developer-handover.md) |
 | Technology choices and why | [`TECH_STACK.md`](TECH_STACK.md) |
