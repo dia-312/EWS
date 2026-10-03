@@ -5,8 +5,10 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { shareTargets } from "@/lib/share";
 import { useShopStore } from "@/lib/shop-store";
+import { track } from "@/lib/track";
 
 type ShareButtonProps = {
+  productId: string;
   /** The canonical address of the page being shared. */
   url: string;
   title: string;
@@ -18,7 +20,7 @@ type ShareButtonProps = {
  * Opens the phone's own share sheet when the browser has one (Web Share API);
  * otherwise a small dialog with copy-link and a few share links.
  */
-export function ShareButton({ url, title, text }: ShareButtonProps) {
+export function ShareButton({ productId, url, title, text }: ShareButtonProps) {
   const t = useTranslations("store.share");
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,6 +28,7 @@ export function ShareButton({ url, title, text }: ShareButtonProps) {
   const announce = useShopStore((state) => state.announce);
 
   async function share() {
+    track({ type: "share", productId });
     if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
       try {
         await navigator.share({ title, text, url });

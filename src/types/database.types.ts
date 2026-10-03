@@ -806,6 +806,10 @@ export type Database = {
     }
     Functions: {
       can_edit_store: { Args: { p_store: string }; Returns: boolean }
+      analytics_summary: {
+        Args: { p_store: string; p_days?: number; p_tz?: string }
+        Returns: Json
+      }
       is_store_member: { Args: { p_store: string }; Returns: boolean }
       normalize_search: { Args: { input: string }; Returns: string }
       search_products: {

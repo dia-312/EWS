@@ -6,6 +6,7 @@ import { AiAssistantEntry } from "@/components/storefront/ai-assistant";
 import { CompareTray } from "@/components/storefront/compare-tray";
 import { Footer } from "@/components/storefront/footer";
 import { Header } from "@/components/storefront/header";
+import { ContactClickTracker, PageViewTracker } from "@/components/storefront/tracker";
 import { ShopHydrator } from "@/components/storefront/shop-hydrator";
 import { ShopToast } from "@/components/storefront/shop-toast";
 import { getDirection, locales } from "@/config/i18n";
@@ -84,6 +85,8 @@ export default async function StorefrontRootLayout({ children, params }: LayoutP
             <CompareTray />
             <ShopToast />
             <ShopHydrator />
+            <PageViewTracker />
+            <ContactClickTracker />
           </div>
         </NextIntlClientProvider>
       </body>

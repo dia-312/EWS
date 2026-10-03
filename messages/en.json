@@ -610,6 +610,37 @@
         },
         "saveFailed": "Could not save the section. Try again."
       }
+    },
+    "analytics": {
+      "title": "Visitor statistics",
+      "period": "Period",
+      "days": "Last {count} days",
+      "privacy": "Anonymous counts only. No names, no cookies; visitors who send Do Not Track are not counted.",
+      "loadError": "Could not load the statistics.",
+      "empty": "No visits recorded yet. Numbers appear here as visitors browse the store.",
+      "cards": {
+        "visitors": "Visitors",
+        "productViews": "Product views",
+        "whatsapp": "WhatsApp clicks",
+        "phone": "Call clicks",
+        "shares": "Shares",
+        "qrScans": "QR scans"
+      },
+      "daily": "Product views per day",
+      "topProducts": "Most viewed products",
+      "topSearches": "What visitors search for",
+      "columns": {
+        "product": "Product",
+        "views": "Views",
+        "whatsapp": "WhatsApp",
+        "phone": "Calls",
+        "shares": "Shares",
+        "qr": "QR",
+        "favorites": "Favorites",
+        "query": "Search",
+        "count": "Times"
+      },
+      "noSearches": "No searches yet."
     }
   },
   "specs": {
