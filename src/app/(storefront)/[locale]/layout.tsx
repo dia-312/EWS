@@ -6,7 +6,7 @@ import { AiAssistantEntry } from "@/components/storefront/ai-assistant";
 import { Footer } from "@/components/storefront/footer";
 import { Header } from "@/components/storefront/header";
 import { getDirection, locales } from "@/config/i18n";
-import { fontVariables } from "@/lib/fonts";
+import "@/lib/font-faces";
 import { pickLocalized } from "@/lib/format";
 import { absoluteUrl, siteUrl } from "@/lib/storefront";
 import { getStorefront } from "@/lib/storefront-data";
@@ -57,7 +57,7 @@ export default async function StorefrontRootLayout({ children, params }: LayoutP
   const publicMessages = { store: messages.store, specs: messages.specs };
 
   return (
-    <html lang={locale} dir={getDirection(locale)} className={`${fontVariables} h-full antialiased`}>
+    <html lang={locale} dir={getDirection(locale)} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider locale={locale} messages={publicMessages}>
           <div className="theme-root flex flex-1 flex-col bg-surface text-foreground" style={themeStyle}>

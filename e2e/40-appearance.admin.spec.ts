@@ -30,6 +30,14 @@ test("the theme can be customized with a contrast check and shows on the public 
   expect(style).toContain("--ui-radius-lg:9999px");
   expect(style).toContain("--font-store:var(--font-cairo)");
 
+  // the chosen font is really loaded (from the site itself), and it replaces the default
+  const families = await page.evaluate(async () => {
+    await document.fonts.ready;
+    return [...new Set([...document.fonts].filter((face) => face.status === "loaded").map((face) => face.family.replace(/"/g, "")))];
+  });
+  expect(families).toContain("Cairo");
+  expect(await page.locator(".theme-root").evaluate((node) => getComputedStyle(node).fontFamily)).toContain("Cairo");
+
   // The admin area keeps its neutral colors.
   await page.goto("/admin");
   await expect(page.locator(".theme-root")).toHaveCount(0);
