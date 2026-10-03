@@ -32,7 +32,7 @@ test("the owner reorders, hides, edits, removes and re-adds homepage sections", 
     expect(order.indexOf("Featured products")).toBeLessThan(order.indexOf("Best sellers"));
   }).toPass();
 
-  let order = await publicOrder(page);
+  const order = await publicOrder(page);
   expect(order.indexOf("Featured products")).toBeGreaterThanOrEqual(0);
   expect(order.indexOf("Featured products")).toBeLessThan(order.indexOf("Best sellers"));
 
