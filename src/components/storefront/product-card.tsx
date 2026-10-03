@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { AvailabilityBadge, ProductBadges } from "@/components/storefront/badges";
 import { Price } from "@/components/storefront/price";
+import { Stars } from "@/components/storefront/stars";
 import { CompareButton, FavoriteButton } from "@/components/storefront/shop-buttons";
 import type { Locale } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
@@ -73,6 +74,15 @@ export function ProductCard({ item, locale, currency, priority = false }: Produc
             {name}
           </Link>
         </h3>
+        {item.rating_count > 0 && item.rating_avg !== null && (
+          <p className="flex items-center gap-1 text-xs text-muted" data-card-rating>
+            <Stars value={Number(item.rating_avg)} />
+            <span className="sr-only">{t("reviews.ratingOf", { rating: Number(item.rating_avg), count: Number(item.rating_count) })}</span>
+            <span aria-hidden>
+              {Number(item.rating_avg)} ({Number(item.rating_count)})
+            </span>
+          </p>
+        )}
         <div className="mt-auto flex flex-col gap-1.5 pt-1">
           <Price current={current} was={was} currency={currency} locale={locale} />
           {item.availability !== "in_stock" ? (

@@ -19,7 +19,8 @@
       "settings": "Settings",
       "offers": "Offers",
       "homepage": "Homepage",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "reviews": "Reviews"
     },
     "login": {
       "title": "Admin sign in",
@@ -57,7 +58,8 @@
         "title": "Recently updated products",
         "hidden": "Hidden"
       },
-      "waitingNotifications": "{count} customers are waiting to hear from you (back in stock / price drop)"
+      "waitingNotifications": "{count} customers are waiting to hear from you (back in stock / price drop)",
+      "waitingReviews": "{count} reviews are waiting for your approval"
     },
     "categories": {
       "title": "Categories",
@@ -845,6 +847,33 @@
         "description": "The customer's contact details will be removed.",
         "confirm": "Yes, delete"
       }
+    },
+    "reviews": {
+      "title": "Customer reviews",
+      "intro": "Nothing a customer writes appears on the site until you approve it. Approved reviews show on the product page and count towards its star rating.",
+      "filter": "Filter reviews",
+      "status": {
+        "pending": "Waiting",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "empty": {
+        "pending": "No reviews are waiting for you",
+        "approved": "No approved reviews yet",
+        "rejected": "No rejected reviews"
+      },
+      "loadError": "Could not load the reviews.",
+      "anonymous": "A customer",
+      "stars": "{count} out of 5 stars",
+      "approve": "Approve",
+      "reject": "Reject",
+      "backToPending": "Back to waiting",
+      "failed": "The action could not be completed. Try again.",
+      "deleteDialog": {
+        "title": "Delete this review?",
+        "description": "The review is removed for good.",
+        "confirm": "Yes, delete"
+      }
     }
   },
   "specs": {
@@ -1164,6 +1193,28 @@
         "restock": "Hello! {name} is back in stock: {url}",
         "priceDrop": "Hello! Good news: {name} is now {price}: {url}"
       }
+    },
+    "reviews": {
+      "title": "Customer reviews",
+      "none": "No reviews yet. Be the first to rate this product.",
+      "count": "{count} reviews",
+      "split": "How the ratings are spread",
+      "starsShort": "{count} stars",
+      "starsLabel": "{count} out of 5 stars",
+      "ratingOf": "Rated {rating} out of 5 by {count} customers",
+      "anonymous": "A customer",
+      "write": "Write a review",
+      "yourRating": "Your rating",
+      "ratingRequired": "Choose a rating from 1 to 5 stars.",
+      "name": "Your name (optional)",
+      "comment": "Your comment (optional)",
+      "noLinks": "Please remove links from your comment.",
+      "moderation": "Your review appears after the store approves it.",
+      "submit": "Send review",
+      "sending": "Sending...",
+      "cancel": "Cancel",
+      "failed": "Could not send your review. Try again.",
+      "saved": "Thank you! Your review will appear once the store approves it."
     }
   }
 }

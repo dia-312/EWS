@@ -8,6 +8,8 @@ import { CallButton, WhatsAppButton } from "@/components/storefront/contact-butt
 import { OfferCountdown } from "@/components/storefront/offer-countdown";
 import { NotifyForm } from "@/components/storefront/notify-form";
 import { Price } from "@/components/storefront/price";
+import { ReviewsSection } from "@/components/storefront/reviews-section";
+import { Stars } from "@/components/storefront/stars";
 import { ProductGallery } from "@/components/storefront/product-gallery";
 import { ProductGrid } from "@/components/storefront/product-grid";
 import { QrDialog } from "@/components/storefront/qr-dialog";
@@ -19,8 +21,9 @@ import { SpecsTable } from "@/components/storefront/specs-table";
 import { locales } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
 import { getAdminSession } from "@/lib/auth";
-import { getProductBySlug, getProductPreview, searchCatalog } from "@/lib/catalog";
+import { getProductBySlug, getProductPreview, getProductReviews, searchCatalog } from "@/lib/catalog";
 import { formatPrice, pickLocalized } from "@/lib/format";
+import { summarize } from "@/lib/reviews";
 import { absoluteUrl, currentPrice, isNewProduct, localizedName } from "@/lib/storefront";
 import { getStorefront } from "@/lib/storefront-data";
 
@@ -128,11 +131,13 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
     url,
   });
 
-  const related = (
-    await searchCatalog({ storeId: store.id, locale, categoryId: product.category_id, pageSize: 5 })
-  ).items
-    .filter((item) => item.slug !== slug)
-    .slice(0, 4);
+  const [relatedPage, reviews] = await Promise.all([
+    searchCatalog({ storeId: store.id, locale, categoryId: product.category_id, pageSize: 5 }),
+    getProductReviews(product.id).catch(() => []),
+  ]);
+  const related = relatedPage.items.filter((item) => item.slug !== slug).slice(0, 4);
+  const rating = summarize(reviews.map((review) => review.rating));
+  const tReviews = await getTranslations("store.reviews");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -154,6 +159,9 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
       }[product.availability as "in_stock"],
       priceValidUntil: offer?.end_at ?? undefined,
     },
+    // only real, approved reviews: the store approves each one before it counts
+    aggregateRating:
+      rating.count > 0 ? { "@type": "AggregateRating", ratingValue: rating.average, reviewCount: rating.count } : undefined,
   };
 
   return (
@@ -182,6 +190,13 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
             badgeKeys={badgeKeys}
           />
           <h1 className="text-3xl font-bold leading-tight">{name}</h1>
+          {rating.count > 0 && (
+            <a href="#reviews-title" className="flex items-center gap-2 text-sm" data-rating-link>
+              <Stars value={rating.average!} />
+              <span className="font-medium">{rating.average}</span>
+              <span className="text-muted underline underline-offset-2">{tReviews("count", { count: rating.count })}</span>
+            </a>
+          )}
 
           <p className="text-sm text-muted">
             {product.brands && <span>{product.brands.name} · </span>}
@@ -250,6 +265,8 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
           <ProductGrid items={related} locale={locale} currency={store.currency_code} />
         </section>
       )}
+
+      <ReviewsSection productId={product.id} reviews={reviews} locale={locale} canWrite={!preview} />
 
       {!preview && <RecordView productId={product.id} />}
       {!preview && <TrackProductView productId={product.id} />}

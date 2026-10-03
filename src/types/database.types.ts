@@ -529,6 +529,60 @@ export type Database = {
           },
         ]
       }
+      product_reviews: {
+        Row: {
+          author_name: string | null
+          comment: string | null
+          created_at: string
+          id: string
+          locale: string
+          moderated_at: string | null
+          product_id: string
+          rating: number
+          status: string
+          store_id: string
+        }
+        Insert: {
+          author_name?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          locale?: string
+          moderated_at?: string | null
+          product_id: string
+          rating: number
+          status?: string
+          store_id: string
+        }
+        Update: {
+          author_name?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          locale?: string
+          moderated_at?: string | null
+          product_id?: string
+          rating?: number
+          status?: string
+          store_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_reviews_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_specs: {
         Row: {
           display_order: number
@@ -864,6 +918,8 @@ export type Database = {
           short_description_ar: string
           short_description_en: string
           slug: string
+          rating_avg: number | null
+          rating_count: number
           total_count: number
         }[]
       }
