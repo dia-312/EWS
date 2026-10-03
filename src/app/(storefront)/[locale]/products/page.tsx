@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { TrackSearch } from "@/components/storefront/tracker";
 import { Breadcrumbs } from "@/components/storefront/breadcrumbs";
 import { ProductListing } from "@/components/storefront/product-listing";
 import { locales } from "@/config/i18n";
@@ -45,6 +46,7 @@ export default async function ProductsPage({ params, searchParams }: PageProps<"
     <div className="flex flex-col gap-6">
       <Breadcrumbs items={[{ label: tNav("home"), href: "/" }, { label: t("allProducts") }]} />
       <h1 className="text-3xl font-bold">{catalogParams.q ? t("searchTitle", { query: catalogParams.q }) : t("allProducts")}</h1>
+      {catalogParams.q && <TrackSearch query={catalogParams.q} />}
       <ProductListing locale={locale} store={store} params={catalogParams} basePath="/products" />
     </div>
   );

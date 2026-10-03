@@ -13,6 +13,7 @@ import { QrDialog } from "@/components/storefront/qr-dialog";
 import { RecentlyViewed, RecordView } from "@/components/storefront/recent";
 import { ShareButton } from "@/components/storefront/share-button";
 import { CompareButton, FavoriteButton } from "@/components/storefront/shop-buttons";
+import { TrackProductView } from "@/components/storefront/tracker";
 import { SpecsTable } from "@/components/storefront/specs-table";
 import { locales } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
@@ -188,9 +189,9 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
 
           <div className="flex flex-wrap gap-3 pt-2">
             {settings?.whatsapp && (
-              <WhatsAppButton number={settings.whatsapp} message={whatsappMessage} label={t("askOnWhatsapp")} />
+              <WhatsAppButton number={settings.whatsapp} message={whatsappMessage} label={t("askOnWhatsapp")} productId={product.id} />
             )}
-            {settings?.phone && <CallButton phone={settings.phone} />}
+            {settings?.phone && <CallButton phone={settings.phone} productId={product.id} />}
             {!settings?.whatsapp && !settings?.phone && (
               <p className="text-sm text-muted">{t("contactSoon")}</p>
             )}
@@ -198,7 +199,7 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
           <div className="flex flex-wrap items-center gap-2">
             <FavoriteButton productId={product.id} productName={name} variant="full" />
             <CompareButton productId={product.id} productName={name} variant="full" />
-            <ShareButton url={url} title={name} text={`${name} — ${formatPrice(current, store.currency_code, locale)}`} />
+            <ShareButton productId={product.id} url={url} title={name} text={`${name} — ${formatPrice(current, store.currency_code, locale)}`} />
             <QrDialog url={url} productName={name} />
           </div>
           <span className="sr-only">{tBadges(product.availability as "in_stock")}</span>
@@ -226,6 +227,7 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
       )}
 
       <RecordView productId={product.id} />
+      <TrackProductView productId={product.id} />
       <RecentlyViewed excludeId={product.id} />
 
       <script

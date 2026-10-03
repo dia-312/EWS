@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { CompareIcon, HeartIcon } from "@/components/storefront/icons";
 import { cn } from "@/lib/cn";
 import { useShopStore } from "@/lib/shop-store";
+import { track } from "@/lib/track";
 
 type ShopButtonProps = {
   productId: string;
@@ -34,6 +35,7 @@ export function FavoriteButton({ productId, productName, variant = "icon", class
         data-favorite={saved ? "on" : "off"}
         onClick={() => {
           const result = toggle(productId);
+          if (result === "added") track({ type: "favorite_add", productId });
           announce(result === "added" ? t("addedFavorite") : t("removedFavorite"));
         }}
         className={cn(
@@ -69,6 +71,7 @@ export function CompareButton({ productId, productName, variant = "icon", classN
         data-compare={selected ? "on" : "off"}
         onClick={() => {
           const result = toggle(productId);
+          if (result === "added") track({ type: "compare_add", productId });
           if (result === "full") showNotice("compare_full");
           // A full list is shown by the visible alert; only successes are announced here.
           if (result !== "full") announce(result === "added" ? t("addedCompare") : t("removedCompare"));

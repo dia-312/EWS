@@ -55,6 +55,15 @@ test.describe("what an anonymous visitor can do against the database", () => {
     expect(upload.ok()).toBe(false);
   });
 
+  test("cannot call the analytics summary", async ({ request }) => {
+    const [store] = (await (await request.get(rest("stores?select=id&limit=1"), { headers })).json()) as { id: string }[];
+    const response = await request.post(rest("rpc/analytics_summary"), {
+      headers: { ...headers, "Content-Type": "application/json" },
+      data: { p_store: store.id },
+    });
+    expect(response.ok()).toBe(false);
+  });
+
   test("can record anonymous analytics events but only of allowed types", async ({ request }) => {
     const [store] = (await (await request.get(rest("stores?select=id&limit=1"), { headers })).json()) as { id: string }[];
 

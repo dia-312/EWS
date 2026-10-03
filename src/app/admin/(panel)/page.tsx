@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
+import { AnalyticsPanel } from "@/components/admin/analytics-panel";
 import { requireAdmin } from "@/lib/auth";
+import { parseDays } from "@/lib/analytics";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage({
@@ -71,6 +73,8 @@ export default async function AdminDashboardPage({
           ))}
         </dl>
       )}
+
+      <AnalyticsPanel storeId={session.storeId} days={parseDays(params.days)} />
     </div>
   );
 }
