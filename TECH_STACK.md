@@ -17,6 +17,7 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 | Client state | Zustand + localStorage (persist) | Favorites, compare, recently viewed — no accounts in v1 |
 | Share / QR | Web Share API + fallback dialog; `uqr` (no network, no third-party QR service) | QR links carry `?src=qr` so scans can be counted later; admin downloads SVG/PNG per product |
 | Analytics | Own `analytics_events` table via `POST /api/track` (zod-validated, anonymous insert under RLS); `analytics_summary` RPC feeds the admin dashboard | No cookies and no personal data (random per-tab id); Do Not Track respected; no third-party scripts, so no consent banner needed. Old events are not purged yet (free tier is 500 MB; a year of a small shop is a few MB) |
+| Keep-alive | `worker.ts` wraps the OpenNext worker and adds a Cloudflare Cron Trigger (`0 3 */2 * *`) that calls `/api/health` | Supabase free projects pause after ~1 week idle; the cron lives in the owner's Cloudflare account. If the site ever shows no products, restore the project from the Supabase dashboard |
 | QR | `qrcode` | Generated from the canonical product URL |
 | PWA | Serwist | Static assets only, no offline catalog promise in v1 |
 | Fonts | Tajawal or IBM Plex Sans Arabic via `next/font` | Final pick during design |
