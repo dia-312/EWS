@@ -32,7 +32,7 @@ export function ShopToast() {
           role="alert"
           className="fixed inset-x-4 bottom-20 z-50 mx-auto w-fit max-w-full rounded-xl bg-secondary px-4 py-3 text-sm font-medium text-secondary-foreground shadow-lg"
         >
-          {t("compareFull", { max: MAX_COMPARE })}
+          {notice === "link_copied" ? t("linkCopied") : t("compareFull", { max: MAX_COMPARE })}
         </div>
       )}
     </>

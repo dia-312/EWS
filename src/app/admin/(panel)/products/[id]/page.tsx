@@ -2,7 +2,11 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ProductForm } from "@/components/admin/product-form";
 import { ProductImages } from "@/components/admin/product-images";
+import { ProductQr } from "@/components/admin/product-qr";
+import { defaultLocale } from "@/config/i18n";
 import { requireEditor } from "@/lib/auth";
+import { withQrSource } from "@/lib/share";
+import { absoluteUrl } from "@/lib/storefront";
 import { getCurrentStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase/server";
 import { updateProduct } from "../actions";
@@ -47,6 +51,7 @@ export default async function EditProductPage({
     <div className="flex max-w-3xl flex-col gap-6">
       <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
       <ProductImages storeId={session.storeId} productId={id} images={images ?? []} />
+      <ProductQr url={withQrSource(absoluteUrl(defaultLocale, `/products/${product.slug}`))} slug={product.slug} />
       <ProductForm
         action={updateProduct.bind(null, id)}
         currency={store.currency_code}

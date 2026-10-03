@@ -8,6 +8,8 @@
 export const MAX_COMPARE = 4;
 /** Safety limit so the saved list can never grow without bound. */
 export const MAX_FAVORITES = 200;
+/** How many recently viewed products are remembered. */
+export const MAX_RECENT = 12;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -46,12 +48,18 @@ export function parseIdList(value: unknown, max: number): string[] {
   return [...seen];
 }
 
+/** Puts `id` first (newest), without duplicates, keeping at most `max` ids. */
+export function pushRecent(list: readonly string[], id: string, max: number): string[] {
+  return [id, ...list.filter((item) => item !== id)].slice(0, max);
+}
+
 /** What the browser keeps; unknown or damaged data becomes an empty list. */
-export function sanitizeSaved(raw: unknown): { favorites: string[]; compare: string[] } {
+export function sanitizeSaved(raw: unknown): { favorites: string[]; compare: string[]; recent: string[] } {
   const data = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
   return {
     favorites: parseIdList(data.favorites, MAX_FAVORITES),
     compare: parseIdList(data.compare, MAX_COMPARE),
+    recent: parseIdList(data.recent, MAX_RECENT),
   };
 }
 

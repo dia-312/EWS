@@ -15,6 +15,7 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 | Drag & drop | dnd-kit | Homepage sections, categories, product images |
 | Charts | Recharts | |
 | Client state | Zustand + localStorage (persist) | Favorites, compare, recently viewed — no accounts in v1 |
+| Share / QR | Web Share API + fallback dialog; `uqr` (no network, no third-party QR service) | QR links carry `?src=qr` so scans can be counted later; admin downloads SVG/PNG per product |
 | QR | `qrcode` | Generated from the canonical product URL |
 | PWA | Serwist | Static assets only, no offline catalog promise in v1 |
 | Fonts | Tajawal or IBM Plex Sans Arabic via `next/font` | Final pick during design |

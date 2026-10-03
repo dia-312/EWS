@@ -4,6 +4,7 @@ import {
   MAX_COMPARE,
   parseIdList,
   pruneIds,
+  pushRecent,
   sanitizeSaved,
   toggleInList,
 } from "./shop-state";
@@ -49,7 +50,7 @@ describe("parseIdList", () => {
 describe("sanitizeSaved", () => {
   it("turns damaged storage into empty lists", () => {
     for (const bad of [null, undefined, "x", 5, [], { favorites: "no" }]) {
-      expect(sanitizeSaved(bad)).toEqual({ favorites: [], compare: [] });
+      expect(sanitizeSaved(bad)).toEqual({ favorites: [], compare: [], recent: [] });
     }
   });
 
@@ -57,6 +58,7 @@ describe("sanitizeSaved", () => {
     expect(sanitizeSaved({ favorites: [A, B, "junk"], compare: [A, B, C, D, E] })).toEqual({
       favorites: [A, B],
       compare: [A, B, C, D],
+      recent: [],
     });
   });
 });
@@ -69,5 +71,23 @@ describe("pruneIds and compareHref", () => {
   it("builds the comparison link", () => {
     expect(compareHref([A, B])).toBe(`/compare?ids=${A},${B}`);
     expect(compareHref([])).toBe("/compare");
+  });
+});
+
+describe("pushRecent", () => {
+  it("puts the newest first and moves a repeat visit to the front", () => {
+    expect(pushRecent([], A, 3)).toEqual([A]);
+    expect(pushRecent([A, B], C, 3)).toEqual([C, A, B]);
+    expect(pushRecent([A, B, C], B, 3)).toEqual([B, A, C]);
+  });
+
+  it("keeps at most the maximum, dropping the oldest", () => {
+    expect(pushRecent([A, B, C], D, 3)).toEqual([D, A, B]);
+  });
+
+  it("never mutates its input", () => {
+    const list = [A, B];
+    pushRecent(list, C, 3);
+    expect(list).toEqual([A, B]);
   });
 });
