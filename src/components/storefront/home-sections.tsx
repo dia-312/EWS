@@ -17,6 +17,7 @@ import {
   type StoreSettings,
 } from "@/lib/catalog";
 import { pickLocalized } from "@/lib/format";
+import { readLimit } from "@/lib/homepage";
 import { thumbUrl } from "@/lib/images";
 import { currentPrice, localizedName } from "@/lib/storefront";
 import { parseWorkingHours } from "@/lib/working-hours";
@@ -50,22 +51,31 @@ export async function HomeSections({ locale, store, settings, categories }: Prop
   const t = await getTranslations("store.home");
   const sections = await getHomepageSections(store.id);
 
-  // Load every product collection once, in parallel.
-  const collections = [...new Set(sections.map((s) => COLLECTION_BY_SECTION[s.type]).filter(Boolean))] as Collection[];
+  // What each section shows: its collection, limited to the number the owner chose.
+  const sizeOf = (section: HomepageSection) => (section.type === "deal_of_day" ? 1 : readLimit(section.config));
+  const keyOf = (collection: Collection, size: number) => `${collection}:${size}`;
+
+  // Load every distinct (collection, size) once, in parallel.
+  const wanted = new Map<string, { collection: Collection; size: number }>();
+  for (const section of sections) {
+    const collection = COLLECTION_BY_SECTION[section.type];
+    if (collection) wanted.set(keyOf(collection, sizeOf(section)), { collection, size: sizeOf(section) });
+  }
   const loaded = await Promise.all(
-    collections.map(async (collection) => {
-      const page = await searchCatalog({ storeId: store.id, locale, collection, pageSize: 8 });
-      return [collection, page.items] as const;
+    [...wanted.entries()].map(async ([key, { collection, size }]) => {
+      const page = await searchCatalog({ storeId: store.id, locale, collection, pageSize: size });
+      return [key, page.items] as const;
     }),
   );
-  const itemsByCollection = new Map<Collection, CatalogItem[]>(loaded);
+  const itemsByKey = new Map<string, CatalogItem[]>(loaded);
 
   return (
     <div className="flex flex-col gap-10">
       {sections.map((section) => {
         const title = pickLocalized(locale, section.title_ar, section.title_en) || t(`sections.${section.type}`);
         const subtitle = pickLocalized(locale, section.subtitle_ar, section.subtitle_en);
-        const items = itemsByCollection.get(COLLECTION_BY_SECTION[section.type] as Collection) ?? [];
+        const collection = COLLECTION_BY_SECTION[section.type];
+        const items = (collection && itemsByKey.get(keyOf(collection, sizeOf(section)))) || [];
 
         switch (section.type) {
           case "hero":

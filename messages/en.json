@@ -17,7 +17,8 @@
       "products": "Products",
       "appearance": "Appearance",
       "settings": "Settings",
-      "offers": "Offers"
+      "offers": "Offers",
+      "homepage": "Homepage"
     },
     "login": {
       "title": "Admin sign in",
@@ -500,6 +501,105 @@
           "end_before_start": "The end time must be after the start time."
         },
         "saveFailed": "Could not save the offer. Try again."
+      }
+    },
+    "homepage": {
+      "title": "Homepage",
+      "intro": "Put the homepage sections in order with the arrows, hide the ones you do not want, and edit section titles and how many products each shows. An empty section (such as offers when there are none) disappears by itself.",
+      "saved": "Section saved. Visitors see the change within about a minute.",
+      "loadError": "Could not load the homepage sections.",
+      "empty": {
+        "title": "No sections",
+        "body": "Add sections below to show them on the homepage."
+      },
+      "errors": {
+        "invalid_type": "That section type is not valid.",
+        "already_added": "This section is already on the page.",
+        "add_failed": "Could not add the section. Try again."
+      },
+      "status": {
+        "visible": "Visible",
+        "hidden": "Hidden"
+      },
+      "defaultTitle": "Default title",
+      "showsProducts": "shows up to {count} products",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "show": "Show",
+      "hide": "Hide",
+      "deleteDialog": {
+        "title": "Delete section?",
+        "description": "The \"{name}\" section will be removed from the homepage. You can add it again later.",
+        "confirm": "Yes, delete"
+      },
+      "deleteErrors": {
+        "delete_failed": "Could not delete the section. Try again."
+      },
+      "add": {
+        "title": "Add a section",
+        "label": "Section type",
+        "button": "Add",
+        "none": "Every section type is already on the page."
+      },
+      "types": {
+        "hero": {
+          "name": "Hero banner",
+          "description": "The big welcome area at the top, with the browse and WhatsApp buttons."
+        },
+        "categories": {
+          "name": "Categories",
+          "description": "Cards for the active categories, for quick navigation."
+        },
+        "offers": {
+          "name": "Special offers",
+          "description": "Products that have a live offer right now."
+        },
+        "new_arrivals": {
+          "name": "New arrivals",
+          "description": "The newest products (last 30 days), or what you marked as \"new\" on a product."
+        },
+        "best_sellers": {
+          "name": "Best sellers",
+          "description": "Products you marked as \"best seller\" in the product form."
+        },
+        "featured": {
+          "name": "Featured products",
+          "description": "Products you marked as \"featured\", in the product's display order."
+        },
+        "deal_of_day": {
+          "name": "Deal of the day",
+          "description": "One live offer shown prominently with a countdown."
+        },
+        "trust": {
+          "name": "Why choose us",
+          "description": "Four points about what the store offers."
+        },
+        "contact": {
+          "name": "Contact",
+          "description": "Contact details, opening hours and the WhatsApp button."
+        },
+        "banner": {
+          "name": "Promotional banner",
+          "description": "Coming soon: nothing is shown for now."
+        }
+      },
+      "form": {
+        "editTitle": "Edit section: {name}",
+        "created": "Section added. Edit its title or leave it as it is.",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "titleHint": "Leave empty to use the default title: \"{title}\".",
+        "subtitleAr": "Subtitle (Arabic)",
+        "subtitleEn": "Subtitle (English)",
+        "limit": "Number of products",
+        "limitHint": "From {min} to {max}. Default {default}.",
+        "cacheNote": "Visitors see the change within about a minute.",
+        "errors": {
+          "too_long": "The text is too long.",
+          "invalid": "This value is not valid.",
+          "invalid_limit": "Enter a whole number within the allowed range."
+        },
+        "saveFailed": "Could not save the section. Try again."
       }
     }
   },
