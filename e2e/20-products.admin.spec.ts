@@ -99,7 +99,7 @@ test("a product goes from creation to visibility, with images, and can be duplic
   // ---- pictures can be reordered by dragging (keyboard: Space, arrow, Space), and the order is saved
   const sources = () => images.locator("li img").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src")));
   const dragged = await sources();
-  const moveFirstPicture = async (key: "ArrowDown" | "ArrowUp", handleIndex: number) => {
+  const moveFirstPicture = async (key: "ArrowRight" | "ArrowLeft", handleIndex: number) => {
     await expect(images.locator("[data-sortable-ready]")).toHaveAttribute("data-sortable-ready", "true");
     // Keys pressed before the page has hydrated are lost, so confirm the picture was picked up.
     await expect(async () => {
@@ -111,11 +111,11 @@ test("a product goes from creation to visibility, with images, and can be duplic
     await page.waitForTimeout(250);
     await page.keyboard.press("Space");
   };
-  await moveFirstPicture("ArrowDown", 0);
+  await moveFirstPicture("ArrowRight", 0); // the pictures sit side by side, so the arrows move sideways
   await expect.poll(sources).toEqual([dragged[1], dragged[0]]);
   await page.reload();
   expect(await sources()).toEqual([dragged[1], dragged[0]]);
-  await moveFirstPicture("ArrowUp", 1);
+  await moveFirstPicture("ArrowLeft", 1);
   await expect.poll(sources).toEqual(dragged);
 
   await images.getByRole("button", { name: "Make primary" }).click();
