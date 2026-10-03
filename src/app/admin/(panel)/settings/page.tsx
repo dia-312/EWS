@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { SettingsForm } from "@/components/admin/settings-form";
+import { SiteImageField } from "@/components/admin/site-image-field";
 import { StoreLogo } from "@/components/admin/store-logo";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -34,6 +35,16 @@ export default async function AdminSettingsPage() {
       <h1 className="text-2xl font-bold">{t("title")}</h1>
       {!readOnly && (
         <StoreLogo storeId={session.storeId} storeName={store.name} logoUrl={store.logo_url} />
+      )}
+      {!readOnly && (
+        <SiteImageField
+          storeId={session.storeId}
+          target={{ kind: "hero" }}
+          imageUrl={settings?.hero_image_url ?? null}
+          title={t("hero.title")}
+          hint={t("hero.hint")}
+          aspect="16 / 6"
+        />
       )}
       <SettingsForm
         action={saveSettings}

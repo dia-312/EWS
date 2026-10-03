@@ -120,6 +120,27 @@ export const getHomepageSections = cache(
   ),
 );
 
+/** Offers that have a banner picture, with the product they point to. The caller keeps the ones that are live. */
+export const getOfferBanners = cache(
+  memoizeAsync(
+    "offer-banners",
+    async (storeId: string) => {
+      const { data, error } = await createPublicClient()
+        .from("offers")
+        .select("id, title_ar, title_en, banner_image_url, start_at, end_at, products!inner(slug, active)")
+        .eq("store_id", storeId)
+        .eq("active", true)
+        .not("banner_image_url", "is", null)
+        .eq("products.active", true)
+        .order("created_at", { ascending: false })
+        .limit(10);
+      if (error) throw new Error(`Failed to load offer banners: ${error.message}`);
+      return data;
+    },
+    { scale: 2 },
+  ),
+);
+
 /** A product with everything the detail page shows, including its live offer, in one query. */
 export const getProductBySlug = cache(
   memoizeAsync("product", async (storeId: string, slug: string) => {

@@ -9,6 +9,7 @@ import type { Locale } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
 import {
   getHomepageSections,
+  getOfferBanners,
   searchCatalog,
   type CatalogItem,
   type Category,
@@ -17,8 +18,9 @@ import {
   type StoreSettings,
 } from "@/lib/catalog";
 import { pickLocalized } from "@/lib/format";
-import { readLimit } from "@/lib/homepage";
+import { readBanner, readLimit } from "@/lib/homepage";
 import { thumbUrl } from "@/lib/images";
+import { sanitizeBannerLink } from "@/lib/site-images";
 import { currentPrice, localizedName } from "@/lib/storefront";
 import { parseWorkingHours } from "@/lib/working-hours";
 
@@ -69,6 +71,16 @@ export async function HomeSections({ locale, store, settings, categories }: Prop
   );
   const itemsByKey = new Map<string, CatalogItem[]>(loaded);
 
+  // Offers with a banner picture: only the ones that are live right now.
+  const now = new Date();
+  const offerBanners = sections.some((section) => section.type === "offers")
+    ? (await getOfferBanners(store.id).catch(() => [])).filter(
+        (offer) =>
+          (!offer.start_at || new Date(offer.start_at) <= now) &&
+          (!offer.end_at || new Date(offer.end_at) > now),
+      )
+    : [];
+
   return (
     <div className="flex flex-col gap-10">
       {sections.map((section) => {
@@ -90,6 +102,25 @@ export async function HomeSections({ locale, store, settings, categories }: Prop
           case "featured":
             return items.length > 0 ? (
               <Section key={section.id} title={title} subtitle={subtitle} viewAll={VIEW_ALL_HREF[section.type]}>
+                {section.type === "offers" && offerBanners.length > 0 && (
+                  <ul className="grid gap-3 md:grid-cols-2" data-offer-banners>
+                    {offerBanners.slice(0, 2).map((offer) => (
+                      <li key={offer.id}>
+                        <Link href={`/products/${offer.products.slug}`} className="block overflow-hidden rounded-2xl border border-border focus-visible:outline-2 focus-visible:outline-primary">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={offer.banner_image_url!}
+                            alt={pickLocalized(locale, offer.title_ar, offer.title_en)}
+                            width={1600}
+                            height={500}
+                            loading="lazy"
+                            className="aspect-[16/5] w-full object-cover"
+                          />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <ProductGrid items={items} locale={locale} currency={store.currency_code} />
               </Section>
             ) : null;
@@ -97,6 +128,12 @@ export async function HomeSections({ locale, store, settings, categories }: Prop
             return items[0] ? (
               <DealOfTheDay key={section.id} title={title} item={items[0]} locale={locale} currency={store.currency_code} />
             ) : null;
+          case "banner": {
+            const banner = readBanner(section.config);
+            return banner.imageUrl ? (
+              <Banner key={section.id} imageUrl={banner.imageUrl} link={sanitizeBannerLink(banner.linkUrl)} title={title} subtitle={subtitle} />
+            ) : null;
+          }
           case "trust":
             return <Trust key={section.id} title={title} />;
           case "contact":
@@ -156,7 +193,19 @@ async function Hero({
   const about = pickLocalized(locale, settings?.about_text_ar, settings?.about_text_en);
 
   return (
-    <section className="rounded-3xl bg-secondary px-6 py-12 text-secondary-foreground sm:px-12 sm:py-16" aria-label={store.name}>
+    <section
+      className="relative isolate overflow-hidden rounded-3xl bg-secondary px-6 py-12 text-secondary-foreground sm:px-12 sm:py-16"
+      aria-label={store.name}
+      data-hero={settings?.hero_image_url ? "image" : "plain"}
+    >
+      {settings?.hero_image_url && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={settings.hero_image_url} alt="" fetchPriority="high" className="absolute inset-0 -z-20 size-full object-cover" />
+          {/* keeps the text readable on any picture */}
+          <span aria-hidden className="absolute inset-0 -z-10 bg-secondary/75" />
+        </>
+      )}
       <h1 className="max-w-2xl text-3xl font-bold leading-tight sm:text-5xl">{title}</h1>
       {(subtitle || about) && <p className="mt-4 max-w-2xl text-base opacity-90 sm:text-lg">{subtitle || about}</p>}
       <div className="mt-8 flex flex-wrap gap-3">
@@ -190,18 +239,63 @@ function CategoriesSection({
                 href={`/categories/${category.slug}`}
                 className="flex h-full flex-col items-center gap-3 rounded-2xl border border-border bg-background p-5 text-center transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary"
               >
-                <span
-                  aria-hidden
-                  className="flex size-14 items-center justify-center rounded-full bg-surface text-xl font-bold text-primary"
-                >
-                  {name.slice(0, 1)}
-                </span>
+                {category.image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={category.image_url} alt="" width={112} height={112} loading="lazy" className="size-14 rounded-full object-cover" />
+                ) : (
+                  <span
+                    aria-hidden
+                    className="flex size-14 items-center justify-center rounded-full bg-surface text-xl font-bold text-primary"
+                  >
+                    {name.slice(0, 1)}
+                  </span>
+                )}
                 <span className="font-medium">{name}</span>
               </Link>
             </li>
           );
         })}
       </ul>
+    </section>
+  );
+}
+
+function Banner({
+  imageUrl,
+  link,
+  title,
+  subtitle,
+}: {
+  imageUrl: string;
+  link: string | null;
+  title: string;
+  subtitle: string;
+}) {
+  const external = link !== null && !link.startsWith("/");
+  const picture = (
+    <div className="relative isolate overflow-hidden rounded-3xl" data-banner>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={imageUrl} alt="" width={1600} height={500} loading="lazy" className="aspect-[16/6] w-full object-cover" />
+      {(title || subtitle) && (
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-5 text-white">
+          {title && <p className="text-xl font-bold sm:text-2xl">{title}</p>}
+          {subtitle && <p className="text-sm opacity-90">{subtitle}</p>}
+        </div>
+      )}
+    </div>
+  );
+  if (!link) return <section aria-label={title || undefined}>{picture}</section>;
+  return (
+    <section aria-label={title || undefined}>
+      {external ? (
+        <a href={link} target="_blank" rel="noopener noreferrer" className="block focus-visible:outline-2 focus-visible:outline-primary">
+          {picture}
+        </a>
+      ) : (
+        <Link href={link} className="block focus-visible:outline-2 focus-visible:outline-primary">
+          {picture}
+        </Link>
+      )}
     </section>
   );
 }

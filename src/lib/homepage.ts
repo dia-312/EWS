@@ -34,6 +34,15 @@ export const DEFAULT_LIMIT = 8;
 export const MIN_LIMIT = 2;
 export const MAX_LIMIT = 24;
 
+/** Reads a banner section's picture and link from its config JSON. */
+export function readBanner(config: unknown): { imageUrl: string | null; linkUrl: string | null } {
+  const value = config && typeof config === "object" ? (config as Record<string, unknown>) : {};
+  return {
+    imageUrl: typeof value.image_url === "string" && value.image_url !== "" ? value.image_url : null,
+    linkUrl: typeof value.link_url === "string" && value.link_url !== "" ? value.link_url : null,
+  };
+}
+
 export function isProductSection(type: string): boolean {
   return (PRODUCT_SECTION_TYPES as readonly string[]).includes(type);
 }

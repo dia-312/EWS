@@ -659,6 +659,7 @@ export type Database = {
           address_ar: string | null
           address_en: string | null
           facebook_url: string | null
+          hero_image_url: string | null
           instagram_url: string | null
           map_url: string | null
           phone: string | null
@@ -675,6 +676,7 @@ export type Database = {
           address_ar?: string | null
           address_en?: string | null
           facebook_url?: string | null
+          hero_image_url?: string | null
           instagram_url?: string | null
           map_url?: string | null
           phone?: string | null

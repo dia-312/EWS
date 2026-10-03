@@ -99,6 +99,28 @@ export async function addSection(formData: FormData) {
   redirect(`/admin/homepage/${data.id}?created=1`);
 }
 
+/** Adds a promotional banner at the end. Unlike the other sections, a page can have several. */
+export async function addBanner() {
+  const session = await requireEditor();
+  const db = await createClient();
+  const { data: rows } = await db.from("homepage_sections").select("display_order").eq("store_id", session.storeId);
+
+  const { data, error } = await db
+    .from("homepage_sections")
+    .insert({
+      store_id: session.storeId,
+      type: "banner",
+      display_order: Math.max(0, ...(rows ?? []).map((row) => row.display_order)) + 1,
+      active: true,
+    })
+    .select("id")
+    .single();
+  if (error) redirect("/admin/homepage?error=add_failed");
+
+  refresh();
+  redirect(`/admin/homepage/${data.id}?created=1`);
+}
+
 export async function updateSection(
   id: string,
   _prev: SectionFormState,
