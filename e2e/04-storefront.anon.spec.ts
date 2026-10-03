@@ -59,7 +59,7 @@ test.describe("language", () => {
   test("the Arabic catalogue shows Arabic product names", async ({ page }) => {
     await page.goto("/ar/products");
     await expect(page.locator("main article", { hasText: "آيفون 15" })).toBeVisible();
-    await expect(page.getByRole("status")).toContainText("12 منتج");
+    await expect(page.getByRole("status").filter({ hasText: "منتج" })).toHaveText("12 منتج");
   });
 });
 

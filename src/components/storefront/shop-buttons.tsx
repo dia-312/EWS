@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { CompareIcon, HeartIcon } from "@/components/storefront/icons";
 import { cn } from "@/lib/cn";
-import { MAX_COMPARE } from "@/lib/shop-state";
 import { useShopStore } from "@/lib/shop-store";
 
 type ShopButtonProps = {
@@ -22,7 +20,7 @@ export function FavoriteButton({ productId, productName, variant = "icon", class
   const t = useTranslations("store.shop");
   const saved = useShopStore((state) => state.hydrated && state.favorites.includes(productId));
   const toggle = useShopStore((state) => state.toggleFavorite);
-  const [announcement, setAnnouncement] = useState("");
+  const announce = useShopStore((state) => state.announce);
 
   const label = saved ? t("removeFavorite", { name: productName }) : t("addFavorite", { name: productName });
 
@@ -36,7 +34,7 @@ export function FavoriteButton({ productId, productName, variant = "icon", class
         data-favorite={saved ? "on" : "off"}
         onClick={() => {
           const result = toggle(productId);
-          setAnnouncement(result === "added" ? t("addedFavorite") : t("removedFavorite"));
+          announce(result === "added" ? t("addedFavorite") : t("removedFavorite"));
         }}
         className={cn(
           baseButton,
@@ -48,9 +46,6 @@ export function FavoriteButton({ productId, productName, variant = "icon", class
         <HeartIcon filled={saved} className={variant === "icon" ? "size-5" : "size-4"} />
         {variant === "full" && <span>{saved ? t("saved") : t("save")}</span>}
       </button>
-      <span className="sr-only" role="status">
-        {announcement}
-      </span>
     </>
   );
 }
@@ -59,7 +54,7 @@ export function CompareButton({ productId, productName, variant = "icon", classN
   const t = useTranslations("store.shop");
   const selected = useShopStore((state) => state.hydrated && state.compare.includes(productId));
   const toggle = useShopStore((state) => state.toggleCompare);
-  const [message, setMessage] = useState("");
+  const announce = useShopStore((state) => state.announce);
   const showNotice = useShopStore((state) => state.showNotice);
 
   const label = selected ? t("removeCompare", { name: productName }) : t("addCompare", { name: productName });
@@ -75,13 +70,8 @@ export function CompareButton({ productId, productName, variant = "icon", classN
         onClick={() => {
           const result = toggle(productId);
           if (result === "full") showNotice("compare_full");
-          setMessage(
-            result === "full"
-              ? t("compareFull", { max: MAX_COMPARE })
-              : result === "added"
-                ? t("addedCompare")
-                : t("removedCompare"),
-          );
+          // A full list is shown by the visible alert; only successes are announced here.
+          if (result !== "full") announce(result === "added" ? t("addedCompare") : t("removedCompare"));
         }}
         className={cn(
           baseButton,
@@ -93,9 +83,6 @@ export function CompareButton({ productId, productName, variant = "icon", classN
         <CompareIcon filled={selected} className={variant === "icon" ? "size-5" : "size-4"} />
         {variant === "full" && <span>{selected ? t("inCompare") : t("compare")}</span>}
       </button>
-      <span className="sr-only" role="status">
-        {message}
-      </span>
     </>
   );
 }

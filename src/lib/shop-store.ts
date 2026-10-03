@@ -20,6 +20,9 @@ type ShopState = {
   /** A short message for every visitor-facing action that was refused (never saved). */
   notice: "compare_full" | null;
   showNotice: (notice: "compare_full") => void;
+  /** Text for the single screen-reader live region (see ShopToast). */
+  announcement: string;
+  announce: (text: string) => void;
   clearNotice: () => void;
   toggleFavorite: (id: string) => ToggleResult;
   removeFavorite: (id: string) => void;
@@ -62,6 +65,8 @@ export const useShopStore = create<ShopState>()(
       hydrated: false,
       notice: null,
       showNotice: (notice) => set({ notice }),
+      announcement: "",
+      announce: (announcement) => set({ announcement }),
       clearNotice: () => set({ notice: null }),
 
       toggleFavorite: (id) => {
