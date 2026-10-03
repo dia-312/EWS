@@ -16,7 +16,7 @@ export default async function AdminDashboardPage({
   const now = new Date().toISOString();
 
   const locale = await getLocale();
-  const [activeProducts, outOfStock, onSale, recent] = await Promise.all([
+  const [activeProducts, outOfStock, onSale, recent, waiting] = await Promise.all([
     supabase
       .from("products")
       .select("id", { count: "exact", head: true })
@@ -42,6 +42,11 @@ export default async function AdminDashboardPage({
       .eq("store_id", session.storeId)
       .order("updated_at", { ascending: false })
       .limit(5),
+    supabase
+      .from("notification_subscriptions")
+      .select("id", { count: "exact", head: true })
+      .eq("store_id", session.storeId)
+      .eq("status", "pending"),
   ]);
 
   const failed = [activeProducts, outOfStock, onSale].some((r) => r.error);
@@ -99,6 +104,14 @@ export default async function AdminDashboardPage({
             {t("shortcuts.settings")}
           </Link>
         </nav>
+      )}
+
+      {(waiting.count ?? 0) > 0 && (
+        <p className="rounded-xl border border-border bg-background px-4 py-3 text-sm" data-waiting-notifications>
+          <Link href="/admin/notifications" className="font-medium underline underline-offset-2">
+            {t("waitingNotifications", { count: waiting.count ?? 0 })}
+          </Link>
+        </p>
       )}
 
       {recent.data && recent.data.length > 0 && (

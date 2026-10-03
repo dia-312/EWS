@@ -18,7 +18,8 @@
       "appearance": "Appearance",
       "settings": "Settings",
       "offers": "Offers",
-      "homepage": "Homepage"
+      "homepage": "Homepage",
+      "notifications": "Notifications"
     },
     "login": {
       "title": "Admin sign in",
@@ -55,7 +56,8 @@
       "recent": {
         "title": "Recently updated products",
         "hidden": "Hidden"
-      }
+      },
+      "waitingNotifications": "{count} customers are waiting to hear from you (back in stock / price drop)"
     },
     "categories": {
       "title": "Categories",
@@ -805,6 +807,44 @@
       "cancelled": "Cancelled. {name} went back.",
       "moved": "{name} moved to position {position} of {total}.",
       "failed": "The new order could not be saved. It was put back as it was."
+    },
+    "notifications": {
+      "title": "Customer notifications",
+      "intro": "Customers who asked to be told when an out-of-stock product is back, or when a price drops. When a request is ready, contact the customer from here, then mark it as answered.",
+      "privacy": "These are personal details (an email address or phone number). Use them only to answer the request, and delete a request once it is handled or if the customer asks you to.",
+      "loadError": "Could not load the requests.",
+      "empty": {
+        "title": "No requests yet",
+        "body": "When a customer asks to be told about a product, the request appears here."
+      },
+      "groups": {
+        "ready": "Ready to answer",
+        "waiting": "Still waiting",
+        "notified": "Answered"
+      },
+      "groupHints": {
+        "ready": "The product is available again, or its price dropped.",
+        "waiting": "Nothing has changed for these products yet.",
+        "notified": "You marked these as answered. Delete them when you no longer need them."
+      },
+      "types": {
+        "restock": "Back in stock",
+        "price_drop": "Price drop"
+      },
+      "priceThen": "was {price}",
+      "priceNow": "now {price}",
+      "contact": {
+        "whatsapp": "WhatsApp",
+        "email": "Email",
+        "call": "Call"
+      },
+      "markNotified": "Mark as answered",
+      "failed": "The action could not be completed. Try again.",
+      "deleteDialog": {
+        "title": "Delete this request?",
+        "description": "The customer's contact details will be removed.",
+        "confirm": "Yes, delete"
+      }
     }
   },
   "specs": {
@@ -1098,6 +1138,32 @@
       "errorBody": "We could not load this page. Check your connection and try again.",
       "retry": "Try again",
       "home": "Back to the homepage"
+    },
+    "notify": {
+      "contactLabel": "Email or phone number",
+      "contactHint": "We use it only to tell you about this product.",
+      "invalid": "Enter a valid email address or phone number (with the country code for WhatsApp).",
+      "consent": "I agree that the store keeps this contact only to tell me about this product, and may delete it afterwards.",
+      "sending": "Sending...",
+      "cancel": "Cancel",
+      "failed": "Could not save your request. Try again.",
+      "restock": {
+        "button": "Notify me when it is back",
+        "title": "Tell me when it is back in stock",
+        "submit": "Notify me",
+        "saved": "Thank you. The store will contact you when this product is back."
+      },
+      "price_drop": {
+        "button": "Tell me if the price drops",
+        "title": "Tell me if the price drops",
+        "submit": "Notify me",
+        "saved": "Thank you. The store will contact you if the price drops."
+      },
+      "messages": {
+        "subject": "{name}",
+        "restock": "Hello! {name} is back in stock: {url}",
+        "priceDrop": "Hello! Good news: {name} is now {price}: {url}"
+      }
     }
   }
 }
