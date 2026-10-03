@@ -6,6 +6,7 @@ import { AvailabilityBadge, ProductBadges } from "@/components/storefront/badges
 import { Breadcrumbs } from "@/components/storefront/breadcrumbs";
 import { CallButton, WhatsAppButton } from "@/components/storefront/contact-buttons";
 import { OfferCountdown } from "@/components/storefront/offer-countdown";
+import { NotifyForm } from "@/components/storefront/notify-form";
 import { Price } from "@/components/storefront/price";
 import { ProductGallery } from "@/components/storefront/product-gallery";
 import { ProductGrid } from "@/components/storefront/product-grid";
@@ -205,6 +206,9 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
               <p className="text-sm text-muted">{t("outOfStockHint")}</p>
             )}
           </div>
+          {!preview && (
+            <NotifyForm productId={product.id} type={product.availability === "out_of_stock" ? "restock" : "price_drop"} />
+          )}
 
           {shortDescription && <p className="max-w-prose">{shortDescription}</p>}
 

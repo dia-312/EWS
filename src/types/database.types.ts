@@ -341,6 +341,9 @@ export type Database = {
           created_at: string
           destination: string
           id: string
+          locale: string
+          notified_at: string | null
+          price_at_subscribe: number | null
           product_id: string
           status: string
           store_id: string
@@ -351,6 +354,9 @@ export type Database = {
           created_at?: string
           destination: string
           id?: string
+          locale?: string
+          notified_at?: string | null
+          price_at_subscribe?: number | null
           product_id: string
           status?: string
           store_id: string
@@ -361,6 +367,9 @@ export type Database = {
           created_at?: string
           destination?: string
           id?: string
+          locale?: string
+          notified_at?: string | null
+          price_at_subscribe?: number | null
           product_id?: string
           status?: string
           store_id?: string
