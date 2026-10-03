@@ -1,0 +1,49 @@
+PROPRIETARY LICENSE
+
+Copyright (c) 2026 Dia'a Yaqub Arar (ضياء يعقوب عرار)
+diaararx@gmail.com | +972 56 820 7267 | https://github.com/dia-312
+
+All rights are reserved except those granted below.
+
+1. WHAT IS GRANTED
+
+   To the one shop to which Dia'a Yaqub Arar (the "Author") delivered this
+   software under a written agreement (the "Licensee"), the Author grants a
+   non-exclusive, non-transferable licence to run this software as the website
+   of the Licensee's own store, and to have it maintained for that purpose.
+
+2. WHAT IS NOT ALLOWED
+
+   Without the Author's written permission, nobody may:
+
+   a. sell, resell, rent, lend, give away, sublicense or otherwise transfer this
+      software or any copy of it;
+   b. use this software, or any copy of it, for any store, shop, business or
+      person other than the Licensee's own store;
+   c. use, copy, adapt or reuse the code, or any part of it, in any other
+      project;
+   d. remove or hide the Author's credit shown in the website footer and in
+      the documentation.
+
+3. MAINTENANCE
+
+   The Licensee may let a developer of its choice maintain or fix the website,
+   but only for the Licensee's own website, and only if that developer agrees to
+   these terms. The Licensee remains responsible for that developer.
+
+4. EVERYONE ELSE
+
+   A person who is not the Licensee may read this code but has no right to use,
+   copy, modify or distribute it.
+
+5. THIRD-PARTY COMPONENTS
+
+   This software uses open-source components (listed in package.json and
+   pnpm-lock.yaml). They stay under their own licences, which this licence does
+   not change.
+
+6. NO WARRANTY
+
+   This software is provided "as is", without warranty of any kind. The Author
+   is not liable for any loss arising from its use, to the extent the law
+   allows.

@@ -22,7 +22,7 @@ Designed and built by **Dia'a Yaqub Arar** (ضياء يعقوب عرار)
 - Phone / WhatsApp: +972 56 820 7267
 - GitHub: [github.com/dia-312](https://github.com/dia-312)
 
-© 2026 Dia'a Yaqub Arar. The terms under which a shop may use and change this code are agreed with that shop when the project is handed over.
+© 2026 Dia'a Yaqub Arar. Proprietary: see [`LICENSE`](LICENSE). The one shop it is delivered to may run it for its own store; selling it, using it for another store, or reusing the code elsewhere is not allowed. The credit line in the site footer stays.
 
 ## Quick start
 

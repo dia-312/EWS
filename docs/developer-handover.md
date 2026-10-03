@@ -2,7 +2,7 @@
 
 For the next developer. The shop owner's manual is [`owner-guide.ar.md`](owner-guide.ar.md); the feature spec is `electronics_store_full_agent_spec.md`; decisions and their reasons are in `TECH_STACK.md`. Read `AGENTS.md` too: this is a recent Next.js (16) and some APIs differ from older versions.
 
-Author and original developer: **Dia'a Yaqub Arar** (ضياء يعقوب عرار), diaararx@gmail.com, +972 56 820 7267, https://github.com/dia-312. © 2026 Dia'a Yaqub Arar.
+Licence: proprietary (see `LICENSE`): run for the one shop only, no resale, no use for another store, no reuse of the code, and the footer credit stays (`src/config/credit.ts`). Author and original developer: **Dia'a Yaqub Arar** (ضياء يعقوب عرار), diaararx@gmail.com, +972 56 820 7267, https://github.com/dia-312. © 2026 Dia'a Yaqub Arar.
 
 ## What this is
 

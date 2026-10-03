@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { CallButton, WhatsAppButton } from "@/components/storefront/contact-buttons";
 import { InstallButton } from "@/components/storefront/pwa";
 import { OpenNowBadge } from "@/components/storefront/open-now";
+import { DEVELOPER } from "@/config/credit";
 import type { Locale } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
 import type { StoreSettings } from "@/lib/catalog";
@@ -115,6 +116,14 @@ export function Footer({ locale, store, settings }: FooterProps) {
             {t("browse")}
           </Link>
         </div>
+        {/* The developer's credit: deliberately apart from the shop's own line, and not a shop contact button */}
+        <p className="mx-auto max-w-7xl px-4 pb-4 text-center text-[11px] text-muted" data-developer-credit>
+          {t("developedBy", { name: locale === "ar" ? DEVELOPER.nameAr : DEVELOPER.nameEn })}
+          {" · "}
+          <a href={DEVELOPER.phoneHref} dir="ltr" className="underline underline-offset-2">
+            {DEVELOPER.phoneDisplay}
+          </a>
+        </p>
       </div>
     </footer>
   );
