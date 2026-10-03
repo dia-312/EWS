@@ -7,11 +7,23 @@
 //
 // Pages, prices, product data and the admin are NEVER stored here, so a visitor
 // can't be shown an old price. Bump CACHE when this file's behavior changes.
-const CACHE = "ews-static-v1";
+const CACHE = "ews-static-v2";
 const OFFLINE_URL = "/offline.html";
 
+// Cloudflare serves /offline.html through a redirect (to /offline). A response that
+// went through a redirect can't answer a page open, so store a clean copy of it.
+async function storeOfflinePage() {
+  const response = await fetch(OFFLINE_URL);
+  if (!response.ok) throw new Error("offline page unavailable");
+  const clean = new Response(await response.blob(), {
+    status: 200,
+    headers: { "Content-Type": "text/html; charset=utf-8" },
+  });
+  await (await caches.open(CACHE)).put(OFFLINE_URL, clean);
+}
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.add(OFFLINE_URL)));
+  event.waitUntil(storeOfflinePage());
   self.skipWaiting();
 });
 
