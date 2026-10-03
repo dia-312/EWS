@@ -112,9 +112,14 @@ export default async function AdminProductsPage({
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">{t("title")}</h1>
         {canEdit && (
-          <Link href="/admin/products/new" className={buttonClass("primary")}>
-            {t("add")}
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/admin/products/import" className={buttonClass("secondary")}>
+              {t("importCsv")}
+            </Link>
+            <Link href="/admin/products/new" className={buttonClass("primary")}>
+              {t("add")}
+            </Link>
+          </div>
         )}
       </div>
 
