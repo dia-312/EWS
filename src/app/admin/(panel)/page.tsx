@@ -67,6 +67,12 @@ export default async function AdminDashboardPage({
         {t("welcome", { name: session.displayName ?? session.email ?? "" })}
       </h1>
 
+      {params.error === "owner_only" && (
+        <p role="status" className="rounded-lg border border-border bg-background px-4 py-3 text-sm">
+          {t("ownerOnly")}
+        </p>
+      )}
+
       {params.error === "read_only" && (
         <p
           role="status"

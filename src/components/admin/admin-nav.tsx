@@ -17,14 +17,14 @@ const ITEMS = [
   { href: "/admin/settings", key: "settings", exact: false },
 ] as const;
 
-export function AdminNav() {
+export function AdminNav({ isOwner = false }: { isOwner?: boolean }) {
   const t = useTranslations("admin.nav");
   const pathname = usePathname();
 
   return (
     <nav aria-label={t("label")} className="border-b border-border bg-background">
       <ul className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4">
-        {ITEMS.map((item) => {
+        {[...ITEMS, ...(isOwner ? [{ href: "/admin/team", key: "team", exact: false } as const] : [])].map((item) => {
           const active = item.exact
             ? pathname === item.href
             : pathname.startsWith(item.href);

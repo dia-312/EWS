@@ -875,6 +875,20 @@ export type Database = {
         Args: { p_store: string; p_days?: number; p_tz?: string }
         Returns: Json
       }
+      add_team_member: { Args: { p_email: string; p_role: string; p_name?: string }; Returns: string }
+      remove_team_member: { Args: { p_user: string }; Returns: string }
+      set_team_role: { Args: { p_user: string; p_role: string }; Returns: string }
+      team_members: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          display_name: string | null
+          email: string
+          id: string
+          last_sign_in_at: string | null
+          role: string
+        }[]
+      }
       is_store_member: { Args: { p_store: string }; Returns: boolean }
       normalize_search: { Args: { input: string }; Returns: string }
       search_products: {

@@ -65,6 +65,13 @@ export async function requireAdmin() {
   return session;
 }
 
+/** Pages only the owner may open (managing the team). */
+export async function requireOwner() {
+  const session = await requireAdmin();
+  if (session.role !== "owner") redirect("/admin?error=owner_only");
+  return session;
+}
+
 const EDIT_ROLES: AdminRole[] = ["owner", "manager", "editor"];
 
 /** Like requireAdmin(), but for writes: read-only `viewer` accounts are refused. */

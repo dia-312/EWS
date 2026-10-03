@@ -20,7 +20,8 @@
       "offers": "Offers",
       "homepage": "Homepage",
       "notifications": "Notifications",
-      "reviews": "Reviews"
+      "reviews": "Reviews",
+      "team": "Team"
     },
     "login": {
       "title": "Admin sign in",
@@ -59,7 +60,8 @@
         "hidden": "Hidden"
       },
       "waitingNotifications": "{count} customers are waiting to hear from you (back in stock / price drop)",
-      "waitingReviews": "{count} reviews are waiting for your approval"
+      "waitingReviews": "{count} reviews are waiting for your approval",
+      "ownerOnly": "Only the owner can manage the team."
     },
     "categories": {
       "title": "Categories",
@@ -873,6 +875,93 @@
         "title": "Delete this review?",
         "description": "The review is removed for good.",
         "confirm": "Yes, delete"
+      }
+    },
+    "account": {
+      "title": "My account",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "roles": {
+        "owner": "Owner",
+        "manager": "Manager",
+        "editor": "Editor",
+        "viewer": "Viewer"
+      },
+      "password": {
+        "title": "Change my password",
+        "new": "New password",
+        "confirm": "Repeat the new password",
+        "hint": "At least {min} characters.",
+        "button": "Change password",
+        "saving": "Saving...",
+        "saved": "Your password was changed.",
+        "errors": {
+          "too_short": "The password is too short.",
+          "mismatch": "The two passwords are not the same.",
+          "same_as_email": "The password must not be your email address.",
+          "failed": "Could not change the password. Sign in again and retry."
+        }
+      }
+    },
+    "team": {
+      "title": "Team",
+      "intro": "The people who can sign in to this admin, and what each of them may do.",
+      "loadError": "Could not load the team.",
+      "you": "You",
+      "lastSignIn": "Last signed in {date}",
+      "neverSignedIn": "Has not signed in yet",
+      "changeRole": "Change the role of {name}",
+      "remove": "Remove",
+      "removeDialog": {
+        "title": "Remove this person?",
+        "description": "{name} will no longer be able to open this admin. Their sign-in stays in Supabase; you can add them again later.",
+        "confirm": "Yes, remove"
+      },
+      "roles": {
+        "owner": {
+          "name": "Owner",
+          "description": "Everything, including managing the team."
+        },
+        "manager": {
+          "name": "Manager",
+          "description": "Edits everything except the team."
+        },
+        "editor": {
+          "name": "Editor",
+          "description": "Edits products, offers and the homepage."
+        },
+        "viewer": {
+          "name": "Viewer",
+          "description": "Can look at everything but change nothing."
+        }
+      },
+      "add": {
+        "title": "Add a person",
+        "step1": "In your Supabase dashboard open Authentication, then Users, then Add user. Enter their email and a password, and tick Auto Confirm User.",
+        "step2": "Then enter the same email here and choose what they may do.",
+        "email": "Their email",
+        "name": "Name (optional)",
+        "role": "Role",
+        "button": "Add to the team",
+        "adding": "Adding..."
+      },
+      "results": {
+        "ok": "Done.",
+        "not_owner": "Only the owner can manage the team.",
+        "bad_role": "Choose a role.",
+        "user_not_found": "No sign-in exists for this email yet. Create it in Supabase first (see the steps above).",
+        "belongs_elsewhere": "This sign-in already belongs to another store.",
+        "self": "You cannot change or remove yourself.",
+        "not_found": "That person is no longer on the team.",
+        "invalid_email": "Enter a valid email address.",
+        "failed": "The action could not be completed. Try again."
+      },
+      "help": {
+        "title": "Good to know",
+        "password": "To reset someone's password: Supabase dashboard, Authentication, Users, the three dots next to them, Send password recovery (or Update password). People can also change their own password under My account.",
+        "leave": "When someone leaves, remove them here. They can no longer open the admin even though their sign-in still exists.",
+        "roles": "Give each person the smallest role they need. Viewers are good for people who only check the numbers."
       }
     }
   },
