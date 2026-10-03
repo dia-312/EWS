@@ -44,7 +44,7 @@ test("the owner can preview a hidden product, and nobody else can see it", async
   // ---- the editor has the same preview button
   await page.goto("/admin/products");
   await row.getByRole("link", { name: "Edit" }).click();
-  await expect(page).toHaveURL(//admin/products/[0-9a-f-]{36}$/);
+  await expect(page).toHaveURL(new RegExp("/admin/products/[0-9a-f-]{36}$"));
   await expect(page.getByRole("link", { name: "Preview" })).toHaveAttribute("href", new RegExp(`${slug}\\?preview=1$`));
 
   // ---- clean up
