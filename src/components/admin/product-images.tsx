@@ -6,11 +6,13 @@ import { useTranslations } from "next-intl";
 import {
   deleteProductImage,
   moveProductImage,
+  reorderProductImages,
   registerProductImage,
   setPrimaryImage,
   updateImageAlt,
   type ImageActionResult,
 } from "@/app/admin/(panel)/products/image-actions";
+import { SortableList } from "@/components/admin/sortable";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { compressImage } from "@/lib/image-compress";
@@ -196,18 +198,26 @@ export function ProductImages({ storeId, productId, images }: ProductImagesProps
       {images.length === 0 ? (
         <p className="text-sm text-muted">{t("empty")}</p>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {images.map((image, index) => (
-            <ImageCard
-              key={image.id}
-              image={image}
-              isFirst={index === 0}
-              isLast={index === images.length - 1}
-              disabled={pending || busy}
-              onRun={run}
-            />
-          ))}
-        </ul>
+        <SortableList
+          as="ul"
+          grid
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          itemClassName="rounded-xl border border-border bg-surface p-3"
+          onReorder={(ids) => reorderProductImages(productId, ids)}
+          items={images.map((image, index) => ({
+            id: image.id,
+            label: image.alt_text_ar || image.alt_text_en || String(index + 1),
+            node: (
+              <ImageCard
+                image={image}
+                isFirst={index === 0}
+                isLast={index === images.length - 1}
+                disabled={pending || busy}
+                onRun={run}
+              />
+            ),
+          }))}
+        />
       )}
 
       <p className="sr-only" role="status">
@@ -238,7 +248,7 @@ function ImageCard({
     altAr !== (image.alt_text_ar ?? "") || altEn !== (image.alt_text_en ?? "");
 
   return (
-    <li className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3">
+    <div className="flex flex-col gap-3">
       <div className="relative aspect-square overflow-hidden rounded-lg bg-background">
         {image.public_url && (
           // Plain <img>: the files are already resized and compressed at upload.
@@ -340,6 +350,6 @@ function ImageCard({
           </div>
         </div>
       </details>
-    </li>
+    </div>
   );
 }

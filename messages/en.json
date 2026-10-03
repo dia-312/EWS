@@ -795,6 +795,16 @@
       "errorTitle": "Could not load this page",
       "errorBody": "Something went wrong while loading. Try again; if it keeps happening, check your connection.",
       "retry": "Try again"
+    },
+    "sortable": {
+      "handle": "Drag to reorder",
+      "instructions": "To reorder, press space to pick this item up, use the arrow keys to move it, and press space again to drop it.",
+      "picked": "Picked up {name}.",
+      "over": "{name} is now at position {position} of {total}.",
+      "dropped": "Dropped {name}.",
+      "cancelled": "Cancelled. {name} went back.",
+      "moved": "{name} moved to position {position} of {total}.",
+      "failed": "The new order could not be saved. It was put back as it was."
     }
   },
   "specs": {

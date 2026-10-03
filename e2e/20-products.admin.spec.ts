@@ -96,6 +96,30 @@ test("a product goes from creation to visibility, with images, and can be duplic
   expect(thumb.status(), "the stored thumbnail is publicly readable").toBe(200);
   expect(thumb.headers()["content-type"]).toMatch(/image\/(webp|jpeg)/);
 
+  // ---- pictures can be reordered by dragging (keyboard: Space, arrow, Space), and the order is saved
+  const sources = () => images.locator("li img").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src")));
+  const dragged = await sources();
+  const moveFirstPicture = async (key: "ArrowRight" | "ArrowLeft", handleIndex: number) => {
+    await expect(images.locator("[data-sortable-ready]")).toHaveAttribute("data-sortable-ready", "true");
+    // Keys pressed before the page has hydrated are lost, so confirm the picture was picked up.
+    await expect(async () => {
+      await images.locator("[data-drag-handle]").nth(handleIndex).focus();
+      await page.keyboard.press("Space");
+      await expect(page.locator("[id^='DndLiveRegion']")).toContainText(/Picked up|is now at position/, { timeout: 1500 });
+    }).toPass({ timeout: 15_000 });
+    await page.keyboard.press(key);
+    await page.waitForTimeout(250);
+    await page.keyboard.press("Space");
+  };
+  await moveFirstPicture("ArrowRight", 0); // the pictures sit side by side, so the arrows move sideways
+  await expect.poll(sources).toEqual([dragged[1], dragged[0]]);
+  await page.waitForLoadState("networkidle"); // let the save reach the server before reloading
+  await page.reload();
+  expect(await sources()).toEqual([dragged[1], dragged[0]]);
+  await moveFirstPicture("ArrowLeft", 1);
+  await expect.poll(sources).toEqual(dragged);
+  await page.waitForLoadState("networkidle");
+
   await images.getByRole("button", { name: "Make primary" }).click();
   await expect(images.getByText("Primary", { exact: true })).toHaveCount(1);
 
