@@ -792,7 +792,6 @@
       }
     },
     "states": {
-      "loading": "Loading...",
       "errorTitle": "Could not load this page",
       "errorBody": "Something went wrong while loading. Try again; if it keeps happening, check your connection.",
       "retry": "Try again"
@@ -1085,7 +1084,6 @@
       "install": "Install the app"
     },
     "states": {
-      "loading": "Loading...",
       "errorTitle": "Something went wrong",
       "errorBody": "We could not load this page. Check your connection and try again.",
       "retry": "Try again",
