@@ -41,6 +41,8 @@ export type SearchOptions = {
   categoryId?: string | null;
   brandIds?: string[] | null;
   collection?: Collection;
+  /** Load exactly these products (a visitor's favourites). */
+  ids?: string[];
   pageSize?: number;
 };
 
@@ -51,6 +53,7 @@ async function runSearch({
   categoryId = null,
   brandIds = null,
   collection,
+  ids,
   pageSize = PAGE_SIZE,
 }: SearchOptions): Promise<CatalogPage> {
   const page = params.page ?? 1;
@@ -68,6 +71,7 @@ async function runSearch({
     p_locale: locale,
     p_limit: pageSize,
     p_offset: (page - 1) * pageSize,
+    p_ids: ids && ids.length > 0 ? ids : undefined,
   });
   if (error) throw new Error(`Catalogue search failed: ${error.message}`);
 
@@ -147,3 +151,34 @@ export const getProductBySlug = cache(
 );
 
 export type ProductDetail = NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>;
+
+/**
+ * Products with their specifications, for the side-by-side comparison. Returned
+ * in the order of `ids`; hidden or deleted products are simply missing.
+ */
+export const getProductsForCompare = memoizeAsync("compare", async (storeId: string, ids: string[]) => {
+  if (ids.length === 0) return [];
+
+  const { data, error } = await createPublicClient()
+    .from("products")
+    .select(
+      `id, slug, name_ar, name_en, price, availability,
+       brands(name),
+       categories(slug, name_ar, name_en, active),
+       product_images(public_url, is_primary, display_order),
+       product_specs(spec_key, value_ar, value_en, display_order),
+       offers(new_price, old_price, end_at)`,
+    )
+    .eq("store_id", storeId)
+    .in("id", ids)
+    .order("new_price", { referencedTable: "offers", ascending: true })
+    .limit(1, { referencedTable: "offers" });
+  if (error) throw new Error(`Failed to load products to compare: ${error.message}`);
+
+  return ids
+    .map((id) => data.find((product) => product.id === id))
+    .filter((product): product is NonNullable<typeof product> => Boolean(product?.categories?.active))
+    .map(({ offers, ...product }) => ({ ...product, offer: offers[0] ?? null }));
+});
+
+export type CompareProduct = Awaited<ReturnType<typeof getProductsForCompare>>[number];

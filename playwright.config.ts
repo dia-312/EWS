@@ -17,6 +17,9 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   retries: process.env.CI ? 1 : 0,
+  // A broken build must fail fast instead of keeping CI busy until its own limit.
+  globalTimeout: process.env.CI ? 15 * 60_000 : undefined,
+  maxFailures: process.env.CI ? 12 : undefined,
   reporter: process.env.CI
     ? [["github"], ["list"], ["html", { open: "never" }]]
     : [["list"]],

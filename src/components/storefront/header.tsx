@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { useTranslations } from "next-intl";
+import { FavoritesLink } from "@/components/storefront/favorites-link";
 import { LanguageSwitcher } from "@/components/storefront/language-switcher";
 import { SearchForm } from "@/components/storefront/search-form";
 import { WhatsAppButton } from "@/components/storefront/contact-buttons";
@@ -34,6 +35,7 @@ export function Header({ locale, store, categories, whatsapp }: HeaderProps) {
         </div>
 
         <div className="ms-auto flex items-center gap-2">
+          <FavoritesLink />
           <Suspense fallback={null}>
             <LanguageSwitcher />
           </Suspense>

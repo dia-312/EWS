@@ -9,6 +9,7 @@ import { OfferCountdown } from "@/components/storefront/offer-countdown";
 import { Price } from "@/components/storefront/price";
 import { ProductGallery } from "@/components/storefront/product-gallery";
 import { ProductGrid } from "@/components/storefront/product-grid";
+import { CompareButton, FavoriteButton } from "@/components/storefront/shop-buttons";
 import { SpecsTable } from "@/components/storefront/specs-table";
 import { locales } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
@@ -190,6 +191,10 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
             {!settings?.whatsapp && !settings?.phone && (
               <p className="text-sm text-muted">{t("contactSoon")}</p>
             )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <FavoriteButton productId={product.id} productName={name} variant="full" />
+            <CompareButton productId={product.id} productName={name} variant="full" />
           </div>
           <span className="sr-only">{tBadges(product.availability as "in_stock")}</span>
         </div>

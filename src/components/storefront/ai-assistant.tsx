@@ -16,10 +16,11 @@ export function AiAssistantEntry() {
       <button
         type="button"
         onClick={() => dialogRef.current?.showModal()}
+        aria-label={t("entry")}
         className="fixed bottom-4 end-4 z-40 flex items-center gap-2 rounded-full bg-secondary px-4 py-3 text-sm font-medium text-secondary-foreground shadow-lg transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         <span aria-hidden>✦</span>
-        {t("entry")}
+        <span className="hidden sm:inline">{t("entry")}</span>
       </button>
 
       <dialog

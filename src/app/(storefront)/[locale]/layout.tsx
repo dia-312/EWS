@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { AiAssistantEntry } from "@/components/storefront/ai-assistant";
+import { CompareTray } from "@/components/storefront/compare-tray";
 import { Footer } from "@/components/storefront/footer";
 import { Header } from "@/components/storefront/header";
+import { ShopHydrator } from "@/components/storefront/shop-hydrator";
+import { ShopToast } from "@/components/storefront/shop-toast";
 import { getDirection, locales } from "@/config/i18n";
 import "@/lib/font-faces";
 import { pickLocalized } from "@/lib/format";
@@ -78,6 +81,9 @@ export default async function StorefrontRootLayout({ children, params }: LayoutP
             </main>
             <Footer locale={locale} store={store} settings={settings} />
             <AiAssistantEntry />
+            <CompareTray />
+            <ShopToast />
+            <ShopHydrator />
           </div>
         </NextIntlClientProvider>
       </body>
