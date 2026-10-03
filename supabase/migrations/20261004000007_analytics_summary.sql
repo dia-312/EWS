@@ -69,5 +69,6 @@ as $$
   );
 $$;
 
+-- Functions are executable by PUBLIC by default; only signed-in admins need this one.
+revoke execute on function public.analytics_summary(uuid, integer, text) from public, anon;
 grant execute on function public.analytics_summary(uuid, integer, text) to authenticated;
-revoke execute on function public.analytics_summary(uuid, integer, text) from anon;

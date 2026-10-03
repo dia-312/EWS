@@ -46,6 +46,8 @@ test.describe("what the storefront reports", () => {
     await page.getByRole("button", { name: "Save", exact: true }).click();
     await page.getByRole("button", { name: "Compare", exact: true }).click();
     await page.getByRole("button", { name: "Share" }).click();
+    // without a share sheet (as in this browser) the fallback dialog opens; close it
+    await page.keyboard.press("Escape");
     await expect
       .poll(() => sent.map((event) => event.type).filter((type) => ["favorite_add", "compare_add", "share"].includes(type)).sort())
       .toEqual(["compare_add", "favorite_add", "share"]);
