@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { BannerLink } from "@/components/admin/banner-link";
 import { SectionForm } from "@/components/admin/section-form";
+import { SiteImageField } from "@/components/admin/site-image-field";
 import { requireEditor } from "@/lib/auth";
-import { isProductSection, readLimit } from "@/lib/homepage";
+import { isProductSection, readBanner, readLimit } from "@/lib/homepage";
 import { createClient } from "@/lib/supabase/server";
 import { updateSection } from "../actions";
 
@@ -41,6 +43,20 @@ export default async function EditSectionPage({ params, searchParams }: PageProp
         <p role="status" className="rounded-lg border border-border bg-background px-4 py-3 text-sm">
           {t("form.created")}
         </p>
+      )}
+
+      {section.type === "banner" && (
+        <>
+          <SiteImageField
+            storeId={session.storeId}
+            target={{ kind: "banner", id }}
+            imageUrl={readBanner(section.config).imageUrl}
+            title={t("banner.imageTitle")}
+            hint={t("banner.imageHint")}
+            aspect="16 / 5"
+          />
+          <BannerLink sectionId={id} initial={readBanner(section.config).linkUrl ?? ""} />
+        </>
       )}
 
       <SectionForm

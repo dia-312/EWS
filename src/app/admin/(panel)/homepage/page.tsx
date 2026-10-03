@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 import { pickLocalized } from "@/lib/format";
 import { isProductSection, missingSectionTypes, readLimit } from "@/lib/homepage";
 import { createClient } from "@/lib/supabase/server";
-import { addSection } from "./actions";
+import { addBanner, addSection } from "./actions";
 
 export default async function AdminHomepagePage({ searchParams }: PageProps<"/admin/homepage">) {
   const [session, locale, t, params] = await Promise.all([
@@ -135,6 +135,12 @@ export default async function AdminHomepagePage({ searchParams }: PageProps<"/ad
               <Button type="submit">{t("add.button")}</Button>
             </form>
           )}
+          <form action={addBanner} className="mt-4 border-t border-border pt-4">
+            <p className="mb-2 text-sm text-muted">{t("add.bannerHint")}</p>
+            <Button type="submit" variant="secondary">
+              {t("add.banner")}
+            </Button>
+          </form>
         </section>
       )}
     </div>

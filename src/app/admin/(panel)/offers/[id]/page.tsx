@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { OfferForm } from "@/components/admin/offer-form";
+import { SiteImageField } from "@/components/admin/site-image-field";
 import { requireEditor } from "@/lib/auth";
 import { getCurrentStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase/server";
@@ -21,7 +22,7 @@ export default async function EditOfferPage({ params }: PageProps<"/admin/offers
   const [{ data: offer }, products] = await Promise.all([
     db
       .from("offers")
-      .select("product_id, title_ar, title_en, old_price, new_price, start_at, end_at, active")
+      .select("product_id, title_ar, title_en, old_price, new_price, start_at, end_at, active, banner_image_url")
       .eq("id", id)
       .eq("store_id", session.storeId)
       .maybeSingle(),
@@ -32,6 +33,14 @@ export default async function EditOfferPage({ params }: PageProps<"/admin/offers
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
+      <SiteImageField
+        storeId={session.storeId}
+        target={{ kind: "offer", id }}
+        imageUrl={offer.banner_image_url}
+        title={t("banner.title")}
+        hint={t("banner.hint")}
+        aspect="16 / 5"
+      />
       <OfferForm
         action={updateOffer.bind(null, id)}
         products={products}
