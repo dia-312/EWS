@@ -14,6 +14,16 @@ Built with Next.js 16, Supabase and Cloudflare Workers. One deployment serves on
 | Technology choices and why | [`TECH_STACK.md`](TECH_STACK.md) |
 | What the product must do | [`electronics_store_full_agent_spec.md`](electronics_store_full_agent_spec.md) |
 
+## Author
+
+Designed and built by **Dia'a Yaqub Arar** (ضياء يعقوب عرار)
+
+- Email: [diaararx@gmail.com](mailto:diaararx@gmail.com)
+- Phone / WhatsApp: +972 56 820 7267
+- GitHub: [github.com/dia-312](https://github.com/dia-312)
+
+© 2026 Dia'a Yaqub Arar. The terms under which a shop may use and change this code are agreed with that shop when the project is handed over.
+
 ## Quick start
 
 ```bash
