@@ -109,6 +109,6 @@ test("the owner reorders, hides, edits, removes and re-adds homepage sections", 
 
   await page.goto("/admin/homepage");
   expect((await adminOrder(page)).at(-1)).toBe("Why choose us"); // new sections go to the end
-  expect(await publicOrder(page)).toContain("Why choose us");
   await expect(page.getByText("Every section type is already on the page.")).toBeVisible();
+  expect(await publicOrder(page)).toContain("Why choose us");
 });

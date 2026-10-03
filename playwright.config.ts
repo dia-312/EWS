@@ -38,6 +38,8 @@ export default defineConfig({
       testMatch: /.*\.admin\.spec\.ts/,
       dependencies: ["setup"],
       use: { storageState: "e2e/.auth/admin.json" },
+      // These journeys change data; a retry would start from the half-changed state.
+      retries: 0,
     },
     {
       // Talks to a second copy of the app that has the storefront cache switched on.
