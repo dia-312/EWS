@@ -16,7 +16,7 @@ export default async function AdminDashboardPage({
   const now = new Date().toISOString();
 
   const locale = await getLocale();
-  const [activeProducts, outOfStock, onSale, recent, waiting] = await Promise.all([
+  const [activeProducts, outOfStock, onSale, recent, waiting, reviewsWaiting] = await Promise.all([
     supabase
       .from("products")
       .select("id", { count: "exact", head: true })
@@ -44,6 +44,11 @@ export default async function AdminDashboardPage({
       .limit(5),
     supabase
       .from("notification_subscriptions")
+      .select("id", { count: "exact", head: true })
+      .eq("store_id", session.storeId)
+      .eq("status", "pending"),
+    supabase
+      .from("product_reviews")
       .select("id", { count: "exact", head: true })
       .eq("store_id", session.storeId)
       .eq("status", "pending"),
@@ -110,6 +115,14 @@ export default async function AdminDashboardPage({
         <p className="rounded-xl border border-border bg-background px-4 py-3 text-sm" data-waiting-notifications>
           <Link href="/admin/notifications" className="font-medium underline underline-offset-2">
             {t("waitingNotifications", { count: waiting.count ?? 0 })}
+          </Link>
+        </p>
+      )}
+
+      {(reviewsWaiting.count ?? 0) > 0 && (
+        <p className="rounded-xl border border-border bg-background px-4 py-3 text-sm" data-waiting-reviews>
+          <Link href="/admin/reviews" className="font-medium underline underline-offset-2">
+            {t("waitingReviews", { count: reviewsWaiting.count ?? 0 })}
           </Link>
         </p>
       )}

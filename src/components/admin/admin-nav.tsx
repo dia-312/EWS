@@ -12,6 +12,7 @@ const ITEMS = [
   { href: "/admin/offers", key: "offers", exact: false },
   { href: "/admin/homepage", key: "homepage", exact: false },
   { href: "/admin/notifications", key: "notifications", exact: false },
+  { href: "/admin/reviews", key: "reviews", exact: false },
   { href: "/admin/appearance", key: "appearance", exact: false },
   { href: "/admin/settings", key: "settings", exact: false },
 ] as const;

@@ -142,6 +142,19 @@ export const getOfferBanners = cache(
   ),
 );
 
+/** The approved reviews of a product, newest first (row level security hides the rest from visitors). */
+export const getProductReviews = memoizeAsync("reviews", async (productId: string) => {
+  const { data, error } = await createPublicClient()
+    .from("product_reviews")
+    .select("id, rating, author_name, comment, created_at")
+    .eq("product_id", productId)
+    .eq("status", "approved")
+    .order("created_at", { ascending: false })
+    .limit(500);
+  if (error) throw new Error(`Failed to load reviews: ${error.message}`);
+  return data;
+});
+
 /** A product with everything the detail page shows, including its live offer, in one query. */
 export const getProductBySlug = cache(
   memoizeAsync("product", async (storeId: string, slug: string) => {
