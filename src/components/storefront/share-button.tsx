@@ -38,10 +38,16 @@ export function ShareButton({ url, title, text }: ShareButtonProps) {
     dialogRef.current?.showModal();
   }
 
+  /** Closes the dialog so the "copied" message is not hidden behind its backdrop. */
+  function done() {
+    dialogRef.current?.close();
+    showNotice("link_copied");
+  }
+
   async function copy() {
     try {
       await navigator.clipboard.writeText(url);
-      showNotice("link_copied");
+      done();
       return;
     } catch {
       /* clipboard blocked: select the text so it can be copied by hand */
@@ -51,7 +57,7 @@ export function ShareButton({ url, title, text }: ShareButtonProps) {
       input.focus();
       input.select();
       if (document.execCommand?.("copy")) {
-        showNotice("link_copied");
+        done();
         return;
       }
     }

@@ -42,11 +42,10 @@ test.describe("share", () => {
     await expect(dialog.getByRole("link", { name: "Email" })).toHaveAttribute("href", /^mailto:/);
 
     await dialog.getByRole("button", { name: "Copy link" }).click();
-    await expect(page.getByRole("alert")).toHaveText("Link copied.");
+    await expect(page.getByRole("alert").filter({ hasText: "Link copied." })).toBeVisible();
+    await expect(dialog).toBeHidden();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(link);
 
-    await dialog.getByRole("button", { name: "Close" }).click();
-    await expect(dialog).toBeHidden();
   });
 });
 
