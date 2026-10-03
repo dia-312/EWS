@@ -814,6 +814,7 @@ export type Database = {
           p_brands?: string[]
           p_category?: string
           p_collection?: string
+          p_ids?: string[]
           p_limit?: number
           p_locale?: string
           p_max?: number

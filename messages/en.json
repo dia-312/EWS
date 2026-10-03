@@ -793,6 +793,69 @@
           "body": "See the product in person; opening hours are listed below."
         }
       }
+    },
+    "shop": {
+      "favorites": "Favorites",
+      "favoritesWithCount": "Favorites ({count})",
+      "addFavorite": "Add to favorites: {name}",
+      "removeFavorite": "Remove from favorites: {name}",
+      "addedFavorite": "Added to favorites.",
+      "removedFavorite": "Removed from favorites.",
+      "save": "Save",
+      "saved": "Saved",
+      "addCompare": "Add to compare: {name}",
+      "removeCompare": "Remove from compare: {name}",
+      "addedCompare": "Added to the comparison.",
+      "removedCompare": "Removed from the comparison.",
+      "compare": "Compare",
+      "inCompare": "In comparison",
+      "compareFull": "You can compare up to {max} products. Remove one to add another.",
+      "trayLabel": "Products selected for comparison",
+      "selected": "{count} of {max} selected to compare",
+      "compareNow": "Compare now",
+      "addOneMore": "Pick at least one more",
+      "clear": "Clear"
+    },
+    "favorites": {
+      "title": "Favorites",
+      "intro": "The products you saved. They stay in this browser only, no account needed.",
+      "loading": "Loading your favorites",
+      "count": "{count, plural, one {# saved product} other {# saved products}}",
+      "clear": "Clear all",
+      "empty": {
+        "title": "No favorites yet",
+        "body": "Tap the heart on any product to save it here and find it again quickly.",
+        "browse": "Browse products"
+      },
+      "error": {
+        "title": "Could not load your favorites",
+        "body": "Check your internet connection and try again.",
+        "retry": "Try again"
+      }
+    },
+    "compare": {
+      "title": "Compare products",
+      "intro": "Compare up to {max} products side by side. A specification a product does not have shows a dash.",
+      "loading": "Loading...",
+      "scrollRegion": "Comparison table (scroll sideways on small screens)",
+      "caption": "Comparison of the selected products",
+      "product": "Product",
+      "price": "Price",
+      "availability": "Availability",
+      "notAvailable": "Not available",
+      "viewProduct": "View product",
+      "remove": "Remove {name} from the comparison",
+      "removeShort": "Remove",
+      "needTwo": "Pick at least two products for the comparison to be useful.",
+      "empty": {
+        "title": "Nothing to compare yet",
+        "body": "Tap the compare button on the products you want (up to {max}), then open this page.",
+        "browse": "Browse products"
+      },
+      "gone": {
+        "title": "The selected products are no longer available",
+        "body": "They may have been hidden or removed from the store. Pick new products to compare."
+      }
     }
   }
 }

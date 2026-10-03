@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { AvailabilityBadge, ProductBadges } from "@/components/storefront/badges";
 import { Price } from "@/components/storefront/price";
+import { CompareButton, FavoriteButton } from "@/components/storefront/shop-buttons";
 import type { Locale } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
 import type { CatalogItem } from "@/lib/catalog";
@@ -58,6 +59,11 @@ export function ProductCard({ item, locale, currency, priority = false }: Produc
           isNew={item.is_new}
           badgeKeys={item.badge_keys}
         />
+        {/* z-10 keeps the buttons clickable above the card-wide link */}
+        <div className="absolute end-2 top-2 z-10 flex flex-col gap-1.5">
+          <FavoriteButton productId={item.id} productName={name} />
+          <CompareButton productId={item.id} productName={name} />
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-3">
