@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { signOut } from "@/app/admin/login/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
@@ -28,9 +29,12 @@ export default async function AdminPanelLayout({
             <span className="text-sm text-muted">{t("title")}</span>
           </div>
           <div className="flex items-center gap-4 text-sm">
-            <span className="hidden text-muted sm:inline" dir="ltr">
+            <Link href="/admin/account" className="hidden text-muted underline-offset-2 hover:underline sm:inline" dir="ltr">
               {session.email}
-            </span>
+            </Link>
+            <Link href="/admin/account" className="underline underline-offset-2 sm:hidden">
+              {t("account.title")}
+            </Link>
             <form action={signOut}>
               <button
                 type="submit"
@@ -42,7 +46,7 @@ export default async function AdminPanelLayout({
           </div>
         </div>
       </header>
-      <AdminNav />
+      <AdminNav isOwner={session.role === "owner"} />
       <div className="mx-auto w-full max-w-6xl flex-1 p-4 sm:py-8">
         {children}
       </div>
