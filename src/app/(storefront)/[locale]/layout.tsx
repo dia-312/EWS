@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -7,6 +7,7 @@ import { CompareTray } from "@/components/storefront/compare-tray";
 import { Footer } from "@/components/storefront/footer";
 import { Header } from "@/components/storefront/header";
 import { ContactClickTracker, PageViewTracker } from "@/components/storefront/tracker";
+import { ServiceWorkerRegister } from "@/components/storefront/pwa";
 import { ShopHydrator } from "@/components/storefront/shop-hydrator";
 import { ShopToast } from "@/components/storefront/shop-toast";
 import { getDirection, locales } from "@/config/i18n";
@@ -14,7 +15,7 @@ import "@/lib/font-faces";
 import { pickLocalized } from "@/lib/format";
 import { absoluteUrl, siteUrl } from "@/lib/storefront";
 import { getStorefront } from "@/lib/storefront-data";
-import { getStoreThemeStyle } from "@/lib/theme";
+import { getStoreTheme, getStoreThemeStyle } from "@/lib/theme";
 import "../../globals.css";
 
 // Only /ar and /en exist; any other first segment is a 404.
@@ -41,7 +42,14 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
       languages: Object.fromEntries(locales.map((value) => [value, absoluteUrl(value)])),
     },
     openGraph: { siteName: store.name, locale, type: "website" },
+    icons: { apple: "/pwa-icon/apple-180" },
+    appleWebApp: { capable: true, title: store.name, statusBarStyle: "default" },
   };
+}
+
+/** The browser bar takes the store's color on phones. */
+export async function generateViewport(): Promise<Viewport> {
+  return { themeColor: (await getStoreTheme()).colors.primary };
 }
 
 /** Root layout of the public site: the language comes from the URL. */
@@ -86,6 +94,7 @@ export default async function StorefrontRootLayout({ children, params }: LayoutP
             <ShopToast />
             <ShopHydrator />
             <PageViewTracker />
+            <ServiceWorkerRegister />
             <ContactClickTracker />
           </div>
         </NextIntlClientProvider>

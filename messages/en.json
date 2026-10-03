@@ -922,6 +922,9 @@
     "recent": {
       "title": "Recently viewed",
       "clear": "Clear"
+    },
+    "pwa": {
+      "install": "Install the app"
     }
   }
 }

@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { CallButton, WhatsAppButton } from "@/components/storefront/contact-buttons";
+import { InstallButton } from "@/components/storefront/pwa";
 import { OpenNowBadge } from "@/components/storefront/open-now";
 import type { Locale } from "@/config/i18n";
 import { Link } from "@/i18n/navigation";
@@ -55,6 +56,7 @@ export function Footer({ locale, store, settings }: FooterProps) {
               {t("map")}
             </a>
           )}
+          <InstallButton />
           <ul className="flex gap-4 text-sm">
             {settings?.instagram_url && (
               <li>
