@@ -25,6 +25,8 @@ async function dragWithKeyboard(page: Page, handle: Locator, steps: number, chec
     await page.keyboard.press("Space");
     await check();
   }).toPass({ timeout: 30_000 });
+  // the list shows the new order at once; give the save request time to reach the server before moving on
+  await page.waitForLoadState("networkidle");
 }
 
 const sectionNames = (page: Page) => page.locator("[data-section-name]").allInnerTexts();

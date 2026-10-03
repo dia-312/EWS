@@ -113,10 +113,12 @@ test("a product goes from creation to visibility, with images, and can be duplic
   };
   await moveFirstPicture("ArrowRight", 0); // the pictures sit side by side, so the arrows move sideways
   await expect.poll(sources).toEqual([dragged[1], dragged[0]]);
+  await page.waitForLoadState("networkidle"); // let the save reach the server before reloading
   await page.reload();
   expect(await sources()).toEqual([dragged[1], dragged[0]]);
   await moveFirstPicture("ArrowLeft", 1);
   await expect.poll(sources).toEqual(dragged);
+  await page.waitForLoadState("networkidle");
 
   await images.getByRole("button", { name: "Make primary" }).click();
   await expect(images.getByText("Primary", { exact: true })).toHaveCount(1);
