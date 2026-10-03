@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireEditor } from "@/lib/auth";
 import { ADDABLE_SECTION_TYPES, isProductSection, moveId } from "@/lib/homepage";
+import { isPermutation } from "@/lib/reorder";
 import { createClient } from "@/lib/supabase/server";
 import type { FormErrors } from "@/lib/validations/category";
 import { parseSectionForm } from "@/lib/validations/homepage";
@@ -44,6 +45,24 @@ export async function moveSection(id: string, direction: "up" | "down") {
     ),
   );
   refresh();
+}
+
+/** Saves the order the owner dragged the sections into. */
+export async function reorderSections(ids: string[]): Promise<{ error?: string }> {
+  const session = await requireEditor();
+  const db = await createClient();
+
+  const { data: rows } = await db.from("homepage_sections").select("id").eq("store_id", session.storeId);
+  if (!rows || !isPermutation(ids, rows.map((row) => row.id))) return { error: "invalid" };
+
+  const results = await Promise.all(
+    ids.map((sectionId, index) =>
+      db.from("homepage_sections").update({ display_order: index + 1 }).eq("id", sectionId).eq("store_id", session.storeId),
+    ),
+  );
+  if (results.some((result) => result.error)) return { error: "failed" };
+  refresh();
+  return {};
 }
 
 export async function toggleSection(id: string, active: boolean) {

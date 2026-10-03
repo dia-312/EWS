@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireEditor } from "@/lib/auth";
+import { isPermutation } from "@/lib/reorder";
 import { createClient } from "@/lib/supabase/server";
 import {
   parseCategoryForm,
@@ -120,6 +121,24 @@ export async function moveCategory(id: string, direction: "up" | "down") {
     ),
   );
   revalidatePath("/admin/categories");
+}
+
+/** Saves the order the owner dragged the categories into. */
+export async function reorderCategories(ids: string[]): Promise<{ error?: string }> {
+  const session = await requireEditor();
+  const supabase = await createClient();
+
+  const { data: rows } = await supabase.from("categories").select("id").eq("store_id", session.storeId);
+  if (!rows || !isPermutation(ids, rows.map((row) => row.id))) return { error: "invalid" };
+
+  const results = await Promise.all(
+    ids.map((categoryId, index) =>
+      supabase.from("categories").update({ display_order: index + 1 }).eq("id", categoryId).eq("store_id", session.storeId),
+    ),
+  );
+  if (results.some((result) => result.error)) return { error: "failed" };
+  revalidatePath("/admin/categories");
+  return {};
 }
 
 export type DeleteCategoryResult = { error?: "has_products" | "delete_failed" };

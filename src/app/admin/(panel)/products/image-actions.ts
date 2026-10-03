@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireEditor } from "@/lib/auth";
+import { isPermutation } from "@/lib/reorder";
 import {
   isValidImagePath,
   MAX_IMAGES_PER_PRODUCT,
@@ -132,6 +133,26 @@ export async function moveProductImage(
   if (results.some((result) => result.error)) return { error: "failed" };
 
   refresh(image.product_id);
+  return {};
+}
+
+/** Saves the order the owner dragged a product's pictures into. */
+export async function reorderProductImages(productId: string, ids: string[]): Promise<ImageActionResult> {
+  const session = await requireEditor();
+  const db = await createClient();
+
+  const { data: product } = await db.from("products").select("id").eq("id", productId).eq("store_id", session.storeId).maybeSingle();
+  if (!product) return { error: "invalid" };
+
+  const { data: rows } = await db.from("product_images").select("id").eq("product_id", productId);
+  if (!rows || !isPermutation(ids, rows.map((row) => row.id))) return { error: "invalid" };
+
+  const results = await Promise.all(
+    ids.map((id, index) => db.from("product_images").update({ display_order: index + 1 }).eq("id", id).eq("product_id", productId)),
+  );
+  if (results.some((result) => result.error)) return { error: "failed" };
+
+  refresh(productId);
   return {};
 }
 

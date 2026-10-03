@@ -96,6 +96,23 @@ test("a product goes from creation to visibility, with images, and can be duplic
   expect(thumb.status(), "the stored thumbnail is publicly readable").toBe(200);
   expect(thumb.headers()["content-type"]).toMatch(/image\/(webp|jpeg)/);
 
+  // ---- pictures can be reordered by dragging (keyboard: Space, arrow, Space), and the order is saved
+  const sources = () => images.locator("li img").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src")));
+  const dragged = await sources();
+  const moveFirstPicture = async (key: "ArrowDown" | "ArrowUp", handleIndex: number) => {
+    await images.locator("[data-drag-handle]").nth(handleIndex).focus();
+    await page.keyboard.press("Space");
+    await page.keyboard.press(key);
+    await page.waitForTimeout(250);
+    await page.keyboard.press("Space");
+  };
+  await moveFirstPicture("ArrowDown", 0);
+  await expect.poll(sources).toEqual([dragged[1], dragged[0]]);
+  await page.reload();
+  expect(await sources()).toEqual([dragged[1], dragged[0]]);
+  await moveFirstPicture("ArrowUp", 1);
+  await expect.poll(sources).toEqual(dragged);
+
   await images.getByRole("button", { name: "Make primary" }).click();
   await expect(images.getByText("Primary", { exact: true })).toHaveCount(1);
 
