@@ -15,6 +15,11 @@
   --accent: #f59e0b;
   --accent-foreground: #000000;
   --danger: #dc2626;
+
+  /* Font families declared by the self-hosted faces (see lib/font-faces.ts). */
+  --font-tajawal: "Tajawal";
+  --font-cairo: "Cairo";
+  --font-ibm-plex-sans-arabic: "IBM Plex Sans Arabic";
 }
 
 /* Derived from foreground/background so they stay correct in dark presets. */

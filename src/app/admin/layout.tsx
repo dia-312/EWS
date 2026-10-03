@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import { getDirection, type Locale } from "@/config/i18n";
-import { fontVariables } from "@/lib/fonts";
+import "@/lib/font-faces";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default async function AdminRootLayout({ children }: LayoutProps<"/admin"
   const locale = (await getLocale()) as Locale;
 
   return (
-    <html lang={locale} dir={getDirection(locale)} className={`${fontVariables} h-full antialiased`}>
+    <html lang={locale} dir={getDirection(locale)} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
