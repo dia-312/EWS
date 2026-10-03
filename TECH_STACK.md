@@ -1,5 +1,7 @@
 # Tech Stack & Technical Decisions
 
+Start with `README.md` and `docs/`. This file records the choices and why; the rows in the first table are kept in step with what was actually built.
+
 Companion to `electronics_store_full_agent_spec.md`. The spec stays the source of truth for features; this file records the technology choices made while planning.
 
 ## Stack
@@ -7,13 +9,11 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 | Layer | Choice | Notes |
 |---|---|---|
 | Framework | Next.js (App Router) + TypeScript | SSR for SEO, route handlers for the API, middleware to protect `/admin` |
-| Styling | Tailwind CSS + shadcn/ui (Radix) | Theme tokens as CSS variables, loaded from `store_theme`. Use logical utilities (`ms-`, `me-`, `ps-`, `pe-`, `text-start`) so RTL works without overrides |
-| Database / Auth / Storage | Supabase Cloud (Postgres, RLS, Auth, Storage) | `@supabase/ssr`; TS types generated with `supabase gen types` |
+| Styling | Tailwind CSS 4 with small hand-written components (`src/components/ui`) | Theme tokens as CSS variables, loaded from `store_theme`. Logical utilities (`ms-`, `me-`, `ps-`, `pe-`, `text-start`) make RTL work without overrides |
+| Database / Auth / Storage | Supabase Cloud (Postgres, RLS, Auth, Storage) | `@supabase/ssr`; types in `src/types/database.types.ts` are kept by hand, one update per migration |
 | i18n | next-intl | `/ar` and `/en` routes, `dir` set per locale, Arabic default |
-| Forms / validation | React Hook Form + Zod | Zod schemas shared between forms and API route handlers (`lib/validations`) |
-| Admin tables | TanStack Table | |
-| Drag & drop | dnd-kit | Homepage sections, categories, product images |
-| Charts | Recharts | |
+| Forms / validation | Zod, with the `useActionForm` hook (`src/lib/use-action-form.ts`) | Zod schemas are shared between forms, server actions and API routes. React 19 resets uncontrolled fields after a form `action`, hence `useActionForm`. React Hook Form is installed but not used |
+| Charts | none: the daily-views chart is plain HTML/CSS | Fewer dependencies for one bar chart |
 | Client state | Zustand + localStorage (persist) | Favorites, compare, recently viewed — no accounts in v1 |
 | Share / QR | Web Share API + fallback dialog; `uqr` (no network, no third-party QR service) | QR links carry `?src=qr` so scans can be counted later; admin downloads SVG/PNG per product |
 | Analytics | Own `analytics_events` table via `POST /api/track` (zod-validated, anonymous insert under RLS); `analytics_summary` RPC feeds the admin dashboard | No cookies and no personal data (random per-tab id); Do Not Track respected; no third-party scripts, so no consent banner needed. Old events are not purged yet (free tier is 500 MB; a year of a small shop is a few MB) |
@@ -26,11 +26,9 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 | Ratings and reviews | `product_reviews` (1-5 stars, optional name and comment; no accounts). Every review starts pending and shows only after the owner approves it in Admin → Reviews; links are refused | Average and count come from approved reviews only: stars on the product page and on cards (`search_products` returns them), and `aggregateRating` in the page's structured data. A "rating" filter is not offered yet (few reviews would make it misleading) |
 | Team and account | Admin → Team (owners only) connects an existing Supabase login to the store with a role, changes roles, removes people; Admin → My account changes your own password | The logins themselves are created in the Supabase dashboard, so the site never holds a secret key: four `security definer` functions (`team_members`, `add_team_member`, `set_team_role`, `remove_team_member`) check the caller is an owner. Nobody can change or remove themselves, so a store always keeps an owner. Password reset for others and "forgot password" email go through Supabase (needs email sending configured there) |
 | Site pictures | `SiteImageField` uploads (browser resizes to WebP) into `store-banners` / `category-images`, then `saveSiteImage` records the URL and deletes the old file | Homepage hero (`store_settings.hero_image_url`, dark layer keeps text readable), category pictures, offer banners, and any number of promotional banner sections (picture + optional link; links are restricted to site paths or https) |
-| QR | `qrcode` | Generated from the canonical product URL |
-| PWA | Serwist | Static assets only, no offline catalog promise in v1 |
-| Fonts | Tajawal or IBM Plex Sans Arabic via `next/font` | Final pick during design |
+| Fonts | Tajawal, Cairo and IBM Plex Sans Arabic, self-hosted through `@fontsource` (`src/lib/font-faces.ts`) | The owner picks one in Appearance; no request goes to Google |
 | Tests | Vitest (unit) + Playwright (e2e, RTL + mobile viewports) | |
-| Tooling | pnpm, ESLint, Prettier | |
+| Tooling | pnpm, ESLint | |
 | Hosting | Cloudflare Workers via OpenNext (`@opennextjs/cloudflare`), built by Cloudflare Workers Builds from GitHub `main` | Verified 2026-10-02 on the free plan: the SSR home page reading Supabase returned 200 on 20/20 sequential requests (~0.85 s each from a remote client). Vercel Hobby is ruled out (non-commercial use only). Local OpenNext builds fail on Windows (symlink EPERM), so builds run on Cloudflare. `proxy.ts` (Node middleware) is experimental on OpenNext: prefer server-side auth checks, and legacy `middleware.ts` if middleware is needed. Recheck CPU limits once real catalog pages exist |
 
 ## Single store now, resellable later
@@ -38,7 +36,7 @@ Companion to `electronics_store_full_agent_spec.md`. The spec stays the source o
 - One deployment = one store. The active store is resolved from the `STORE_SLUG` env var.
 - The schema keeps `stores` and `store_id` on every business table, as in the spec, but no multi-tenant logic (domain routing, tenant onboarding) is built in v1.
 - All store-specific data (name, logo, contact, theme, products) lives in the database and is loaded by a seed script. Nothing store-specific is hardcoded.
-- Selling to another store = new Supabase project + new Vercel project + new seed file + new env vars.
+- Selling to another store = new Supabase project + new Cloudflare project + new seed file + new env vars. The steps are in `docs/developer-handover.md`.
 
 ## Cost & handover
 
@@ -117,4 +115,4 @@ Pitfalls found by these tests and fixed:
 - Node.js LTS (24.x, installed via winget) and pnpm (installed with `npm install -g pnpm`; `corepack enable` fails without admin rights on Windows).
 - Git repository initialized on branch `main`.
 - Supabase CLI — installed through pnpm/npx when needed.
-- A Supabase Cloud project and a Vercel account.
+- A Supabase Cloud project and a Cloudflare account (Vercel Hobby is not used: non-commercial only).
