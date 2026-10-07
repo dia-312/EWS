@@ -21,7 +21,7 @@ export function AvailabilityBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium",
         known ? AVAILABILITY_STYLE[availability] : "bg-surface text-muted",
         className,
       )}
@@ -59,19 +59,19 @@ export function ProductBadges({
   return (
     <ul className={cn("flex flex-wrap gap-1", className)}>
       {onSale && (
-        <li className="rounded-full bg-danger px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
+        <li className="rounded-pill bg-danger px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
           {discountPercent ? `${t("sale")} ${discountPercent}%` : t("sale")}
         </li>
       )}
       {isNew && (
-        <li className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-foreground shadow-sm">
+        <li className="rounded-pill bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-foreground shadow-sm">
           {t("new")}
         </li>
       )}
       {curated.map((key) => (
         <li
           key={key}
-          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground shadow-sm"
+          className="rounded-pill bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground shadow-sm"
         >
           {KNOWN_CURATED_KEYS.has(key) ? t(key as "featured") : key}
         </li>

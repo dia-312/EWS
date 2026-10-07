@@ -19,10 +19,10 @@ export default function StorefrontNotFound() {
       <h1 className="text-2xl font-extrabold sm:text-3xl">{t("title")}</h1>
       <p className="max-w-md text-muted">{t("body")}</p>
       <div className="mt-3 flex flex-wrap justify-center gap-3">
-        <Link href="/" className={`${buttonClass("primary")} rounded-full px-7 py-3 shadow-glow`}>
+        <Link href="/" className={`${buttonClass("primary")} rounded-pill px-7 py-3 shadow-glow`}>
           {t("home")}
         </Link>
-        <Link href="/products" className={`${buttonClass("secondary")} rounded-full px-7 py-3`}>
+        <Link href="/products" className={`${buttonClass("secondary")} rounded-pill px-7 py-3`}>
           {tNav("allProducts")}
         </Link>
       </div>

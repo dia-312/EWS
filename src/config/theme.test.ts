@@ -65,6 +65,7 @@ describe("themeCssVars", () => {
     expect(vars["--primary-foreground"]).toMatch(/^#/);
     expect(vars["--background"]).toBe("#111827");
     expect(vars["--ui-radius-lg"]).toBe("0.75rem");
+    expect(vars["--ui-radius-pill"]).toBe("9999px");
     expect(vars["--font-store"]).toBe("var(--font-cairo)");
   });
 });

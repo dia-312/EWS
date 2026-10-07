@@ -69,7 +69,7 @@ export function ShareButton({ productId, url, title, text }: ShareButtonProps) {
 
   return (
     <>
-      <Button variant="secondary" size="sm" className="rounded-full" onClick={share} data-share>
+      <Button variant="secondary" size="sm" className="rounded-pill" onClick={share} data-share>
         <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <circle cx="18" cy="5" r="3" />
           <circle cx="6" cy="12" r="3" />

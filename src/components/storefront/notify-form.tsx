@@ -32,7 +32,7 @@ export function NotifyForm({ productId, type }: { productId: string; type: Notif
 
   if (!open) {
     return (
-      <Button variant="secondary" size="sm" className="rounded-full" onClick={() => setOpen(true)} data-notify-open={type}>
+      <Button variant="secondary" size="sm" className="rounded-pill" onClick={() => setOpen(true)} data-notify-open={type}>
         {t("button")}
       </Button>
     );

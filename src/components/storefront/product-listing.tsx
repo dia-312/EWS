@@ -53,7 +53,7 @@ export async function ProductListing({
 
       <div className="flex min-w-0 flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p role="status" className="rounded-full bg-primary-soft px-4 py-1.5 text-sm font-medium">
+          <p role="status" className="rounded-pill bg-primary-soft px-4 py-1.5 text-sm font-medium">
             {t("results", { count: result.total })}
           </p>
           <div className="lg:hidden">

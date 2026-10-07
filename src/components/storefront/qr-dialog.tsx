@@ -23,7 +23,7 @@ export function QrDialog({ url, productName }: { url: string; productName: strin
 
   return (
     <>
-      <Button variant="secondary" size="sm" className="rounded-full" onClick={open} data-qr-open>
+      <Button variant="secondary" size="sm" className="rounded-pill" onClick={open} data-qr-open>
         <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <rect x="3" y="3" width="7" height="7" rx="1" />
           <rect x="14" y="3" width="7" height="7" rx="1" />

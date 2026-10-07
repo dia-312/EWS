@@ -14,13 +14,13 @@ export function FavoritesLink() {
     <Link
       href="/favorites"
       aria-label={count > 0 ? t("favoritesWithCount", { count }) : t("favorites")}
-      className="relative inline-flex size-10 items-center justify-center rounded-full border border-border bg-background transition-colors hover:border-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-primary"
+      className="relative inline-flex size-10 items-center justify-center rounded-pill border border-border bg-background transition-colors hover:border-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-primary"
     >
       <HeartIcon className="size-5" filled={count > 0} />
       {count > 0 && (
         <span
           data-favorites-count
-          className="absolute -end-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-danger px-1 text-xs font-bold leading-5 text-white"
+          className="absolute -end-1 -top-1 flex min-w-5 items-center justify-center rounded-pill bg-danger px-1 text-xs font-bold leading-5 text-white"
         >
           {count}
         </span>

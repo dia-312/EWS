@@ -74,7 +74,7 @@ export function RecentlyViewed({ excludeId }: { excludeId?: string }) {
   return (
     <section aria-labelledby="recent-title" className="flex flex-col gap-4" data-recently-viewed>
       <div className="flex items-end justify-between gap-3">
-        <h2 id="recent-title" className="text-2xl font-bold">
+        <h2 id="recent-title" className="section-title">
           {t("title")}
         </h2>
         <Button variant="ghost" size="sm" onClick={clearRecent}>

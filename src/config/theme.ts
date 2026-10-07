@@ -103,6 +103,15 @@ const RADIUS_SCALE: Record<RadiusKey, [string, string, string]> = {
   full: ["9999px", "1.5rem", "2rem"],
 };
 
+/** Radius of pill-shaped buttons, chips and inputs: round unless the owner chose square-ish corners. */
+const PILL_RADIUS: Record<RadiusKey, string> = {
+  none: "0.125rem",
+  sm: "0.5rem",
+  md: "9999px",
+  lg: "9999px",
+  full: "9999px",
+};
+
 /** The editable theme columns of store_theme (all nullable except preset). */
 export type StoredTheme = {
   preset: string;
@@ -161,6 +170,7 @@ export function themeCssVars(theme: ResolvedTheme): Record<string, string> {
     "--ui-radius-lg": lg,
     "--ui-radius-xl": xl,
     "--ui-radius-2xl": xxl,
+    "--ui-radius-pill": PILL_RADIUS[theme.radius],
     "--font-store": `var(--font-${theme.font})`,
   };
 }

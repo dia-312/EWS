@@ -12,7 +12,7 @@ export function SearchForm({ locale, defaultValue = "" }: { locale: string; defa
       role="search"
       action={`/${locale}/products`}
       method="get"
-      className="group flex w-full items-center gap-1 rounded-full border border-border bg-surface p-1 transition-shadow focus-within:border-primary focus-within:bg-background focus-within:shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_16%,transparent)]"
+      className="group flex w-full items-center gap-1 rounded-pill border border-border bg-surface p-1 transition-shadow focus-within:border-primary focus-within:bg-background focus-within:shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_16%,transparent)]"
     >
       <label htmlFor="site-search" className="sr-only">
         {t("label")}
@@ -33,7 +33,7 @@ export function SearchForm({ locale, defaultValue = "" }: { locale: string; defa
       />
       <button
         type="submit"
-        className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-glow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="rounded-pill bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-glow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         {t("submit")}
       </button>

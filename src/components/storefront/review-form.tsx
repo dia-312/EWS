@@ -27,7 +27,7 @@ export function ReviewForm({ productId }: { productId: string }) {
 
   if (!open) {
     return (
-      <Button variant="secondary" size="sm" className="self-start rounded-full" onClick={() => setOpen(true)} data-review-open>
+      <Button variant="secondary" size="sm" className="self-start rounded-pill" onClick={() => setOpen(true)} data-review-open>
         {t("write")}
       </Button>
     );
