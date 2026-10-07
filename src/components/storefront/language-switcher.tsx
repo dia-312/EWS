@@ -21,7 +21,7 @@ export function LanguageSwitcher() {
       locale={other}
       hrefLang={other}
       lang={other}
-      className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-primary"
+      className="inline-flex h-10 items-center rounded-full border border-border bg-background px-4 text-sm font-medium transition-colors hover:border-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-primary"
       aria-label={t("switchTo", { language: t(other) })}
     >
       {t(other)}

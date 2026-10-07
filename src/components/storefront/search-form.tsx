@@ -8,10 +8,19 @@ export function SearchForm({ locale, defaultValue = "" }: { locale: string; defa
   const t = useTranslations("store.search");
 
   return (
-    <form role="search" action={`/${locale}/products`} method="get" className="flex w-full">
+    <form
+      role="search"
+      action={`/${locale}/products`}
+      method="get"
+      className="group flex w-full items-center gap-1 rounded-full border border-border bg-surface p-1 transition-shadow focus-within:border-primary focus-within:bg-background focus-within:shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_16%,transparent)]"
+    >
       <label htmlFor="site-search" className="sr-only">
         {t("label")}
       </label>
+      <svg viewBox="0 0 24 24" aria-hidden className="ms-3 size-5 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
       <input
         id="site-search"
         name="q"
@@ -20,11 +29,11 @@ export function SearchForm({ locale, defaultValue = "" }: { locale: string; defa
         placeholder={t("placeholder")}
         autoComplete="off"
         maxLength={100}
-        className="min-w-0 flex-1 rounded-s-lg border border-e-0 border-border bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted"
       />
       <button
         type="submit"
-        className="rounded-e-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-glow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         {t("submit")}
       </button>
