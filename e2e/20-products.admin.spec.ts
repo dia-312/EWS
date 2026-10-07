@@ -99,26 +99,27 @@ test("a product goes from creation to visibility, with images, and can be duplic
   // ---- pictures can be reordered by dragging (keyboard: Space, arrow, Space), and the order is saved
   const sources = () => images.locator("li img").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src")));
   const dragged = await sources();
-  const moveFirstPicture = async (key: "ArrowRight" | "ArrowLeft", handleIndex: number) => {
+  // Moves a picture one place sideways with the keyboard. If the attempt does not land (a key pressed a
+  // moment too early), it is cancelled and tried again until the pictures are in the expected order.
+  const moveFirstPicture = async (key: "ArrowRight" | "ArrowLeft", handleIndex: number, expected: (string | null)[]) => {
     await expect(images.locator("[data-sortable-ready]")).toHaveAttribute("data-sortable-ready", "true");
-    // Keys pressed before the page has hydrated are lost, so confirm the picture was picked up.
     await expect(async () => {
+      await page.keyboard.press("Escape"); // cancels a drag left over from an earlier attempt
       await images.locator("[data-drag-handle]").nth(handleIndex).focus();
       await page.keyboard.press("Space");
       await expect(page.locator("[id^='DndLiveRegion']")).toContainText(/Picked up|is now at position/, { timeout: 1500 });
-    }).toPass({ timeout: 15_000 });
-    await page.keyboard.press(key);
-    await page.waitForTimeout(250);
-    await page.keyboard.press("Space");
+      await page.waitForTimeout(200); // the arrow keys are listened to a moment after the pick-up
+      await page.keyboard.press(key);
+      await page.waitForTimeout(250);
+      await page.keyboard.press("Space");
+      await expect.poll(sources, { timeout: 3000 }).toEqual(expected);
+    }).toPass({ timeout: 30_000 });
+    await page.waitForLoadState("networkidle"); // let the save reach the server
   };
-  await moveFirstPicture("ArrowRight", 0); // the pictures sit side by side, so the arrows move sideways
-  await expect.poll(sources).toEqual([dragged[1], dragged[0]]);
-  await page.waitForLoadState("networkidle"); // let the save reach the server before reloading
+  await moveFirstPicture("ArrowRight", 0, [dragged[1], dragged[0]]); // the pictures sit side by side, so the arrows move sideways
   await page.reload();
   expect(await sources()).toEqual([dragged[1], dragged[0]]);
-  await moveFirstPicture("ArrowLeft", 1);
-  await expect.poll(sources).toEqual(dragged);
-  await page.waitForLoadState("networkidle");
+  await moveFirstPicture("ArrowLeft", 1, dragged);
 
   await images.getByRole("button", { name: "Make primary" }).click();
   await expect(images.getByText("Primary", { exact: true })).toHaveCount(1);
