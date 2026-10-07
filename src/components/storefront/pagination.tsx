@@ -22,7 +22,7 @@ export function Pagination({ page, totalPages, hrefFor }: PaginationProps) {
   return (
     <nav aria-label={t("label")} className="flex flex-wrap items-center justify-center gap-2">
       {page > 1 ? (
-        <Link href={hrefFor(page - 1)} rel="prev" className={buttonClass("secondary", "sm")}>
+        <Link href={hrefFor(page - 1)} rel="prev" className={`${buttonClass("secondary", "sm")} rounded-full px-4 py-2`}>
           {t("previous")}
         </Link>
       ) : null}
@@ -36,9 +36,9 @@ export function Pagination({ page, totalPages, hrefFor }: PaginationProps) {
               aria-current={n === page ? "page" : undefined}
               aria-label={t("goTo", { page: n })}
               className={cn(
-                "inline-flex min-w-9 items-center justify-center rounded-lg px-2.5 py-1.5 text-sm",
+                "inline-flex min-w-10 items-center justify-center rounded-full px-3 py-2 text-sm transition-colors",
                 "focus-visible:outline-2 focus-visible:outline-primary",
-                n === page ? "bg-primary font-bold text-primary-foreground" : "border border-border hover:bg-surface",
+                n === page ? "bg-primary font-bold text-primary-foreground shadow-glow" : "border border-border bg-background hover:border-primary hover:bg-primary-soft",
               )}
             >
               {n}
@@ -48,7 +48,7 @@ export function Pagination({ page, totalPages, hrefFor }: PaginationProps) {
       </ul>
 
       {page < totalPages ? (
-        <Link href={hrefFor(page + 1)} rel="next" className={buttonClass("secondary", "sm")}>
+        <Link href={hrefFor(page + 1)} rel="next" className={`${buttonClass("secondary", "sm")} rounded-full px-4 py-2`}>
           {t("next")}
         </Link>
       ) : null}

@@ -179,17 +179,17 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
         ]}
       />
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-12">
         <ProductGallery images={images} name={name} />
 
-        <div className="flex flex-col items-start gap-4">
+        <div className="flex flex-col items-start gap-4 rounded-3xl border border-border/80 bg-background p-6 shadow-card sm:p-8 lg:sticky lg:top-32">
           <ProductBadges
             onSale={Boolean(offer)}
             discountPercent={discountPercent}
             isNew={isNew}
             badgeKeys={badgeKeys}
           />
-          <h1 className="text-3xl font-bold leading-tight">{name}</h1>
+          <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">{name}</h1>
           {rating.count > 0 && (
             <a href="#reviews-title" className="flex items-center gap-2 text-sm" data-rating-link>
               <Stars value={rating.average!} />
@@ -227,16 +227,22 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
 
           {shortDescription && <p className="max-w-prose">{shortDescription}</p>}
 
-          <div className="flex flex-wrap gap-3 pt-2">
+          <div className="flex w-full flex-wrap gap-3 pt-2">
             {settings?.whatsapp && (
-              <WhatsAppButton number={settings.whatsapp} message={whatsappMessage} label={t("askOnWhatsapp")} productId={product.id} />
+              <WhatsAppButton
+                number={settings.whatsapp}
+                message={whatsappMessage}
+                label={t("askOnWhatsapp")}
+                productId={product.id}
+                className="flex-1 rounded-full px-7 py-3.5 text-base font-semibold shadow-glow sm:flex-none"
+              />
             )}
-            {settings?.phone && <CallButton phone={settings.phone} productId={product.id} />}
+            {settings?.phone && <CallButton phone={settings.phone} productId={product.id} className="rounded-full px-6 py-3.5 text-base font-semibold" />}
             {!settings?.whatsapp && !settings?.phone && (
               <p className="text-sm text-muted">{t("contactSoon")}</p>
             )}
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex w-full flex-wrap items-center gap-2 border-t border-border pt-4">
             <FavoriteButton productId={product.id} productName={name} variant="full" />
             <CompareButton productId={product.id} productName={name} variant="full" />
             <ShareButton productId={product.id} url={url} title={name} text={`${name} — ${formatPrice(current, store.currency_code, locale)}`} />
@@ -247,19 +253,19 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
       </div>
 
       {description && (
-        <section aria-labelledby="description-title" className="flex max-w-3xl flex-col gap-3">
-          <h2 id="description-title" className="text-xl font-bold">
+        <section aria-labelledby="description-title" className="flex max-w-4xl flex-col gap-3 rounded-3xl border border-border/80 bg-background p-6 shadow-card sm:p-8">
+          <h2 id="description-title" className="section-title">
             {t("description")}
           </h2>
-          <p className="whitespace-pre-line leading-relaxed">{description}</p>
+          <p className="whitespace-pre-line leading-loose">{description}</p>
         </section>
       )}
 
       <SpecsTable specs={product.product_specs} locale={locale} />
 
       {related.length > 0 && (
-        <section aria-labelledby="related-title" className="flex flex-col gap-4">
-          <h2 id="related-title" className="text-xl font-bold">
+        <section aria-labelledby="related-title" className="flex flex-col gap-5">
+          <h2 id="related-title" className="section-title">
             {t("related")}
           </h2>
           <ProductGrid items={related} locale={locale} currency={store.currency_code} />

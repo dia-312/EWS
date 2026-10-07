@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Breadcrumbs } from "@/components/storefront/breadcrumbs";
+import { PageHeader } from "@/components/storefront/page-header";
 import { CompareFallback } from "@/components/storefront/compare-bits";
 import { CompareTable } from "@/components/storefront/compare-table";
 import { EmptyState } from "@/components/storefront/empty-state";
@@ -40,11 +40,11 @@ export default async function ComparePage({ params, searchParams }: PageProps<"/
 
   return (
     <div className="flex flex-col gap-6">
-      <Breadcrumbs items={[{ label: tNav("home"), href: "/" }, { label: t("title") }]} />
-      <div>
-        <h1 className="text-3xl font-bold">{t("title")}</h1>
-        <p className="mt-1 text-sm text-muted">{t("intro", { max: MAX_COMPARE })}</p>
-      </div>
+      <PageHeader
+        crumbs={[{ label: tNav("home"), href: "/" }, { label: t("title") }]}
+        title={t("title")}
+        description={t("intro", { max: MAX_COMPARE })}
+      />
 
       {ids.length === 0 ? (
         <CompareFallback />

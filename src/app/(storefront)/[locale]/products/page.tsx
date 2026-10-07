@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { TrackSearch } from "@/components/storefront/tracker";
-import { Breadcrumbs } from "@/components/storefront/breadcrumbs";
+import { PageHeader } from "@/components/storefront/page-header";
 import { ProductListing } from "@/components/storefront/product-listing";
 import { locales } from "@/config/i18n";
 import { parseCatalogParams } from "@/lib/catalog-params";
@@ -44,8 +44,10 @@ export default async function ProductsPage({ params, searchParams }: PageProps<"
 
   return (
     <div className="flex flex-col gap-6">
-      <Breadcrumbs items={[{ label: tNav("home"), href: "/" }, { label: t("allProducts") }]} />
-      <h1 className="text-3xl font-bold">{catalogParams.q ? t("searchTitle", { query: catalogParams.q }) : t("allProducts")}</h1>
+      <PageHeader
+        crumbs={[{ label: tNav("home"), href: "/" }, { label: t("allProducts") }]}
+        title={catalogParams.q ? t("searchTitle", { query: catalogParams.q }) : t("allProducts")}
+      />
       {catalogParams.q && <TrackSearch query={catalogParams.q} />}
       <ProductListing locale={locale} store={store} params={catalogParams} basePath="/products" />
     </div>
