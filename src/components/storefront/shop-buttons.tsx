@@ -15,7 +15,7 @@ type ShopButtonProps = {
 };
 
 const baseButton =
-  "inline-flex items-center justify-center gap-2 rounded-full border font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+  "inline-flex items-center justify-center gap-2 rounded-pill border font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 export function FavoriteButton({ productId, productName, variant = "icon", className }: ShopButtonProps) {
   const t = useTranslations("store.shop");

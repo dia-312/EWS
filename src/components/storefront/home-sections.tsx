@@ -168,7 +168,7 @@ async function Section({
         {viewAll && (
           <Link
             href={viewAll}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-1.5 text-sm font-medium transition-colors hover:border-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-primary"
+            className="inline-flex items-center gap-1.5 rounded-pill border border-border bg-background px-4 py-1.5 text-sm font-medium transition-colors hover:border-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-primary"
           >
             {t("viewAll")}
             <span aria-hidden className="inline-block rtl:-scale-x-100">→</span>
@@ -201,7 +201,7 @@ async function Hero({
 
   return (
     <section
-      className={`relative isolate overflow-hidden rounded-[1.75rem] bg-secondary text-secondary-foreground shadow-lift ${image ? "min-h-[26rem]" : ""}`}
+      className={`relative isolate overflow-hidden rounded-3xl bg-secondary text-secondary-foreground shadow-lift ${image ? "min-h-[26rem]" : ""}`}
       aria-label={store.name}
       data-hero={image ? "image" : "plain"}
     >
@@ -225,11 +225,11 @@ async function Hero({
         <h1 className="text-4xl font-extrabold leading-[1.12] sm:text-6xl">{title}</h1>
         {(subtitle || about) && <p className="max-w-xl text-base opacity-90 sm:text-lg">{subtitle || about}</p>}
         <div className="flex flex-wrap gap-3 pt-1">
-          <Link href="/products" className={`${buttonClass("primary")} rounded-full px-7 py-3 text-base font-semibold shadow-glow ring-1 ring-white/20`}>
+          <Link href="/products" className={`${buttonClass("primary")} rounded-pill px-7 py-3 text-base font-semibold shadow-glow ring-1 ring-white/20`}>
             {t("browse")}
           </Link>
           {settings?.whatsapp && (
-            <WhatsAppButton number={settings.whatsapp} variant="secondary" className="rounded-full px-6 py-3 text-base font-semibold" />
+            <WhatsAppButton number={settings.whatsapp} variant="secondary" className="rounded-pill px-6 py-3 text-base font-semibold" />
           )}
         </div>
         {categories.length > 0 && (
@@ -238,7 +238,7 @@ async function Hero({
               <li key={category.id}>
                 <Link
                   href={`/categories/${category.slug}`}
-                  className="inline-flex rounded-full border border-current/25 bg-white/10 px-4 py-1.5 text-sm backdrop-blur-sm transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-current"
+                  className="inline-flex rounded-pill border border-current/25 bg-white/10 px-4 py-1.5 text-sm backdrop-blur-sm transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-current"
                 >
                   {pickLocalized(locale, category.name_ar, category.name_en)}
                 </Link>
@@ -369,12 +369,12 @@ async function DealOfTheDay({
         <p className="text-2xl font-bold sm:text-3xl">{name}</p>
         <Price current={current} was={was} currency={currency} locale={locale} size="lg" />
         {discountPercent && (
-          <span className="rounded-full bg-danger px-3.5 py-1 text-sm font-bold text-white shadow-sm">
+          <span className="rounded-pill bg-danger px-3.5 py-1 text-sm font-bold text-white shadow-sm">
             {t("save", { percent: discountPercent })}
           </span>
         )}
         {item.offer_ends_at && <OfferCountdown endsAt={item.offer_ends_at} />}
-        <Link href={`/products/${item.slug}`} className={`${buttonClass("primary")} mt-1 rounded-full px-7 py-3 text-base font-semibold shadow-glow`}>
+        <Link href={`/products/${item.slug}`} className={`${buttonClass("primary")} mt-1 rounded-pill px-7 py-3 text-base font-semibold shadow-glow`}>
           {t("viewDeal")}
         </Link>
       </div>
@@ -461,9 +461,9 @@ async function ContactSection({
       {address && <p className="max-w-xl opacity-90">{address}</p>}
       <div className="flex flex-wrap gap-3">
         {settings?.whatsapp && (
-          <WhatsAppButton number={settings.whatsapp} label={t("chatOnWhatsapp")} className="rounded-full px-6 py-3 font-semibold ring-1 ring-white/25" />
+          <WhatsAppButton number={settings.whatsapp} label={t("chatOnWhatsapp")} className="rounded-pill px-6 py-3 font-semibold ring-1 ring-white/25" />
         )}
-        {settings?.phone && <CallButton phone={settings.phone} className="rounded-full px-6 py-3 font-semibold" />}
+        {settings?.phone && <CallButton phone={settings.phone} className="rounded-pill px-6 py-3 font-semibold" />}
       </div>
     </section>
   );

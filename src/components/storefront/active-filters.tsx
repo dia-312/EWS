@@ -77,7 +77,7 @@ export function ActiveFilters({
         <li key={chip.key}>
           <Link
             href={chip.href}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-sm hover:bg-surface focus-visible:outline-2 focus-visible:outline-primary"
+            className="inline-flex items-center gap-1.5 rounded-pill border border-border bg-background px-3 py-1 text-sm hover:bg-surface focus-visible:outline-2 focus-visible:outline-primary"
             aria-label={t("remove", { filter: chip.label })}
           >
             <span dir="auto">{chip.label}</span>

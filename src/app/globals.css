@@ -62,6 +62,8 @@
   --radius-lg: var(--ui-radius-lg, 0.5rem);
   --radius-xl: var(--ui-radius-xl, 0.75rem);
   --radius-2xl: var(--ui-radius-2xl, 1rem);
+  --radius-3xl: calc(var(--ui-radius-2xl, 1rem) * 1.5);
+  --radius-pill: var(--ui-radius-pill, 9999px);
 }
 
 body {

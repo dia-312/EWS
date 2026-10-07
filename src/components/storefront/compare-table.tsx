@@ -35,33 +35,33 @@ export function CompareTable({ products, locale, currency }: CompareTableProps) 
   const tSpecs = useTranslations("specs");
   const specKeys = collectSpecKeys(products);
 
-  const cell = "border-b border-border px-4 py-3 align-top";
-  const rowHead = "sticky start-0 z-10 w-32 min-w-32 border-b border-border bg-surface px-4 py-3 text-start align-top text-sm font-medium sm:w-44 sm:min-w-44";
+  const cell = "border-b border-border/70 px-4 py-3.5 align-top";
+  const rowHead = "sticky start-0 z-10 w-32 min-w-32 border-b border-border/70 bg-surface px-4 py-3.5 text-start align-top text-sm font-semibold text-muted sm:w-44 sm:min-w-44";
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-border bg-background" tabIndex={0} role="region" aria-label={t("scrollRegion")}>
+    <div className="overflow-x-auto rounded-3xl border border-border/80 bg-background shadow-card" tabIndex={0} role="region" aria-label={t("scrollRegion")}>
       <table className="w-full min-w-[34rem] border-collapse text-sm">
         <caption className="sr-only">{t("caption")}</caption>
         <thead>
           <tr>
-            <th scope="col" className="sticky start-0 z-10 w-32 min-w-32 border-b border-border bg-surface px-4 py-3 text-start text-xs font-medium text-muted sm:w-44 sm:min-w-44">
+            <th scope="col" className="sticky start-0 z-10 w-32 min-w-32 border-b border-border/70 bg-surface px-4 py-3 text-start text-xs font-medium text-muted sm:w-44 sm:min-w-44">
               {t("product")}
             </th>
             {products.map((product) => {
               const name = localizedName(locale, product);
               const image = [...product.product_images].sort((a, b) => Number(b.is_primary) - Number(a.is_primary))[0];
               return (
-                <th key={product.id} scope="col" className="min-w-44 border-b border-border px-4 py-3 text-start align-top font-normal">
+                <th key={product.id} scope="col" className="min-w-44 border-b border-border/70 bg-gradient-to-b from-background to-primary-soft px-4 py-4 text-start align-top font-normal">
                   <div className="flex flex-col items-start gap-2">
-                    <div className="flex size-24 items-center justify-center overflow-hidden rounded-lg bg-surface">
+                    <div className="flex size-28 items-center justify-center overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_50%_35%,var(--background),var(--surface))] shadow-card">
                       {image?.public_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={thumbUrl(image.public_url)} alt="" width={96} height={96} loading="lazy" className="size-full object-contain p-1" />
+                        <img src={thumbUrl(image.public_url)} alt="" width={112} height={112} loading="lazy" className="size-full object-contain p-2" />
                       ) : (
                         <span aria-hidden className="text-2xl text-muted">▢</span>
                       )}
                     </div>
-                    <Link href={`/products/${product.slug}`} className="font-bold underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-primary">
+                    <Link href={`/products/${product.slug}`} className="text-base font-extrabold underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-primary">
                       {name}
                     </Link>
                     {product.brands && <span className="text-xs text-muted">{product.brands.name}</span>}
@@ -118,7 +118,7 @@ export function CompareTable({ products, locale, currency }: CompareTableProps) 
             <th scope="row" className={`${rowHead} border-b-0`} />
             {products.map((product) => (
               <td key={product.id} className="px-4 py-3">
-                <Link href={`/products/${product.slug}`} className={buttonClass("secondary", "sm")}>
+                <Link href={`/products/${product.slug}`} className={`${buttonClass("primary", "sm")} rounded-pill px-4`}>
                   {t("viewProduct")}
                 </Link>
               </td>

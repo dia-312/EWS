@@ -26,13 +26,13 @@ export function CompareTray() {
   return (
     <aside
       aria-label={t("trayLabel")}
-      className="fixed bottom-4 start-4 z-40 flex max-w-[calc(100%-6rem)] flex-wrap items-center gap-2 rounded-2xl border border-border bg-background p-2 ps-4 shadow-lg sm:max-w-none"
+      className="fixed bottom-4 start-4 z-40 flex max-w-[calc(100%-6rem)] flex-wrap items-center gap-2 rounded-3xl border border-border/70 bg-glass p-2 ps-4 shadow-lift backdrop-blur-xl sm:max-w-none"
     >
       <span className="text-sm font-medium" role="status">
         {t("selected", { count: compare.length, max: MAX_COMPARE })}
       </span>
       {ready ? (
-        <Link href={compareHref(compare)} className={buttonClass("primary", "sm")}>
+        <Link href={compareHref(compare)} className={`${buttonClass("primary", "sm")} rounded-pill px-4`}>
           {t("compareNow")}
         </Link>
       ) : (

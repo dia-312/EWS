@@ -18,7 +18,7 @@ export function SortLinks({ basePath, params }: { basePath: string; params: Cata
             href={`${basePath}${toQueryString({ ...params, sort: key, page: 1 })}`}
             aria-current={active ? "true" : undefined}
             className={cn(
-              "rounded-full px-3.5 py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-primary",
+              "rounded-pill px-3.5 py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-primary",
               active ? "bg-primary font-semibold text-primary-foreground shadow-glow" : "border border-border bg-background hover:border-primary hover:bg-primary-soft",
             )}
           >

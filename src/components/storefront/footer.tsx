@@ -43,8 +43,8 @@ export function Footer({ locale, store, settings }: FooterProps) {
             {t("contact")}
           </h2>
           <div className="flex flex-wrap gap-2">
-            {settings?.whatsapp && <WhatsAppButton number={settings.whatsapp} className="rounded-full ring-1 ring-white/25" />}
-            {settings?.phone && <CallButton phone={settings.phone} className="rounded-full" />}
+            {settings?.whatsapp && <WhatsAppButton number={settings.whatsapp} className="rounded-pill ring-1 ring-white/25" />}
+            {settings?.phone && <CallButton phone={settings.phone} className="rounded-pill" />}
           </div>
           {settings?.phone && (
             <p className="text-sm opacity-90" dir="ltr">

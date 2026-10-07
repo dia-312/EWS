@@ -48,7 +48,7 @@ export function Header({ locale, store, categories, whatsapp }: HeaderProps) {
             <LanguageSwitcher />
           </Suspense>
           {whatsapp && (
-            <WhatsAppButton number={whatsapp} className="hidden rounded-full px-4 py-2 text-sm shadow-glow sm:inline-flex" />
+            <WhatsAppButton number={whatsapp} className="hidden rounded-pill px-4 py-2 text-sm shadow-glow sm:inline-flex" />
           )}
         </div>
       </div>

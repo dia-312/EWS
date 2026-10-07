@@ -234,10 +234,10 @@ export default async function ProductPage({ params, searchParams }: PageProps<"/
                 message={whatsappMessage}
                 label={t("askOnWhatsapp")}
                 productId={product.id}
-                className="flex-1 rounded-full px-7 py-3.5 text-base font-semibold shadow-glow sm:flex-none"
+                className="flex-1 rounded-pill px-7 py-3.5 text-base font-semibold shadow-glow sm:flex-none"
               />
             )}
-            {settings?.phone && <CallButton phone={settings.phone} productId={product.id} className="rounded-full px-6 py-3.5 text-base font-semibold" />}
+            {settings?.phone && <CallButton phone={settings.phone} productId={product.id} className="rounded-pill px-6 py-3.5 text-base font-semibold" />}
             {!settings?.whatsapp && !settings?.phone && (
               <p className="text-sm text-muted">{t("contactSoon")}</p>
             )}

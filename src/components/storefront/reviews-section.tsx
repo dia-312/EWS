@@ -51,8 +51,8 @@ export async function ReviewsSection({
             {split.map(({ stars, count: n }) => (
               <li key={stars} className="flex items-center gap-2">
                 <span className="w-14 shrink-0">{t("starsShort", { count: stars })}</span>
-                <span className="h-2 flex-1 overflow-hidden rounded-full bg-surface">
-                  <span className="block h-full rounded-full bg-accent" style={{ width: `${(n / count) * 100}%` }} />
+                <span className="h-2 flex-1 overflow-hidden rounded-pill bg-surface">
+                  <span className="block h-full rounded-pill bg-accent" style={{ width: `${(n / count) * 100}%` }} />
                 </span>
                 <span className="w-6 text-end text-muted">{n}</span>
               </li>
