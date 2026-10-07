@@ -25,7 +25,7 @@ type FilterFormProps = {
 };
 
 const inputClass =
-  "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary";
+  "w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:bg-background focus-visible:ring-2 focus-visible:ring-primary/40";
 
 export function FilterForm({
   locale,
@@ -48,13 +48,13 @@ export function FilterForm({
 
       {!hideCategory && categories.length > 0 && (
         <fieldset className="flex flex-col gap-2">
-          <legend className="mb-1 text-sm font-bold">{t("category")}</legend>
-          <label className="flex items-center gap-2 text-sm">
+          <legend className="mb-1 text-sm font-extrabold">{t("category")}</legend>
+          <label className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1 text-sm transition-colors hover:bg-primary-soft">
             <input type="radio" name="category" value="" defaultChecked={!params.category} className="size-4 accent-primary" />
             {t("allCategories")}
           </label>
           {categories.map((category) => (
-            <label key={category.id} className="flex items-center gap-2 text-sm">
+            <label key={category.id} className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1 text-sm transition-colors hover:bg-primary-soft">
               <input
                 type="radio"
                 name="category"
@@ -70,9 +70,9 @@ export function FilterForm({
 
       {brands.length > 0 && (
         <fieldset className="flex flex-col gap-2">
-          <legend className="mb-1 text-sm font-bold">{t("brand")}</legend>
+          <legend className="mb-1 text-sm font-extrabold">{t("brand")}</legend>
           {brands.map((brand) => (
-            <label key={brand.id} className="flex items-center gap-2 text-sm">
+            <label key={brand.id} className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1 text-sm transition-colors hover:bg-primary-soft">
               <input
                 type="checkbox"
                 name="brand"
@@ -87,7 +87,7 @@ export function FilterForm({
       )}
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-sm font-bold">{t("price")}</legend>
+        <legend className="mb-1 text-sm font-extrabold">{t("price")}</legend>
         <div className="flex items-center gap-2" dir="ltr">
           <label htmlFor={id("min")} className="sr-only">
             {t("minPrice")}
@@ -122,7 +122,7 @@ export function FilterForm({
       </fieldset>
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-sm font-bold">{t("availability")}</legend>
+        <legend className="mb-1 text-sm font-extrabold">{t("availability")}</legend>
         {AVAILABILITY_VALUES.map((value) => (
           <label key={value} className="flex items-center gap-2 text-sm">
             <input
@@ -143,7 +143,7 @@ export function FilterForm({
       </label>
 
       <div className="flex gap-2">
-        <Button type="submit" className="flex-1">
+        <Button type="submit" className="flex-1 rounded-xl">
           {t("apply")}
         </Button>
         {hasFilters && (

@@ -14,7 +14,7 @@ type PriceProps = {
 export function Price({ current, was, currency, locale, size = "md", className }: PriceProps) {
   return (
     <div className={cn("flex flex-wrap items-baseline gap-x-2", className)} dir="ltr">
-      <span className={cn("font-bold", size === "lg" ? "text-3xl" : "text-lg")}>
+      <span className={cn("font-extrabold", was !== null && "text-danger", size === "lg" ? "text-4xl" : "text-lg")}>
         {formatPrice(current, currency, locale)}
       </span>
       {was !== null && (

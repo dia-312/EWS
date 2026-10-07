@@ -40,7 +40,7 @@ export function FavoriteButton({ productId, productName, variant = "icon", class
         }}
         className={cn(
           baseButton,
-          saved ? "border-danger bg-danger/10 text-danger" : "border-border bg-background/90 text-foreground hover:bg-surface",
+          saved ? "border-danger bg-danger/10 text-danger shadow-card backdrop-blur" : "border-border/70 bg-glass text-foreground shadow-card backdrop-blur hover:bg-background",
           variant === "icon" ? "size-9" : "px-4 py-2 text-sm",
           className,
         )}
@@ -78,7 +78,7 @@ export function CompareButton({ productId, productName, variant = "icon", classN
         }}
         className={cn(
           baseButton,
-          selected ? "border-primary bg-primary/10 text-primary" : "border-border bg-background/90 text-foreground hover:bg-surface",
+          selected ? "border-primary bg-primary-soft text-primary shadow-card backdrop-blur" : "border-border/70 bg-glass text-foreground shadow-card backdrop-blur hover:bg-background",
           variant === "icon" ? "size-9" : "px-4 py-2 text-sm",
           className,
         )}

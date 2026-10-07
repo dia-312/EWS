@@ -2,9 +2,9 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/cn";
 
 const AVAILABILITY_STYLE: Record<string, string> = {
-  in_stock: "bg-green-100 text-green-800",
-  limited: "bg-amber-100 text-amber-900",
-  out_of_stock: "bg-red-100 text-red-800",
+  in_stock: "bg-green-100 text-green-800 ring-1 ring-green-600/15",
+  limited: "bg-amber-100 text-amber-900 ring-1 ring-amber-600/20",
+  out_of_stock: "bg-red-100 text-red-800 ring-1 ring-red-600/15",
 };
 
 /** Stock state with a text label (never color alone). */
@@ -59,19 +59,19 @@ export function ProductBadges({
   return (
     <ul className={cn("flex flex-wrap gap-1", className)}>
       {onSale && (
-        <li className="rounded-full bg-danger px-2.5 py-0.5 text-xs font-bold text-white">
+        <li className="rounded-full bg-danger px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
           {discountPercent ? `${t("sale")} ${discountPercent}%` : t("sale")}
         </li>
       )}
       {isNew && (
-        <li className="rounded-full bg-green-700 px-2.5 py-0.5 text-xs font-bold text-white">
+        <li className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-foreground shadow-sm">
           {t("new")}
         </li>
       )}
       {curated.map((key) => (
         <li
           key={key}
-          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground shadow-sm"
         >
           {KNOWN_CURATED_KEYS.has(key) ? t(key as "featured") : key}
         </li>

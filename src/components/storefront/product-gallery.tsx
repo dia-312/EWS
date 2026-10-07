@@ -21,7 +21,7 @@ export function ProductGallery({ images, name }: { images: GalleryImage[]; name:
       <div
         role="img"
         aria-label={t("noImage")}
-        className="flex aspect-square items-center justify-center rounded-2xl border border-border bg-surface text-muted"
+        className="flex aspect-square items-center justify-center rounded-3xl border border-border bg-[radial-gradient(circle_at_50%_35%,var(--background),var(--surface))] text-muted shadow-card"
       >
         <svg viewBox="0 0 24 24" className="size-20" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden>
           <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -34,7 +34,7 @@ export function ProductGallery({ images, name }: { images: GalleryImage[]; name:
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="aspect-square overflow-hidden rounded-2xl border border-border bg-background">
+      <div className="aspect-square overflow-hidden rounded-3xl border border-border/80 bg-[radial-gradient(circle_at_50%_35%,var(--background),var(--surface))] shadow-card">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={current.url}
@@ -42,7 +42,7 @@ export function ProductGallery({ images, name }: { images: GalleryImage[]; name:
           width={1600}
           height={1600}
           fetchPriority="high"
-          className="size-full object-contain p-4"
+          className="size-full object-contain p-6 sm:p-10"
         />
       </div>
 
@@ -56,8 +56,8 @@ export function ProductGallery({ images, name }: { images: GalleryImage[]; name:
                 aria-label={t("showImage", { number: position + 1, total: images.length })}
                 aria-current={position === index ? "true" : undefined}
                 className={cn(
-                  "size-16 overflow-hidden rounded-lg border bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-                  position === index ? "border-primary ring-2 ring-primary" : "border-border",
+                  "size-[4.5rem] overflow-hidden rounded-xl border bg-background transition-all hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                  position === index ? "border-primary ring-2 ring-primary/70" : "border-border opacity-80 hover:opacity-100",
                 )}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}

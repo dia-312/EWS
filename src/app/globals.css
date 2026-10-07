@@ -22,11 +22,21 @@
   --font-ibm-plex-sans-arabic: "IBM Plex Sans Arabic";
 }
 
-/* Derived from foreground/background so they stay correct in dark presets. */
+/*
+ * Everything below is derived from the store's own colors, so any theme (and any
+ * color the owner picks) gets the same polish: soft tints of the primary color,
+ * glass surfaces, and shadows that only use black.
+ */
 :root,
 .theme-root {
   --muted: color-mix(in srgb, var(--foreground) 62%, var(--background));
   --border: color-mix(in srgb, var(--foreground) 14%, var(--background));
+  --primary-soft: color-mix(in srgb, var(--primary) 9%, var(--background));
+  --primary-tint: color-mix(in srgb, var(--primary) 18%, var(--background));
+  --glass: color-mix(in srgb, var(--background) 78%, transparent);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.05), 0 6px 18px -10px rgb(0 0 0 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.05), 0 22px 40px -18px rgb(0 0 0 / 0.28);
+  --shadow-glow: 0 12px 30px -12px color-mix(in srgb, var(--primary) 65%, transparent);
 }
 
 @theme inline {
@@ -42,6 +52,12 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-danger: var(--danger);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-tint: var(--primary-tint);
+  --color-glass: var(--glass);
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-glow: var(--shadow-glow);
   --font-sans: var(--font-store, var(--font-tajawal));
   --radius-lg: var(--ui-radius-lg, 0.5rem);
   --radius-xl: var(--ui-radius-xl, 0.75rem);
@@ -52,10 +68,62 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-tajawal), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tighter headings for Latin text only: tight spacing breaks Arabic letter joins. */
+:lang(en) :is(h1, h2, h3) {
+  letter-spacing: -0.015em;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--primary-tint);
 }
 
 .theme-root {
   font-family: var(--font-store, var(--font-tajawal)), system-ui, sans-serif;
+}
+
+/* Section headings: a short bar of the primary color before the title. */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.section-title::before {
+  content: "";
+  width: 0.3rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, var(--primary), color-mix(in srgb, var(--primary) 35%, var(--accent)));
+  flex-shrink: 0;
+}
+
+/* Cards that rise a little on hover (pointer devices only, never with reduced motion). */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lift {
+    transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* A soft dotted texture for dark hero panels. */
+.dots {
+  background-image: radial-gradient(color-mix(in srgb, currentColor 14%, transparent) 1px, transparent 1.2px);
+  background-size: 18px 18px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -32,7 +32,7 @@ export async function ReviewsSection({
 
   return (
     <section aria-labelledby="reviews-title" className="flex max-w-3xl flex-col gap-4" data-reviews>
-      <h2 id="reviews-title" className="text-xl font-bold">
+      <h2 id="reviews-title" className="section-title">
         {t("title")}
       </h2>
 

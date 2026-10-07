@@ -46,12 +46,14 @@ export async function ProductListing({
   return (
     <div className="grid gap-6 lg:grid-cols-[16rem_minmax(0,1fr)]">
       <aside className="hidden lg:block" aria-label={t("filters")}>
-        <FilterForm {...filterProps} idPrefix="side" />
+        <div className="sticky top-32 rounded-2xl border border-border/80 bg-background p-5 shadow-card">
+          <FilterForm {...filterProps} idPrefix="side" />
+        </div>
       </aside>
 
       <div className="flex min-w-0 flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p role="status" className="text-sm text-muted">
+          <p role="status" className="rounded-full bg-primary-soft px-4 py-1.5 text-sm font-medium">
             {t("results", { count: result.total })}
           </p>
           <div className="lg:hidden">

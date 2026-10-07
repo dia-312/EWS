@@ -30,8 +30,8 @@ export function ProductCard({ item, locale, currency, priority = false }: Produc
   const alt = pickLocalized(locale, item.image_alt_ar, item.image_alt_en) || name;
 
   return (
-    <article className="group relative flex w-full flex-col overflow-hidden rounded-xl border border-border bg-background transition-shadow focus-within:ring-2 focus-within:ring-primary hover:shadow-md">
-      <div className="relative aspect-square bg-surface">
+    <article className="lift group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-background shadow-card focus-within:ring-2 focus-within:ring-primary">
+      <div className="relative aspect-square overflow-hidden bg-[radial-gradient(circle_at_50%_35%,var(--background),var(--surface))]">
         {item.image_url ? (
           // Plain <img>: the files are already resized and compressed at upload.
           // eslint-disable-next-line @next/next/no-img-element
@@ -42,11 +42,11 @@ export function ProductCard({ item, locale, currency, priority = false }: Produc
             height={480}
             loading={priority ? "eager" : "lazy"}
             decoding="async"
-            className={`size-full object-contain p-3 ${unavailable ? "opacity-60" : ""}`}
+            className={`size-full object-contain p-5 transition-transform duration-500 ease-out group-hover:scale-[1.06] motion-reduce:transition-none ${unavailable ? "opacity-55 grayscale-[40%]" : ""}`}
           />
         ) : (
-          <div className="flex size-full items-center justify-center text-muted" aria-hidden>
-            <svg viewBox="0 0 24 24" className="size-12" fill="none" stroke="currentColor" strokeWidth="1.2">
+          <div className="flex size-full items-center justify-center text-muted/60" aria-hidden>
+            <svg viewBox="0 0 24 24" className="size-14" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="5" width="18" height="14" rx="2" />
               <circle cx="9" cy="10" r="1.5" />
               <path d="m21 16-5-5-8 8" />
@@ -54,22 +54,22 @@ export function ProductCard({ item, locale, currency, priority = false }: Produc
           </div>
         )}
         <ProductBadges
-          className="absolute start-2 top-2"
+          className="absolute start-2.5 top-2.5 max-w-[calc(100%-3.5rem)]"
           onSale={item.offer_price !== null}
           discountPercent={discountPercent}
           isNew={item.is_new}
           badgeKeys={item.badge_keys}
         />
         {/* z-10 keeps the buttons clickable above the card-wide link */}
-        <div className="absolute end-2 top-2 z-10 flex flex-col gap-1.5">
+        <div className="absolute end-2.5 top-2.5 z-10 flex flex-col gap-1.5">
           <FavoriteButton productId={item.id} productName={name} />
           <CompareButton productId={item.id} productName={name} />
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-3">
-        {item.brand_name && <p className="text-xs text-muted">{item.brand_name}</p>}
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug">
+      <div className="flex flex-1 flex-col gap-1.5 p-4">
+        {item.brand_name && <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">{item.brand_name}</p>}
+        <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug">
           <Link href={`/products/${item.slug}`} className="outline-none after:absolute after:inset-0">
             {name}
           </Link>
@@ -83,7 +83,7 @@ export function ProductCard({ item, locale, currency, priority = false }: Produc
             </span>
           </p>
         )}
-        <div className="mt-auto flex flex-col gap-1.5 pt-1">
+        <div className="mt-auto flex flex-col gap-2 pt-2">
           <Price current={current} was={was} currency={currency} locale={locale} />
           {item.availability !== "in_stock" ? (
             <AvailabilityBadge availability={item.availability} className="self-start" />

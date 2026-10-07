@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Breadcrumbs } from "@/components/storefront/breadcrumbs";
+import { PageHeader } from "@/components/storefront/page-header";
 import { ProductListing } from "@/components/storefront/product-listing";
 import { locales } from "@/config/i18n";
 import { parseCatalogParams } from "@/lib/catalog-params";
@@ -52,17 +52,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
 
   return (
     <div className="flex flex-col gap-6">
-      <Breadcrumbs
-        items={[
+      <PageHeader
+        crumbs={[
           { label: tNav("home"), href: "/" },
           { label: tNav("allProducts"), href: "/products" },
           { label: name },
         ]}
+        title={name}
+        description={description || undefined}
       />
-      <div>
-        <h1 className="text-3xl font-bold">{name}</h1>
-        {description && <p className="mt-1 max-w-2xl text-muted">{description}</p>}
-      </div>
       <ProductListing
         locale={locale}
         store={store}
